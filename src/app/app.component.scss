@@ -1,0 +1,10 @@
+.container-body {
+	padding: 6rem 20rem 1rem 20rem;
+	height: 90vh;
+}
+
+@media (max-width: 1200px) {
+	.container-body {
+		padding: 6rem 1rem 1rem 1rem;
+	}
+}

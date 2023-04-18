@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Righteous&family=Roboto:wght@300&display=swap');
+
+body {
+	font-family: 'Roboto', sans-serif !important;
+	color: var(--text-color);
+	background-color: var(--surface-ground);
+}
+
+a {
+	text-decoration: none;
+}
+
+.font-logo {
+	font-family: 'Righteous', cursive;
+}
+
+.card {
+	background: var(--surface-card);
+	border: 1px solid var(--surface-border);
+	padding: 0rem 1rem;
+	margin-bottom: 2rem;
+	box-shadow: var(--card-shadow);
+	border-radius: 12px;
+}

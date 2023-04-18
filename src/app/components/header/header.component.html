@@ -1,0 +1,31 @@
+<div class="topbar">
+	<p-button
+		class="topbar-menu"
+		styleClass="p-button-rounded p-button-lg"
+		icon="pi pi-bars"
+		(click)="showSidebar()"
+	></p-button>
+
+	<a class="topbar-logo" routerLink="">
+		<span class="font-logo">VegiToc</span>
+	</a>
+
+	<p-button
+		class="topbar-profile-menu-button"
+		styleClass="p-button-rounded p-button-lg"
+		icon="pi pi-ellipsis-v"
+		(click)="showProfileMenu()"
+	></p-button>
+
+	<div
+		class="topbar-profile-menu"
+		[ngClass]="{ 'topbar-profile-menu-mobile': profileMenuVisible == true }"
+	>
+		<p-button styleClass="p-button-rounded">registrarse</p-button>
+		<p-button
+			styleClass="p-button-rounded p-button-lg"
+			icon="pi pi-user"
+		></p-button>
+	</div>
+</div>
+<app-sidebar></app-sidebar>
