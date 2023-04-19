@@ -20,6 +20,11 @@ const routes: Routes = [
 				(m) => m.PlanificacionModule
 			),
 	},
+	{
+		path: 'login',
+		loadChildren: () =>
+			import('../pages/login/login.module').then((m) => m.LoginModule),
+	},
 ];
 
 @NgModule({
