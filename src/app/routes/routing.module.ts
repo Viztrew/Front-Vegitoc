@@ -20,6 +20,14 @@ const routes: Routes = [
 				(m) => m.PlanificacionModule
 			),
 	},
+
+	{
+		path: 'buscar',
+		loadChildren: () =>
+			import(
+				'../pages/buscar-planificacion/buscar-planificacion.module'
+			).then((m) => m.BuscarPlanificacionModule),
+	},
 ];
 
 @NgModule({
