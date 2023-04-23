@@ -1,0 +1,19 @@
+<h1>Buscar Productos</h1>
+<input type="text" pInputText [(ngModel)]="nombreProductoBuscar" />
+<p-button label="Buscar" (click)="buscarProducto()"></p-button>
+<p>{{ nombreProductoBuscar }}</p>
+
+<div *ngFor="let producto of productos">
+	<div class="grid product-card">
+		<div class="col-12">
+			{{ producto.nombre_prod }} - {{ producto.nombre_marca }}
+			<hr />
+			<img
+				src="http://ec2-107-23-75-98.compute-1.amazonaws.com:3001/imagenes/{{
+					producto.id_producto
+				}}.jpg"
+				alt="{{ producto.nombre_prod }}"
+			/>
+		</div>
+	</div>
+</div>

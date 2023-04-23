@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { HttpClientModule } from '@angular/common/http';
 import { RoutingModule } from './routes/routing.module';
 import { AppComponent } from './app.component';
 import { PrimengModule } from './modules/primeng.module';
@@ -24,7 +24,7 @@ import { FormsModule } from '@angular/forms';
 		CommonModule,
 		RoutingModule,
 		PrimengModule,
-		FormsModule,
+		HttpClientModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent],
