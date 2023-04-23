@@ -1,3 +1,5 @@
 <p>login works!</p>
 
-<p-button label="Submit"></p-button>
+<input type="text"  [(ngModel)] ='usuario' placeholder="Usuario">
+<input type="text" placeholder="Contraseña">
+<p-button label="Submit" (click)="hacerLogin()"></p-button>

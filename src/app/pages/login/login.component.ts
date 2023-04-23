@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+  usuario: string = '';
+  contrasena: string = '';
 
+  hacerLogin(){
+    console.log(this.usuario);
+    
+  }
 }

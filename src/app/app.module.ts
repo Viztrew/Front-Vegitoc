@@ -9,6 +9,7 @@ import { PrimengModule } from './modules/primeng.module';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
 	declarations: [
@@ -23,6 +24,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 		CommonModule,
 		RoutingModule,
 		PrimengModule,
+		FormsModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent],
