@@ -1,0 +1,13 @@
+.input-buscar {
+	display: flex;
+	margin-bottom: 1rem;
+
+	input {
+		width: 100%;
+	}
+}
+
+.items-list {
+	height: 55vh;
+	overflow-y: auto;
+}

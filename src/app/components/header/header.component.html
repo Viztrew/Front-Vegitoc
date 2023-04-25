@@ -7,25 +7,14 @@
 	></p-button>
 
 	<a class="topbar-logo" routerLink="">
-		<span class="font-logo">VegiToc</span>
+		<span class="font-logo">SmartPlate</span>
 	</a>
 
 	<p-button
-		class="topbar-profile-menu-button"
+		class="topbar-session"
 		styleClass="p-button-rounded p-button-lg"
-		icon="pi pi-ellipsis-v"
-		(click)="showProfileMenu()"
+		icon="pi pi-user"
+		(click)="login()"
 	></p-button>
-
-	<div
-		class="topbar-profile-menu"
-		[ngClass]="{ 'topbar-profile-menu-mobile': profileMenuVisible == true }"
-	>
-		<p-button
-			styleClass="p-button-rounded p-button-lg"
-			icon="pi pi-user"
-			(click)="login()"
-		></p-button>
-	</div>
 </div>
 <app-sidebar></app-sidebar>

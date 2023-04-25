@@ -9,25 +9,15 @@ import { VegiService } from 'src/app/services/vegi.service';
 export class HeaderComponent {
 	constructor(private servicio: VegiService) {}
 
+	@ViewChild(SidebarComponent) sidebar: any;
+
+	profileMenuVisible: boolean = false;
+
 	usuario = {
 		email: 'email@falso',
 		password: 'clave_falsa',
 	};
-
-	login() {
-		console.log('login ->');
-
-		this.servicio.login(this.usuario).subscribe((data) => {
-			if (data) {
-				localStorage.setItem('sesion', data.token);
-			}
-
-			console.log(data);
-		});
-	}
-
-	@ViewChild(SidebarComponent) sidebar: any;
-	profileMenuVisible: boolean = false;
+	
 	async showSidebar() {
 		this.sidebar.sidebarVisible = true;
 	}
@@ -35,4 +25,18 @@ export class HeaderComponent {
 	async showProfileMenu() {
 		this.profileMenuVisible = true;
 	}
+
+	login() {
+		console.log('login ->');
+
+		this.servicio.login(this.usuario).subscribe((data) => {
+			if (data) {
+				localStorage.setItem('session', data.token);
+			}
+
+			console.log(data);
+		});
+	}
+
+	
 }
