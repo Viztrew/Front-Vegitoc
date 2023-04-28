@@ -1,5 +1,37 @@
-<p>login works!</p>
+<div class="flex justify-content-center">
 
-<input type="text"  [(ngModel)] ='usuario' placeholder="Usuario">
+<form [formGroup]="userForm" (ngSubmit)="addUser()">
+    <label for="Registro" class="registro">Registro</label>
+    
+    <div class="field">
+        <label for="usuario" class="block">Usuario</label>
+        <input type="text" pInputText placeholder="Usuario" formControlName="usuario"/>
+        <small class="p-error block" 
+        *ngIf="userForm.get('usuario')?.invalid && userForm.get('usuario')?.dirty"
+        >Este campo es obligatorio</small>
+    </div>
+
+    <div class="field">
+        <label for="contrasena" class="block">Contraseña</label>
+        <input type="text" pInputText placeholder="Contraseña" formControlName="contrasena"/>
+        <small class="p-error block" 
+        *ngIf="userForm.get('contrasena')?.invalid && userForm.get('contrasena')?.dirty"
+        >Este campo es obligatorio</small>
+    </div>
+
+    <div class="field">
+        <label for="contrasena" class="block">Repetir contraseña</label>
+        <input type="text" pInputText placeholder="Repetir contraseña" formControlName="contrasena"/>
+        <small class="p-error block" 
+        *ngIf="userForm.get('contrasena')?.invalid && userForm.get('contrasena')?.dirty"
+        >Este campo es obligatorio</small>
+    </div>
+
+    <button pButton type="Submit" label="Continuar" [disabled]="userForm.invalid"></button>
+</form>
+
+</div>
+<!--<input type="text"  [(ngModel)] ='usuario' placeholder="Usuario">
 <input type="text" placeholder="Contraseña">
-<p-button label="Submit" (click)="hacerLogin()"></p-button>
+<p-button label="Submit" (click)="hacerlogin()"></p-button>
+-->
