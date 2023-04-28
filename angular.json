@@ -29,6 +29,7 @@
 							"node_modules/primeng/resources/themes/saga-orange/theme.css",
 							"node_modules/primeng/resources/primeng.min.css",
 							"node_modules/primeflex/primeflex.scss",
+							"node_modules/ngx-spinner/animations/ball-scale-multiple.css",
 							"src/app/styles/styles.scss"
 						],
 						"scripts": []

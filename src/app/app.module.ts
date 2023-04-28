@@ -10,6 +10,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { FormsModule } from '@angular/forms';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
 	declarations: [
@@ -25,6 +26,7 @@ import { FormsModule } from '@angular/forms';
 		RoutingModule,
 		PrimengModule,
 		HttpClientModule,
+		NgxSpinnerModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent],

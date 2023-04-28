@@ -1,31 +1,38 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
+
 @Injectable({
 	providedIn: 'root',
 })
 export class VegiService {
 	constructor(private http: HttpClient) {}
 
+	HttpOptions = {
+		headers: new HttpHeaders({
+			token: localStorage.getItem('session') || '',
+		}),
+	};
+
 	login(usuario: Object): Observable<any> {
 		return this.http.post(
-			`http://ec2-107-23-75-98.compute-1.amazonaws.com:3000/usuario/loginUsuario`,
+			`${environment.baseUrl}/usuario/loginUsuario`,
 			usuario
 		);
 	}
 
-	buscarProducto(producto: string, token: string): Observable<any> {
-		let HttpOptions = {
-			headers: new HttpHeaders({
-				token: token,
-			}),
-		};
-
-		console.log(token);
-
+	obtenerProductos(): Observable<any> {
 		return this.http.get(
-			`http://ec2-107-23-75-98.compute-1.amazonaws.com:3000/producto/busquedaSimilitudes/${producto}`,
-			HttpOptions
+			`${environment.baseUrl}/producto/listaCompletaProductos`,
+			this.HttpOptions
+		);
+	}
+
+	buscarProducto(producto: string): Observable<any> {
+		return this.http.get(
+			`${environment.baseUrl}/producto/busquedaSimilitudes/${producto}`,
+			this.HttpOptions
 		);
 	}
 }

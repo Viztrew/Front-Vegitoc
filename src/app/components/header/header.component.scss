@@ -14,7 +14,7 @@
 
 	.topbar-menu {
 		margin-left: 0;
-		order: 1;
+		order: 3;
 	}
 	.topbar-logo {
 		display: flex;
@@ -24,39 +24,15 @@
 		order: 2;
 	}
 
-	.topbar-profile-menu-button {
-		display: none;
-		margin-left: 0;
-		order: 3;
-	}
-
-	.topbar-profile-menu {
+	.topbar-session {
 		display: flex;
-		align-items: center;
 		margin-left: 0;
-		order: 3;
+		order: 1;
 	}
 }
 // Version móvil
 @media (max-width: 1200px) {
 	.topbar {
 		padding: 0 2rem;
-
-		.topbar-menu {
-			order: 3;
-		}
-
-		.topbar-profile-menu-button {
-			display: flex;
-			order: 1;
-		}
-		.topbar-profile-menu {
-			display: none;
-			margin-left: 0;
-			order: 3;
-			.topbar-profile-menu-mobile {
-				display: flex;
-			}
-		}
 	}
 }

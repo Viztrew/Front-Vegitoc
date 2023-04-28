@@ -1,0 +1,26 @@
+.item {
+	background: var(--surface-card);
+	border: 1px solid var(--surface-border);
+	padding: 1rem;
+	margin-bottom: 3px;
+	box-shadow: var(--card-shadow);
+	border-radius: 3px;
+	transition: all 0.1s ease-in-out;
+
+	.item-image {
+		width: 100%;
+		max-width: max-content;
+	}
+}
+
+.item:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 1px 15px var(--primary-color);
+}
+
+// Version móvil
+@media (max-width: 575px) {
+	.topbar {
+		padding: 0 2rem;
+	}
+}
