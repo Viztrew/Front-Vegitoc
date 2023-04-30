@@ -3,4 +3,8 @@
 	<a class="block" routerLink="/planificacion"> Planificación</a>
 	<a class="block" routerLink="/home"> Home</a>
 	<a class="block" routerLink="/buscar"> Buscar</a>
+	<p-inputSwitch
+		[(ngModel)]="themeChecked"
+		(click)="changeTheme()"
+	></p-inputSwitch>
 </p-sidebar>

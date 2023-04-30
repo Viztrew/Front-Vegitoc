@@ -26,11 +26,30 @@
 						"assets": ["src/favicon.ico", "src/assets"],
 						"styles": [
 							"node_modules/primeicons/primeicons.css",
-							"node_modules/primeng/resources/themes/saga-orange/theme.css",
 							"node_modules/primeng/resources/primeng.min.css",
 							"node_modules/primeflex/primeflex.scss",
 							"node_modules/ngx-spinner/animations/ball-scale-multiple.css",
-							"src/app/styles/styles.scss"
+							"src/app/styles/styles.scss",
+							{
+								"input": "src/app/styles/themes/theme-saga-orange.scss",
+								"bundleName": "saga-orange",
+								"inject": false
+							},
+							{
+								"input": "src/app/styles/themes/theme-vela-orange.scss",
+								"bundleName": "vela-orange",
+								"inject": false
+							},
+							{
+								"input": "src/app/styles/themes/theme-saga-green.scss",
+								"bundleName": "saga-green",
+								"inject": false
+							},
+							{
+								"input": "src/app/styles/themes/theme-vela-green.scss",
+								"bundleName": "vela-green",
+								"inject": false
+							}
 						],
 						"scripts": []
 					},
