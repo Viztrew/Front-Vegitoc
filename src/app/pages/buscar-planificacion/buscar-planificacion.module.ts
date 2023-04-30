@@ -6,6 +6,7 @@ import { PrimengModule } from '../../modules/primeng.module';
 import { FormsModule } from '@angular/forms';
 import { BuscarItemsComponent } from './buscar-items/buscar-items.component';
 import { ItemComponent } from 'src/app/components/item/item.component';
+
 @NgModule({
 	declarations: [
 		BuscarPlanificacionComponent,

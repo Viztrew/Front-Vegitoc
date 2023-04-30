@@ -14,6 +14,10 @@ a {
 	font-family: 'Righteous', cursive;
 }
 
+.text-bold {
+	font-weight: bold;
+}
+
 .card {
 	background: var(--surface-card);
 	border: 1px solid var(--surface-border);
@@ -21,4 +25,28 @@ a {
 	margin-bottom: 2rem;
 	box-shadow: var(--card-shadow);
 	border-radius: 12px;
+	height: 78vh;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+div::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+div::-webkit-scrollbar-thumb {
+	background: #ccc;
+	border-radius: 4px;
+}
+div::-webkit-scrollbar-thumb:hover {
+	background: var(--primary-100);
+}
+
+div::-webkit-scrollbar-thumb:active {
+	background-color: var(--primary-color);
+}
+
+.no-padding {
+	padding: 0;
 }

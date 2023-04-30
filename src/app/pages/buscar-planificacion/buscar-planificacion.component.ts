@@ -8,7 +8,9 @@ import { environment } from 'src/environments/environment';
 	styleUrls: ['./buscar-planificacion.component.scss'],
 })
 export class BuscarPlanificacionComponent implements OnInit {
-	constructor(private servicio: VegiService) {}
+	constructor() {}
+
+	TipoItems: Array<string> = ['producto', 'receta', 'favorito'];
 
 	ngOnInit() {}
 }

@@ -4,12 +4,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { RoutingModule } from './routes/routing.module';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { FormsModule } from '@angular/forms';
+
+//compontentes
 import { AppComponent } from './app.component';
 import { PrimengModule } from './modules/primeng.module';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { NgxSpinnerModule } from 'ngx-spinner';
+import { InfoProductoComponent } from './components/info-producto/info-producto.component';
 
 @NgModule({
 	declarations: [
@@ -17,6 +21,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 		HeaderComponent,
 		FooterComponent,
 		SidebarComponent,
+		InfoProductoComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -26,6 +31,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 		PrimengModule,
 		HttpClientModule,
 		NgxSpinnerModule,
+		FormsModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent],

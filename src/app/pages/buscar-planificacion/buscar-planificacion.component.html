@@ -1,16 +1,15 @@
 <div class="card">
 	<h1 class="text-center">Buscar</h1>
+	<p-divider></p-divider>
 	<p-tabView>
 		<p-tabPanel header="Productos">
-			<div class="items-list">
-				<app-buscar-items></app-buscar-items>
-			</div>
+			<app-buscar-items [tipoItem]="TipoItems[0]"></app-buscar-items>
 		</p-tabPanel>
 		<p-tabPanel header="Recetas">
-			<p>recetas</p>
+			<app-buscar-items [tipoItem]="TipoItems[1]"></app-buscar-items>
 		</p-tabPanel>
 		<p-tabPanel header="Favoritos">
-			<p>Favoritos</p>
+			<app-buscar-items [tipoItem]="TipoItems[2]"></app-buscar-items>
 		</p-tabPanel>
 		<p-tabPanel header="Mis recetas">
 			<p>mis recetas</p>

@@ -8,9 +8,17 @@ import { environment } from 'src/environments/environment';
 export class ItemComponent {
 	@Input() item: any;
 
-	imagesUrl = environment.imagesUrl;
+	imageSrc: string = '';
 
-	OnInit() {
-		//console.log(this.item);
+	ngOnInit(): void {
+		this.imageSrc =
+			environment.imagesUrl + '/' + this.item.id_producto + '.jpg';
+	}
+	updateUrl(event: Event) {
+		this.imageSrc = '../../../assets/img/nophoto.png';
+	}
+
+	anhadirProductoPlanificacion() {
+		console.log('añadir');
 	}
 }

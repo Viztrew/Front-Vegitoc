@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { VegiService } from 'src/app/services/vegi.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Producto } from 'src/app/interfaces/data-types';
 
 @Component({
 	selector: 'app-buscar-items',
@@ -13,35 +14,64 @@ export class BuscarItemsComponent {
 		private spinner: NgxSpinnerService
 	) {}
 
-	@Input() items = new Array<any>();
+	items = new Array<any>();
+
+	@Input() tipoItem: string = '';
 
 	nombreItemBuscar: string = '';
 
-	onLoad: boolean = true;
+	sinResultadosTemplate: boolean = false;
 
-	ngOnInit(): void {
-		this.getProductos();
-		this.spinner.show();
-		setTimeout(() => {
-			this.spinner.hide(); /** spinner ends after 5 seconds */
-		}, 1000);
-	}
+	buscarTemplate: boolean = true;
 
-	async getProductos() {
-		await this.servicio.obtenerProductos().subscribe((data) => {
-			this.items = data;
-		});
-	}
+	ngOnInit(): void {}
 
 	async buscarProducto() {
 		if (this.nombreItemBuscar == '') {
-			this.getProductos();
+			this.items = [];
+			this.buscarTemplate = true;
+			this.sinResultadosTemplate = false;
 		} else {
+			this.spinner.show();
+			this.buscarTemplate = false;
 			await this.servicio
 				.buscarProducto(this.nombreItemBuscar)
 				.subscribe((data) => {
-					this.items = data;
+					if (data.length > 0) {
+						this.items = data;
+						this.sinResultadosTemplate = false;
+					} else {
+						this.items = [];
+						this.sinResultadosTemplate = true;
+					}
+					this.spinner.hide();
 				});
 		}
+	}
+
+	async obtenerRecetas() {
+		this.spinner.show();
+		this.buscarTemplate = false;
+		await this.servicio.obtenerRecetas().subscribe((data) => {
+			if (data.length > 0) {
+				this.items = data;
+				this.sinResultadosTemplate = false;
+			} else {
+				this.items = [];
+				this.sinResultadosTemplate = true;
+			}
+			this.spinner.hide();
+		});
+	}
+
+	async obtenerFavoritos() {
+		this.spinner.show();
+		this.buscarTemplate = false;
+		await this.servicio.obtenerFavoritos().subscribe((data) => {
+			let productos = data.productos;
+			let recetas = data.recetas;
+			this.items = productos.concat(recetas);
+			this.spinner.hide();
+		});
 	}
 }

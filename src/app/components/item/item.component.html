@@ -1,24 +1,34 @@
 <div class="item flex align-items-center pb-2 w-full flex-wrap">
 	<div class="col-12 sm:col-5 md:col-5 lg:col-5">
 		<img
-			src="{{ imagesUrl }}/{{ item.id_producto }}.jpg"
-			alt="{{ item.nombre_prod }}"
+			[src]="imageSrc"
+			(error)="updateUrl($event)"
+			alt="{{ item.nombre }}"
 			class="item-image shadow-2"
 		/>
 	</div>
 	<div class="col-12 sm:col-7 md:col-7 lg:col-7">
-		<div class="col-12">
-			<h3>{{ item.nombre }}</h3>
+		<div class="col-12 no-padding">
+			<h3>{{ item.nombre }} - {{ item.cantidad_embase }}</h3>
 		</div>
-		<div class="col-12">
+		<div class="col-12 no-padding">
 			<p>{{ item.marca }}</p>
 		</div>
-		<div class="col-12">
-			<p>Kcal porción: {{ item.kcal_100 }}</p>
+		<div class="col-12 no-padding">
+			<p>Kcal porción: {{ item.kcal_prcn }}</p>
 		</div>
-		<div class="col-12">
-			<p-button label="Añadir"></p-button>
-			<i class="pi pi-star" style="font-size: 1.5rem"></i>
+		<div class="col-12 no-padding">
+			<p-button
+				label="Añadir"
+				(click)="anhadirProductoPlanificacion()"
+			></p-button>
+
+			<div *ngIf="item.favorito">
+				<i class="pi pi-star-fill" style="font-size: 1.5rem"></i>
+			</div>
+			<div *ngIf="!item.favorito">
+				<i class="pi pi-star" style="font-size: 1.5rem"></i>
+			</div>
 		</div>
 	</div>
 </div>

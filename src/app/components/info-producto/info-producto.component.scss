@@ -1,0 +1,24 @@
+.info-image {
+	width: 100%;
+	max-width: max-content;
+}
+
+.info-table {
+	width: 100%;
+	margin-bottom: 1rem;
+	background-color: transparent;
+	border-collapse: collapse;
+	border-radius: 4px !important;
+}
+
+.info-table {
+	th,
+	td {
+		padding: 0.3rem;
+		vertical-align: top;
+		border-bottom: 1px solid var(--primary-color);
+	}
+	tr:hover {
+		background-color: var(--surface-border);
+	}
+}
