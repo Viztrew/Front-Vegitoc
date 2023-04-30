@@ -18,7 +18,7 @@ export class VegiService {
 	login(usuario: Object): Observable<any> {
 		return this.http.post(
 			`${environment.baseUrl}/usuario/loginUsuario`,
-			usuario
+			usuario, {observe: 'response'}
 		);
 	}
 

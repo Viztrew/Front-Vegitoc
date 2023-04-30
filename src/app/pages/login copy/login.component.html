@@ -1,6 +1,6 @@
 <div class="flex justify-content-center">
 
-<form [formGroup]="userForm" (ngSubmit)="hacerLogin()">
+<form [formGroup]="userForm" (ngSubmit)="addUser()">
     <label for="Registro" class="registro">Registro</label>
     
     <div class="field">
@@ -19,7 +19,7 @@
         >Este campo es obligatorio</small>
     </div>
 
-    <button pButton type="Submit" label="Iniciar Sesión" [disabled]="userForm.invalid"></button>
+    <button pButton type="Submit" label="Continuar" [disabled]="userForm.invalid"></button>
 </form>
 
 </div>

@@ -20,11 +20,11 @@ export class BuscarItemsComponent {
 	onLoad: boolean = true;
 
 	ngOnInit(): void {
-		this.getProductos();
-		this.spinner.show();
-		setTimeout(() => {
-			this.spinner.hide(); /** spinner ends after 5 seconds */
-		}, 1000);
+		//this.getProductos();
+		//this.spinner.show();
+		//setTimeout(() => {
+	//		this.spinner.hide(); /** spinner ends after 5 seconds */
+	//	}, 1000);
 	}
 
 	async getProductos() {
