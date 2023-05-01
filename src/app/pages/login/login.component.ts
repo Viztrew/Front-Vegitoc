@@ -24,7 +24,15 @@ export class LoginComponent {
     let usuario = {email: this.userForm.value.usuario, password: this.userForm.value.contrasena};
     this.servicio.login(usuario).subscribe(data => {
       localStorage.setItem('session', data.body.token)
-      this.router.navigateByUrl('planificacion')
+      Swal.fire({
+        title: '¡Bienvenido!',
+        text: 'Has iniciado sesión',
+        icon: 'success',
+        confirmButtonText: 'Continuar'
+      }).then((result) => {
+        this.router.navigateByUrl('planificacion')
+      });
+      
     }, err=>{
       Swal.fire({
         icon: "error",

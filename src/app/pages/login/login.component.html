@@ -1,7 +1,7 @@
+<h1 for="Iniciar" class="iniciar">Iniciar Sesión</h1>
 <div class="flex justify-content-center">
 
 <form [formGroup]="userForm" (ngSubmit)="hacerLogin()">
-    <label for="Registro" class="registro">Registro</label>
     
     <div class="field">
         <label for="usuario" class="block">Usuario</label>
@@ -13,17 +13,11 @@
 
     <div class="field">
         <label for="contrasena" class="block">Contraseña</label>
-        <input type="text" pInputText placeholder="Contraseña" formControlName="contrasena"/>
+        <input type="password" pInputText placeholder="Contraseña" formControlName="contrasena"/>
         <small class="p-error block" 
         *ngIf="userForm.get('contrasena')?.invalid && userForm.get('contrasena')?.dirty"
         >Este campo es obligatorio</small>
     </div>
-
     <button pButton type="Submit" label="Iniciar Sesión" [disabled]="userForm.invalid"></button>
-</form>
-
+</form> 
 </div>
-<!--<input type="text"  [(ngModel)] ='usuario' placeholder="Usuario">
-<input type="text" placeholder="Contraseña">
-<p-button label="Submit" (click)="hacerlogin()"></p-button>
--->
