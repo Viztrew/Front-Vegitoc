@@ -8,10 +8,15 @@ body {
 
 a {
 	text-decoration: none;
+	color: var(--text-color);
 }
 
 .font-logo {
 	font-family: 'Righteous', cursive;
+}
+
+.text-bold {
+	font-weight: bold;
 }
 
 .card {
@@ -21,4 +26,39 @@ a {
 	margin-bottom: 2rem;
 	box-shadow: var(--card-shadow);
 	border-radius: 12px;
+	height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+div::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+div::-webkit-scrollbar-thumb {
+	background: #ccc;
+	border-radius: 4px;
+}
+div::-webkit-scrollbar-thumb:hover {
+	background: var(--primary-100);
+}
+
+div::-webkit-scrollbar-thumb:active {
+	background-color: var(--primary-color);
+}
+
+.no-padding {
+	padding: 0;
+}
+
+.star-icon {
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: var(--border-radius);
+	margin-left: 0.5rem;
+	border: 1px solid var(--surface-border);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 }

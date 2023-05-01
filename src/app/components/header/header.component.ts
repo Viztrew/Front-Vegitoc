@@ -17,7 +17,7 @@ export class HeaderComponent {
 		email: 'email@falso',
 		password: 'clave_falsa',
 	};
-	
+
 	async showSidebar() {
 		this.sidebar.sidebarVisible = true;
 	}
@@ -37,6 +37,4 @@ export class HeaderComponent {
 			console.log(data);
 		});
 	}
-
-	
 }

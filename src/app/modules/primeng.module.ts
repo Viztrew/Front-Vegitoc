@@ -7,6 +7,14 @@ import { SidebarModule } from 'primeng/sidebar';
 import { InputTextModule } from 'primeng/inputtext';
 import { TabViewModule } from 'primeng/tabview';
 import { ScrollerModule } from 'primeng/scroller';
+import { DividerModule } from 'primeng/divider';
+import { TableModule } from 'primeng/table';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { ToastModule } from 'primeng/toast';
+import { MenuModule } from 'primeng/menu';
+import { AccordionModule } from 'primeng/accordion';
+
+// SPINNER
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
@@ -19,6 +27,12 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 		TabViewModule,
 		ScrollerModule,
 		ProgressSpinnerModule,
+		DividerModule,
+		TableModule,
+		InputSwitchModule,
+		ToastModule,
+		MenuModule,
+		AccordionModule,
 	],
 	exports: [
 		ButtonModule,
@@ -27,6 +41,12 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 		TabViewModule,
 		ScrollerModule,
 		ProgressSpinnerModule,
+		DividerModule,
+		TableModule,
+		InputSwitchModule,
+		ToastModule,
+		MenuModule,
+		AccordionModule,
 	],
 })
 export class PrimengModule {}

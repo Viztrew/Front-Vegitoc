@@ -22,16 +22,37 @@ export class VegiService {
 		);
 	}
 
-	obtenerProductos(): Observable<any> {
+	obtenerFavoritos(): Observable<any> {
 		return this.http.get(
-			`${environment.baseUrl}/producto/listaCompletaProductos`,
+			`${environment.baseUrl}/usuario/obtenerFavoritos`,
+			this.HttpOptions
+		);
+	}
+
+	obtenerRecetasUsuario(): Observable<any> {
+		return this.http.get(
+			`${environment.baseUrl}/recetas/recetasUsuario`,
 			this.HttpOptions
 		);
 	}
 
 	buscarProducto(producto: string): Observable<any> {
 		return this.http.get(
-			`${environment.baseUrl}/producto/busquedaSimilitudes/${producto}`,
+			`${environment.baseUrl}/producto/buscarProducto/${producto}`,
+			this.HttpOptions
+		);
+	}
+
+	buscarReceta(receta: string): Observable<any> {
+		return this.http.get(
+			`${environment.baseUrl}/recetas/buscarReceta/${receta}`,
+			this.HttpOptions
+		);
+	}
+
+	obtenerInformacionProducto(id_producto: bigint): Observable<any> {
+		return this.http.get(
+			`${environment.baseUrl}/producto/informacionNutricionalProductoSimple/${id_producto}`,
 			this.HttpOptions
 		);
 	}

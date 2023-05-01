@@ -1,15 +1,50 @@
 <div class="input-buscar">
 	<input
-		placeholder="Buscar producto"
+		placeholder="Buscar {{ tipoItem }}"
 		type="text"
 		pInputText
 		[(ngModel)]="nombreItemBuscar"
-		(keyup.enter)="buscarProducto()"
+		(keyup.enter)="
+			tipoItem == 'producto'
+				? buscarProducto()
+				: tipoItem == 'receta'
+				? buscarReceta()
+				: obtenerFavoritos()
+		"
 	/>
-	<p-button icon="pi pi-search" (click)="buscarProducto()"></p-button>
+	<p-button
+		icon="pi pi-search"
+		(click)="
+			tipoItem == 'producto'
+				? buscarProducto()
+				: tipoItem == 'receta'
+				? buscarReceta()
+				: obtenerFavoritos()
+		"
+	></p-button>
 </div>
-<div class="grid items-list">
+<div class="items-list grid">
 	<div class="col-12 lg:col-6" *ngFor="let item of items">
-		<app-item [item]="item"></app-item>
+		<app-item [item]="item" [tipoItem]="tipoItem"></app-item>
+	</div>
+
+	<div class="container mt-5">
+		<div *ngIf="buscarTemplate">
+			<div class="flex justify-content-center">
+				<i class="pi pi-search" style="font-size: 2.5rem"></i>
+			</div>
+			<div class="flex justify-content-center">
+				<p>Busca {{ tipoItem }}s</p>
+			</div>
+		</div>
+
+		<div *ngIf="sinResultadosTemplate">
+			<div class="flex justify-content-center">
+				<i class="pi pi-times-circle" style="font-size: 2.5rem"></i>
+			</div>
+			<div class="flex justify-content-center">
+				<p>No hay resultados con '{{ nombreItemBuscar }}'</p>
+			</div>
+		</div>
 	</div>
 </div>

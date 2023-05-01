@@ -8,6 +8,11 @@
 }
 
 .items-list {
-	height: 55vh;
+	height: 50vh;
 	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.items-list .container {
+	width: 100%;
 }
