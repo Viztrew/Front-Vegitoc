@@ -1,33 +1,50 @@
 <div class="item flex align-items-center pb-2 w-full flex-wrap">
 	<div class="col-12 sm:col-5 md:col-5 lg:col-5">
-		<img
-			[src]="imageSrc"
-			(error)="updateUrl($event)"
-			alt="{{ item.nombre }}"
-			class="item-image shadow-2"
-		/>
+		<a routerLink="{{ itemRoute }}" cursor-pointer>
+			<img
+				[src]="imageSrc"
+				(error)="updateUrl($event)"
+				alt="{{ item.nombre }}"
+				class="item-image shadow-2"
+			/>
+		</a>
 	</div>
 	<div class="col-12 sm:col-7 md:col-7 lg:col-7">
-		<div class="col-12 no-padding">
-			<h3>{{ item.nombre }} - {{ item.cantidad_embase }}</h3>
-		</div>
-		<div class="col-12 no-padding">
-			<p>{{ item.marca }}</p>
-		</div>
+		<a routerLink="{{ itemRoute }}" cursor-pointer>
+			<div class="col-12 no-padding">
+				<p class="text-bold">
+					{{ item.nombre }} - {{ item.cantidad_embase }}
+				</p>
+			</div>
+			<div class="col-12 no-padding">
+				<p>{{ item.marca }}</p>
+			</div>
+		</a>
+
 		<div class="col-12 no-padding">
 			<p>Kcal porción: {{ item.kcal_prcn }}</p>
 		</div>
-		<div class="col-12 no-padding">
-			<p-button
-				label="Añadir"
-				(click)="anhadirProductoPlanificacion()"
-			></p-button>
 
-			<div *ngIf="item.favorito">
-				<i class="pi pi-star-fill" style="font-size: 1.5rem"></i>
-			</div>
-			<div *ngIf="!item.favorito">
-				<i class="pi pi-star" style="font-size: 1.5rem"></i>
+		<div class="col-12 no-padding">
+			<div class="flex align-items-center justify-content-center">
+				<p-button
+					label="Añadir"
+					(click)="anhadirProductoPlanificacion()"
+				></p-button>
+
+				<p-button
+					icon="{{
+						item.favorito
+					}} == true? pi pi-star-fill : pi pi-star"
+				></p-button>
+				<div class="star-icon">
+					<div *ngIf="item.favorito">
+						<i class="pi pi-star-fill"></i>
+					</div>
+					<div *ngIf="!item.favorito">
+						<i pRipple class="pi pi-star"> </i>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

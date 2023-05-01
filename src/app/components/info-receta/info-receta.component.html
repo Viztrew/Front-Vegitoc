@@ -1,0 +1,24 @@
+<div class="card">
+	<h1 class="text-center">Receta</h1>
+	<p-divider></p-divider>
+
+	<div class="grid flex">
+		<div class="col-12 sm:col-5 md:col-5 lg:col-5">
+			<h2 class="text-center">Nombre-Receta</h2>
+			<img
+				[src]="imageSrc"
+				(error)="updateUrl($event)"
+				alt=""
+				class="info-image shadow-2"
+			/>
+		</div>
+		<div class="col-12 sm:col-7 md:col-7 lg:col-7">
+			<p>
+				<span class="text-bold">Tamaño de porción: </span>
+			</p>
+			<p>
+				<span class="text-bold">Porciones por envase: </span>
+			</p>
+		</div>
+	</div>
+</div>

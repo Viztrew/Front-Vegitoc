@@ -11,6 +11,8 @@ import { DividerModule } from 'primeng/divider';
 import { TableModule } from 'primeng/table';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { ToastModule } from 'primeng/toast';
+import { MenuModule } from 'primeng/menu';
+import { AccordionModule } from 'primeng/accordion';
 
 // SPINNER
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -29,6 +31,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 		TableModule,
 		InputSwitchModule,
 		ToastModule,
+		MenuModule,
+		AccordionModule,
 	],
 	exports: [
 		ButtonModule,
@@ -41,6 +45,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 		TableModule,
 		InputSwitchModule,
 		ToastModule,
+		MenuModule,
+		AccordionModule,
 	],
 })
 export class PrimengModule {}

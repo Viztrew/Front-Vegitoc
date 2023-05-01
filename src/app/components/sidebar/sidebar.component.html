@@ -1,10 +1,21 @@
 <p-sidebar [(visible)]="sidebarVisible">
-	<h1 class="block">Menú</h1>
-	<a class="block" routerLink="/planificacion"> Planificación</a>
-	<a class="block" routerLink="/home"> Home</a>
-	<a class="block" routerLink="/buscar"> Buscar</a>
-	<p-inputSwitch
-		[(ngModel)]="themeChecked"
-		(click)="changeTheme()"
-	></p-inputSwitch>
+	<ng-template pTemplate="header">
+		<h2>Menú</h2>
+	</ng-template>
+	<ng-template pTemplate="content"
+		><div (click)="sidebarVisible = false">
+			<p-menu [model]="menuItems"></p-menu>
+		</div>
+
+		<div class="flex align-items-center">
+			<p class="mr-3">Modo Vegano</p>
+			<p-inputSwitch
+				[(ngModel)]="themeChecked"
+				(click)="changeTheme()"
+			></p-inputSwitch>
+		</div>
+	</ng-template>
+	<ng-template pTemplate="footer">
+		<p class="font-logo">SmartPlate</p>
+	</ng-template>
 </p-sidebar>

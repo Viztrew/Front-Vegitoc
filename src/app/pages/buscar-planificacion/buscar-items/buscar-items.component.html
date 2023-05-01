@@ -8,7 +8,7 @@
 			tipoItem == 'producto'
 				? buscarProducto()
 				: tipoItem == 'receta'
-				? obtenerRecetas()
+				? buscarReceta()
 				: obtenerFavoritos()
 		"
 	/>
@@ -18,26 +18,33 @@
 			tipoItem == 'producto'
 				? buscarProducto()
 				: tipoItem == 'receta'
-				? obtenerRecetas()
+				? buscarReceta()
 				: obtenerFavoritos()
 		"
 	></p-button>
 </div>
-<div class="grid items-list">
+<div class="items-list grid">
 	<div class="col-12 lg:col-6" *ngFor="let item of items">
-		<app-item
-			[item]="item"
-			routerLink="/buscar/producto/{{ item.id_producto }}"
-		></app-item>
+		<app-item [item]="item" [tipoItem]="tipoItem"></app-item>
 	</div>
 
-	<div *ngIf="buscarTemplate">
-		<i class="pi pi-search" style="font-size: 1rem"></i>
-		<p>Busca {{ tipoItem }}s</p>
-	</div>
+	<div class="container mt-5">
+		<div *ngIf="buscarTemplate">
+			<div class="flex justify-content-center">
+				<i class="pi pi-search" style="font-size: 2.5rem"></i>
+			</div>
+			<div class="flex justify-content-center">
+				<p>Busca {{ tipoItem }}s</p>
+			</div>
+		</div>
 
-	<div *ngIf="sinResultadosTemplate">
-		<i class="pi pi-times-circle" style="font-size: 1rem"></i>
-		<p>No hay resultados con '{{ nombreItemBuscar }}'</p>
+		<div *ngIf="sinResultadosTemplate">
+			<div class="flex justify-content-center">
+				<i class="pi pi-times-circle" style="font-size: 2.5rem"></i>
+			</div>
+			<div class="flex justify-content-center">
+				<p>No hay resultados con '{{ nombreItemBuscar }}'</p>
+			</div>
+		</div>
 	</div>
 </div>

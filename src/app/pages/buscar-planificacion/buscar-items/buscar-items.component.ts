@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { VegiService } from 'src/app/services/vegi.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Producto } from 'src/app/interfaces/data-types';
-
+import { Producto, Receta } from 'src/app/interfaces/data-types';
+import { MessageService } from 'primeng/api';
 @Component({
 	selector: 'app-buscar-items',
 	templateUrl: './buscar-items.component.html',
@@ -11,7 +11,8 @@ import { Producto } from 'src/app/interfaces/data-types';
 export class BuscarItemsComponent {
 	constructor(
 		private servicio: VegiService,
-		private spinner: NgxSpinnerService
+		private spinner: NgxSpinnerService,
+		private messageService: MessageService
 	) {}
 
 	items = new Array<any>();
@@ -24,9 +25,12 @@ export class BuscarItemsComponent {
 
 	buscarTemplate: boolean = true;
 
-	ngOnInit(): void {}
-
-	async buscarProducto() {
+	ngOnInit(): void {
+		if (this.tipoItem == 'favorito') {
+			this.obtenerFavoritos();
+		}
+	}
+	async buscarReceta() {
 		if (this.nombreItemBuscar == '') {
 			this.items = [];
 			this.buscarTemplate = true;
@@ -34,9 +38,8 @@ export class BuscarItemsComponent {
 		} else {
 			this.spinner.show();
 			this.buscarTemplate = false;
-			await this.servicio
-				.buscarProducto(this.nombreItemBuscar)
-				.subscribe((data) => {
+			await this.servicio.buscarReceta(this.nombreItemBuscar).subscribe(
+				(data) => {
 					if (data.length > 0) {
 						this.items = data;
 						this.sinResultadosTemplate = false;
@@ -45,33 +48,110 @@ export class BuscarItemsComponent {
 						this.sinResultadosTemplate = true;
 					}
 					this.spinner.hide();
-				});
+				},
+				(err) => {
+					this.spinner.hide();
+					if (err.status == 401) {
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sesión caducada',
+							detail: 'Inicia sesión nuevamente',
+							life: 3000,
+						});
+					} else {
+						if (err.status == 0) {
+							this.messageService.add({
+								severity: 'error',
+								summary: 'Sin conexión',
+								detail: 'No se pudo conectar al servidor',
+								life: 3000,
+							});
+						}
+					}
+				}
+			);
 		}
 	}
-
-	async obtenerRecetas() {
-		this.spinner.show();
-		this.buscarTemplate = false;
-		await this.servicio.obtenerRecetas().subscribe((data) => {
-			if (data.length > 0) {
-				this.items = data;
-				this.sinResultadosTemplate = false;
-			} else {
-				this.items = [];
-				this.sinResultadosTemplate = true;
-			}
-			this.spinner.hide();
-		});
+	async buscarProducto() {
+		if (this.nombreItemBuscar == '') {
+			this.items = [];
+			this.buscarTemplate = true;
+			this.sinResultadosTemplate = false;
+		} else {
+			this.spinner.show();
+			this.buscarTemplate = false;
+			await this.servicio.buscarProducto(this.nombreItemBuscar).subscribe(
+				(data) => {
+					if (data.length > 0) {
+						this.items = data;
+						this.sinResultadosTemplate = false;
+					} else {
+						this.items = [];
+						this.sinResultadosTemplate = true;
+					}
+					this.spinner.hide();
+				},
+				(err) => {
+					this.spinner.hide();
+					if (err.status == 401) {
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sesión caducada',
+							detail: 'Inicia sesión nuevamente',
+							life: 3000,
+						});
+					} else {
+						if (err.status == 0) {
+							this.messageService.add({
+								severity: 'error',
+								summary: 'Sin conexión',
+								detail: 'No se pudo conectar al servidor',
+								life: 3000,
+							});
+						}
+					}
+				}
+			);
+		}
 	}
 
 	async obtenerFavoritos() {
 		this.spinner.show();
 		this.buscarTemplate = false;
-		await this.servicio.obtenerFavoritos().subscribe((data) => {
-			let productos = data.productos;
-			let recetas = data.recetas;
-			this.items = productos.concat(recetas);
-			this.spinner.hide();
-		});
+		await this.servicio.obtenerFavoritos().subscribe(
+			(data) => {
+				let productos = data.productos;
+				let recetas = data.recetas;
+				this.items = productos.concat(recetas);
+				this.spinner.hide();
+			},
+			(err) => {
+				this.spinner.hide();
+				if (err.status == 401) {
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sesión caducada',
+						detail: 'Inicia sesión nuevamente',
+						life: 1500,
+					});
+				} else {
+					if (err.status == 0) {
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sin conexión',
+							detail: 'No se pudo conectar al servidor',
+							life: 1500,
+						});
+					} else {
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sin conexión',
+							detail: 'No se pudo conectar al servidor',
+							life: 1500,
+						});
+					}
+				}
+			}
+		);
 	}
 }

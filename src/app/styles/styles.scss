@@ -8,6 +8,7 @@ body {
 
 a {
 	text-decoration: none;
+	color: var(--text-color);
 }
 
 .font-logo {
@@ -49,4 +50,15 @@ div::-webkit-scrollbar-thumb:active {
 
 .no-padding {
 	padding: 0;
+}
+
+.star-icon {
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: var(--border-radius);
+	margin-left: 0.5rem;
+	border: 1px solid var(--surface-border);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 }

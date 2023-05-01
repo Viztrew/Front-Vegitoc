@@ -1,0 +1,21 @@
+.p-menu {
+	width: 100% !important;
+	.p-element::hover {
+		background-color: var(--primary-color) !important;
+	}
+}
+
+:host ::ng-deep .p-menu {
+	width: 100%;
+	border: 0;
+	.p-submenu-header {
+		padding: 0;
+	}
+	.p-menuitem {
+		border-bottom: solid 1px var(--primary-color) !important;
+	}
+}
+
+:host ::ng-deep .p-sidebar-footer {
+	text-align: center;
+}

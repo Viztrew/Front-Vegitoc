@@ -8,7 +8,11 @@
 }
 
 .items-list {
-	height: 100%;
+	height: 50vh;
 	overflow-y: auto;
 	overflow-x: hidden;
+}
+
+.items-list .container {
+	width: 100%;
 }
