@@ -19,7 +19,7 @@ export class SidebarComponent implements OnInit {
 	ngOnInit() {
 		let theme = localStorage.getItem('theme');
 		if (theme) {
-			if (theme == 'vela-green') {
+			if (theme == 'arya-green') {
 				this.themeChecked = true;
 			} else {
 				this.themeChecked = false;
@@ -29,8 +29,8 @@ export class SidebarComponent implements OnInit {
 
 	changeTheme() {
 		if (this.themeChecked) {
-			localStorage.setItem('theme', 'vela-green');
-			this.themeService.switchTheme('vela-green');
+			localStorage.setItem('theme', 'arya-green');
+			this.themeService.switchTheme('arya-green');
 			this.messageService.clear();
 			this.messageService.add({
 				severity: 'success',
@@ -39,8 +39,8 @@ export class SidebarComponent implements OnInit {
 				life: 1500,
 			});
 		} else {
-			localStorage.setItem('theme', 'vela-orange');
-			this.themeService.switchTheme('vela-orange');
+			localStorage.setItem('theme', 'arya-orange');
+			this.themeService.switchTheme('arya-orange');
 			this.messageService.clear();
 			this.messageService.add({
 				severity: 'info',

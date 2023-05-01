@@ -41,6 +41,11 @@
 								"inject": false
 							},
 							{
+								"input": "src/app/styles/themes/theme-arya-orange.scss",
+								"bundleName": "arya-orange",
+								"inject": false
+							},
+							{
 								"input": "src/app/styles/themes/theme-saga-green.scss",
 								"bundleName": "saga-green",
 								"inject": false
@@ -48,6 +53,11 @@
 							{
 								"input": "src/app/styles/themes/theme-vela-green.scss",
 								"bundleName": "vela-green",
+								"inject": false
+							},
+							{
+								"input": "src/app/styles/themes/theme-arya-green.scss",
+								"bundleName": "arya-green",
 								"inject": false
 							}
 						],

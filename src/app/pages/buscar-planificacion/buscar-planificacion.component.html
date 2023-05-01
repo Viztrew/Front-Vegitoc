@@ -1,7 +1,7 @@
 <div class="card">
 	<h1 class="text-center">Buscar</h1>
 	<p-divider></p-divider>
-	<p-tabView>
+	<p-tabView [scrollable]="true">
 		<p-tabPanel header="Productos">
 			<app-buscar-items [tipoItem]="TipoItems[0]"></app-buscar-items>
 		</p-tabPanel>
