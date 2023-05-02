@@ -4,6 +4,7 @@ import { VegiService } from 'src/app/services/vegi.service';
 import  Swal  from 'sweetalert2';
 import { Router } from '@angular/router';
 import { PlanificacionComponent } from '../planificacion/planificacion.component';
+import { MessageService } from 'primeng/api';
 
 
 @Component({
@@ -18,26 +19,27 @@ export class LoginComponent {
     usuario: ['', Validators.required],
     contrasena: ['', Validators.required],
   })
-  constructor(private fb: FormBuilder, private servicio: VegiService, private router: Router){};
+  constructor(private fb: FormBuilder, private servicio: VegiService, private router: Router, private mensaje: MessageService){};
 
   hacerLogin(){
     let usuario = {email: this.userForm.value.usuario, password: this.userForm.value.contrasena};
     this.servicio.login(usuario).subscribe(data => {
       localStorage.setItem('session', data.body.token)
-      Swal.fire({
-        title: '¡Bienvenido!',
-        text: 'Has iniciado sesión',
-        icon: 'success',
-        confirmButtonText: 'Continuar'
-      }).then((result) => {
-        this.router.navigateByUrl('planificacion')
-      });
-      
+      this.mensaje.clear();
+		  this.mensaje.add({
+				severity: 'success',
+				summary: '¡Bienvenido!',
+				detail: 'Se ha iniciado sesión correctamente',
+				life: 3000,
+			});
+      this.router.navigateByUrl('planificacion');
     }, err=>{
-      Swal.fire({
-        icon: "error",
-        text: "Usuario incorrecto",
-        confirmButtonText: "Continuar"
+      this.mensaje.clear();
+      this.mensaje.add({
+        severity: 'error',
+				summary: 'Usuario o contraseña incorrecta',
+				detail: 'No se ha podido iniciar sesión',
+				life: 3000,
       })
     }) 
   }
