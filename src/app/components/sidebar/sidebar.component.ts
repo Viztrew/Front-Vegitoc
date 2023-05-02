@@ -47,6 +47,13 @@ export class SidebarComponent implements OnInit {
 						label: 'Buscar',
 						icon: 'pi pi-search',
 						routerLink: ['/buscar'],
+
+					},
+					
+					{
+						label: 'Login',
+						icon: 'pi pi-user',
+						routerLink: ['/login'],
 					},
 				],
 			},
