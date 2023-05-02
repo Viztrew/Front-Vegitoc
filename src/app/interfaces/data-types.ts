@@ -16,6 +16,10 @@ export interface Receta {
 }
 
 export interface InfoProducto {
+	nombre: string;
+	porcion: string;
+	cantidad_embase: string;
+	id_nutricional: number;
 	azucares_100: string;
 	azucares_prcn: string;
 	colesterol_100: string;
@@ -34,8 +38,6 @@ export interface InfoProducto {
 	hidratos_prcn: string;
 	kcal_100: string;
 	kcal_prcn: string;
-	nombre: string;
-	porcion: string;
 	prot_100: string;
 	prot_prcn: string;
 	sodio_100: string;
