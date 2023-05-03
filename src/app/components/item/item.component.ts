@@ -24,11 +24,12 @@ export class ItemComponent {
 	itemRoute: string = '';
 
 	ngOnInit(): void {
-		this.imageSrc =
-			environment.imagesUrl + '/' + this.item.id_producto + '.jpg';
-		if (this.tipoItem == 'receta') {
+		if (this.item.id_preparacion) {
 			this.itemRoute = '/buscar/receta/' + this.item.id_preparacion;
+			this.imageSrc = '../../../assets/img/nophoto.png';
 		} else {
+			this.imageSrc =
+				environment.imagesUrl + '/' + this.item.id_producto + '.jpg';
 			this.itemRoute = '/buscar/producto/' + this.item.id_producto;
 		}
 	}

@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class BuscarPlanificacionComponent implements OnInit {
 	constructor() {}
 
-	TipoItems: Array<string> = ['producto', 'receta', 'favorito'];
+	TipoItems: Array<string> = ['producto', 'receta', 'favorito', 'misrecetas'];
 
 	tabScroll: boolean = true;
 

@@ -1,35 +1,45 @@
-<div class="input-buscar">
+<div
+	class="input-buscar"
+	*ngIf="tipoItem != 'favorito' && tipoItem != 'misrecetas'"
+>
 	<input
 		placeholder="Buscar {{ tipoItem }}"
 		type="text"
 		pInputText
 		[(ngModel)]="nombreItemBuscar"
 		(keyup.enter)="
-			tipoItem == 'producto'
-				? buscarProducto()
-				: tipoItem == 'receta'
-				? buscarReceta()
-				: obtenerFavoritos()
+			tipoItem == 'producto' ? buscarProducto() : buscarReceta()
 		"
 	/>
 	<p-button
 		icon="pi pi-search"
-		(click)="
-			tipoItem == 'producto'
-				? buscarProducto()
-				: tipoItem == 'receta'
-				? buscarReceta()
-				: obtenerFavoritos()
-		"
+		(click)="tipoItem == 'producto' ? buscarProducto() : buscarReceta()"
 	></p-button>
 </div>
+
+<div *ngIf="tipoItem == 'favorito'">
+	<p-divider align="center">
+		<p-button
+			label="Actualizar"
+			icon="pi pi-refresh"
+			styleClass="p-button-outlined"
+			(click)="obtenerFavoritos()"
+		></p-button>
+	</p-divider>
+</div>
+
 <div class="items-list grid">
 	<div class="col-12 lg:col-6" *ngFor="let item of items">
 		<app-item [item]="item" [tipoItem]="tipoItem"></app-item>
 	</div>
 
 	<div class="container mt-5">
-		<div *ngIf="buscarTemplate">
+		<div
+			*ngIf="
+				buscarTemplate &&
+				(tipoItem == 'producto' || tipoItem == 'receta')
+			"
+		>
 			<div class="flex justify-content-center">
 				<i class="pi pi-search" style="font-size: 2.5rem"></i>
 			</div>
@@ -38,12 +48,35 @@
 			</div>
 		</div>
 
-		<div *ngIf="sinResultadosTemplate">
+		<div
+			*ngIf="
+				sinResultadosTemplate &&
+				(tipoItem == 'producto' || tipoItem == 'receta')
+			"
+		>
 			<div class="flex justify-content-center">
 				<i class="pi pi-times-circle" style="font-size: 2.5rem"></i>
 			</div>
 			<div class="flex justify-content-center">
 				<p>No hay resultados con '{{ nombreItemBuscar }}'</p>
+			</div>
+		</div>
+
+		<div *ngIf="favoritoTemplate && tipoItem == 'favorito'">
+			<div class="flex justify-content-center">
+				<i class="pi pi-star" style="font-size: 2.5rem"></i>
+			</div>
+			<div class="flex justify-content-center">
+				<p>Sin favoritos</p>
+			</div>
+		</div>
+
+		<div *ngIf="misRecetasTemplate && tipoItem == 'misrecetas'">
+			<div class="flex justify-content-center">
+				<i class="fa-solid fa-bowl-food" style="font-size: 2.5rem"></i>
+			</div>
+			<div class="flex justify-content-center">
+				<p>Sin recetas propias</p>
 			</div>
 		</div>
 	</div>

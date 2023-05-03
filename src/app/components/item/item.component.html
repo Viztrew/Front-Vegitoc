@@ -33,6 +33,7 @@
 				></p-button>
 
 				<a
+					*ngIf="tipoItem != 'misrecetas'"
 					class="star-icon"
 					(click)="toggleFavorito()"
 					cursor-pointer
