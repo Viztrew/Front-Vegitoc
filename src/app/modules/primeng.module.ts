@@ -13,6 +13,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { ToastModule } from 'primeng/toast';
 import { MenuModule } from 'primeng/menu';
 import { AccordionModule } from 'primeng/accordion';
+import { TooltipModule } from 'primeng/tooltip';
 
 // SPINNER
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -33,6 +34,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 		ToastModule,
 		MenuModule,
 		AccordionModule,
+		TooltipModule,
 	],
 	exports: [
 		ButtonModule,
@@ -47,6 +49,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 		ToastModule,
 		MenuModule,
 		AccordionModule,
+		TooltipModule,
 	],
 })
 export class PrimengModule {}

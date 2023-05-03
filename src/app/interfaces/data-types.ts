@@ -12,7 +12,7 @@ export interface Receta {
 	nombre: string;
 	kcal_prcn: string;
 	link_imagen: string;
-	es_preparacion_favorita: boolean;
+	favorito: boolean;
 }
 
 export interface InfoProducto {
@@ -42,4 +42,37 @@ export interface InfoProducto {
 	prot_prcn: string;
 	sodio_100: string;
 	sodio_prcn: string;
+}
+
+export interface InfoReceta {
+	lista_productos: [
+		{
+			id_preparacion: number;
+			cantidad: string;
+			nombre_unidad: string;
+			nombre_producto: string;
+			id_producto: string;
+			kcal: string;
+			prot: string;
+			gr_totales: string;
+			hidratos: string;
+		}
+	];
+	info_receta: [
+		{
+			id_preparacion: number;
+			nombre: string;
+			kcal_prcn: string;
+			prot_prcn: string;
+			gr_totales_prcn: string;
+			hidratos_prcn: string;
+		}
+	];
+	pasos: [
+		{
+			id_preparacion: number;
+			n_paso: number;
+			descripcion: string;
+		}
+	];
 }
