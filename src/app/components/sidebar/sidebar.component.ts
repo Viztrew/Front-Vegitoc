@@ -65,8 +65,8 @@ export class SidebarComponent implements OnInit {
 				life: 1500,
 			});
 		} else {
-			localStorage.setItem('theme', 'arya-orange');
-			this.themeService.switchTheme('arya-orange');
+			localStorage.setItem('theme', 'saga-orange');
+			this.themeService.switchTheme('saga-orange');
 			this.messageService.clear();
 			this.messageService.add({
 				severity: 'info',

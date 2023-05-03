@@ -4,6 +4,7 @@ import { VegiService } from 'src/app/services/vegi.service';
 import { InfoProducto } from 'src/app/interfaces/data-types';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from 'src/environments/environment';
+import { MessageService } from 'primeng/api';
 @Component({
 	selector: 'app-info-producto',
 	templateUrl: './info-producto.component.html',
@@ -13,7 +14,8 @@ export class InfoProductoComponent implements OnInit {
 	constructor(
 		private route: ActivatedRoute,
 		private servicio: VegiService,
-		private spinner: NgxSpinnerService
+		private spinner: NgxSpinnerService,
+		private messageService: MessageService
 	) {}
 
 	infoProducto = {} as InfoProducto;
@@ -37,9 +39,20 @@ export class InfoProductoComponent implements OnInit {
 		this.spinner.show();
 		this.servicio
 			.obtenerInformacionProducto(this.route.snapshot.params['id'])
-			.subscribe((data) => {
-				this.infoProducto = data[0];
-				this.spinner.hide();
-			});
+			.subscribe(
+				(data) => {
+					this.infoProducto = data[0];
+					this.spinner.hide();
+				},
+				(err) => {
+					this.spinner.hide();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Error',
+						detail: 'No se logró obtener el producto',
+						life: 3000,
+					});
+				}
+			);
 	}
 }

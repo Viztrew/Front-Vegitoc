@@ -1,18 +1,21 @@
 <div class="card">
-	<h1 class="text-center">Información Nutricional</h1>
+	<h1 class="text-center">Producto</h1>
 	<p-divider></p-divider>
 
 	<div class="grid flex">
 		<div class="col-12 sm:col-5 md:col-5 lg:col-5">
 			<h2 class="text-center">{{ infoProducto.nombre }}</h2>
-			<img
-				[src]="imageSrc"
-				(error)="updateUrl($event)"
-				alt="{{ infoProducto.nombre }}"
-				class="info-image shadow-2"
-			/>
+			<div class="img-container">
+				<img
+					[src]="imageSrc"
+					(error)="updateUrl($event)"
+					alt="{{ infoProducto.nombre }}"
+					class="info-image shadow-2"
+				/>
+			</div>
 		</div>
-		<div class="col-12 sm:col-7 md:col-7 lg:col-7">
+		<div class="card col-12 sm:col-7 md:col-7 lg:col-7">
+			<h3 class="text-center">Información Nutricional</h3>
 			<p>
 				<span class="text-bold">Tamaño de porción: </span>
 				<span>{{ infoProducto.porcion }}</span>

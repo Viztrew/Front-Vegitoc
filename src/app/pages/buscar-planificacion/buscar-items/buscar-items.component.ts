@@ -37,9 +37,9 @@ export class BuscarItemsComponent {
 			this.sinResultadosTemplate = false;
 		} else {
 			this.spinner.show();
-			this.buscarTemplate = false;
 			await this.servicio.buscarReceta(this.nombreItemBuscar).subscribe(
 				(data) => {
+					this.buscarTemplate = false;
 					if (data.length > 0) {
 						this.items = data;
 						this.sinResultadosTemplate = false;
@@ -63,7 +63,7 @@ export class BuscarItemsComponent {
 							this.messageService.add({
 								severity: 'error',
 								summary: 'Sin conexión',
-								detail: 'No se pudo conectar al servidor',
+								detail: 'No se pudo conectar con el servidor',
 								life: 3000,
 							});
 						}
@@ -79,9 +79,10 @@ export class BuscarItemsComponent {
 			this.sinResultadosTemplate = false;
 		} else {
 			this.spinner.show();
-			this.buscarTemplate = false;
+
 			await this.servicio.buscarProducto(this.nombreItemBuscar).subscribe(
 				(data) => {
+					this.buscarTemplate = false;
 					if (data.length > 0) {
 						this.items = data;
 						this.sinResultadosTemplate = false;
@@ -105,7 +106,7 @@ export class BuscarItemsComponent {
 							this.messageService.add({
 								severity: 'error',
 								summary: 'Sin conexión',
-								detail: 'No se pudo conectar al servidor',
+								detail: 'No se pudo conectar con el servidor',
 								life: 3000,
 							});
 						}
@@ -117,9 +118,9 @@ export class BuscarItemsComponent {
 
 	async obtenerFavoritos() {
 		this.spinner.show();
-		this.buscarTemplate = false;
 		await this.servicio.obtenerFavoritos().subscribe(
 			(data) => {
+				this.buscarTemplate = false;
 				let productos = data.productos;
 				let recetas = data.recetas;
 				this.items = productos.concat(recetas);
@@ -132,22 +133,15 @@ export class BuscarItemsComponent {
 						severity: 'error',
 						summary: 'Sesión caducada',
 						detail: 'Inicia sesión nuevamente',
-						life: 1500,
+						life: 3000,
 					});
 				} else {
 					if (err.status == 0) {
 						this.messageService.add({
 							severity: 'error',
 							summary: 'Sin conexión',
-							detail: 'No se pudo conectar al servidor',
-							life: 1500,
-						});
-					} else {
-						this.messageService.add({
-							severity: 'error',
-							summary: 'Sin conexión',
-							detail: 'No se pudo conectar al servidor',
-							life: 1500,
+							detail: 'No se pudo conectar con el servidor',
+							life: 3000,
 						});
 					}
 				}

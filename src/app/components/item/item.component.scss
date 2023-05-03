@@ -1,5 +1,5 @@
 .item {
-	background: var(--surface-card);
+	background: var(--surface-ground);
 	border: 1px solid var(--surface-border);
 	padding: 1rem;
 	margin-bottom: 3px;
@@ -17,11 +17,4 @@
 .item:hover {
 	transform: translateY(-3px);
 	box-shadow: 0 1px 15px var(--primary-color);
-}
-
-// Version móvil
-@media (max-width: 575px) {
-	.topbar {
-		padding: 0 2rem;
-	}
 }

@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Righteous&family=Roboto:wght@300&display=swap');
 
+//Estilos para todo el sistema
 body {
 	font-family: 'Roboto', sans-serif !important;
 	color: var(--text-color);
@@ -29,8 +30,29 @@ a {
 	height: 100%;
 	overflow-y: auto;
 	overflow-x: hidden;
+	.card {
+		margin-bottom: 1rem;
+		height: auto;
+		background: var(--surface-ground);
+	}
+}
+.no-padding {
+	padding: 0;
 }
 
+.star-icon {
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: var(--border-radius);
+	margin-left: 0.5rem;
+	border: 1px solid var(--surface-border);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--primary-color);
+}
+
+// Estilo del scrollbar
 div::-webkit-scrollbar {
 	width: 8px;
 	height: 8px;
@@ -48,17 +70,33 @@ div::-webkit-scrollbar-thumb:active {
 	background-color: var(--primary-color);
 }
 
-.no-padding {
-	padding: 0;
+// Para páginas info-producto e info-receta
+.img-container {
+	display: flex;
+	justify-content: center;
+	.info-image {
+		width: 100%;
+		max-width: max-content;
+		max-height: min-content;
+	}
 }
 
-.star-icon {
-	width: 2.5rem;
-	height: 2.5rem;
-	border-radius: var(--border-radius);
-	margin-left: 0.5rem;
-	border: 1px solid var(--surface-border);
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
+.info-table {
+	width: 100%;
+	margin-bottom: 1rem;
+	background-color: transparent;
+	border-collapse: collapse;
+	border-radius: 4px !important;
+}
+
+.info-table {
+	th,
+	td {
+		padding: 0.3rem;
+		vertical-align: top;
+		border-bottom: 1px solid var(--primary-color);
+	}
+	tr:hover {
+		background-color: var(--surface-hover);
+	}
 }
