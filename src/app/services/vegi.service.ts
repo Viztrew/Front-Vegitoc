@@ -15,13 +15,7 @@ export class VegiService {
 		}),
 	};
 
-	login(usuario: Object): Observable<any> {
-		return this.http.post(
-			`${environment.baseUrl}/usuario/loginUsuario`,
-			usuario
-		);
-	}
-
+	// GET
 	obtenerFavoritos(): Observable<any> {
 		return this.http.get(
 			`${environment.baseUrl}/usuario/obtenerFavoritos`,
@@ -56,10 +50,19 @@ export class VegiService {
 			this.HttpOptions
 		);
 	}
+
 	obtenerInformacionReceta(id_receta: bigint): Observable<any> {
 		return this.http.get(
 			`${environment.baseUrl}/recetas/detalleReceta/${id_receta}`,
 			this.HttpOptions
+		);
+	}
+
+	// POST
+	login(usuario: Object): Observable<any> {
+		return this.http.post(
+			`${environment.baseUrl}/usuario/loginUsuario`,
+			usuario
 		);
 	}
 
@@ -79,6 +82,7 @@ export class VegiService {
 		);
 	}
 
+	// DELETE
 	quitarFavoritoProducto(id_producto: bigint): Observable<any> {
 		return this.http.delete(
 			`${environment.baseUrl}/usuario/quitarFavoritoProducto/${id_producto}`,
