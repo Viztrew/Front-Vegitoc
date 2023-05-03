@@ -56,4 +56,40 @@ export class VegiService {
 			this.HttpOptions
 		);
 	}
+	obtenerInformacionReceta(id_receta: bigint): Observable<any> {
+		return this.http.get(
+			`${environment.baseUrl}/recetas/detalleReceta/${id_receta}`,
+			this.HttpOptions
+		);
+	}
+
+	agregarFavoritoProducto(id_producto: bigint): Observable<any> {
+		return this.http.post(
+			`${environment.baseUrl}/usuario/agregarFavoritoProducto/${id_producto}`,
+			{},
+			this.HttpOptions
+		);
+	}
+
+	agregarFavoritoReceta(id_receta: bigint): Observable<any> {
+		return this.http.post(
+			`${environment.baseUrl}/usuario/agregarFavoritoPreaparacion/${id_receta}`,
+			{},
+			this.HttpOptions
+		);
+	}
+
+	quitarFavoritoProducto(id_producto: bigint): Observable<any> {
+		return this.http.delete(
+			`${environment.baseUrl}/usuario/quitarFavoritoProducto/${id_producto}`,
+			this.HttpOptions
+		);
+	}
+
+	quitarFavoritoReceta(id_receta: bigint): Observable<any> {
+		return this.http.delete(
+			`${environment.baseUrl}/usuario/quitarFavoritoPreparacion/${id_receta}`,
+			this.HttpOptions
+		);
+	}
 }
