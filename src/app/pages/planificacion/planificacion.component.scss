@@ -1,17 +1,29 @@
 .plan-card {
 	display: flex;
 	overflow-x: auto;
-	height: auto;
-
+	height: 92%;
+	margin-top: 1vh;
 	.plan-card-day {
-		height: 3rem;
-		background-color: var(--primary-color);
-		color: black;
-		font-size: 1.5rem;
+		height: 100%;
+	}
+	#mid-day {
+		border-left: 1px solid var(--surface-border);
+		border-right: 1px solid var(--surface-border);
 	}
 }
-/*
+
+.scroll-arrow {
+	display: none;
+	position: absolute;
+	width: 100%;
+	z-index: 30;
+	padding: 0.55rem 3rem;
+	justify-content: space-between;
+	left: 0;
+}
+
 @media (max-width: 767px) {
-	.plan-card {
+	.scroll-arrow {
+		display: flex;
 	}
-}*/
+}

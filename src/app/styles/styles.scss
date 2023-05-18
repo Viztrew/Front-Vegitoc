@@ -23,10 +23,9 @@ a {
 .card {
 	background: var(--surface-card);
 	border: 1px solid var(--surface-border);
-	padding: 0rem 1rem;
-	margin-bottom: 2rem;
-	box-shadow: var(--card-shadow);
+	box-shadow: 0 3px 5px #00000005, 0 0 2px #0000000d, 0 1px 4px #00000014;
 	border-radius: 12px;
+	padding: 2vh;
 	height: 100%;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -34,6 +33,12 @@ a {
 		margin-bottom: 1rem;
 		height: auto;
 		background: var(--surface-ground);
+	}
+	.section-title {
+		color: var(--text-color);
+		font-size: 4vh;
+		height: 5vh;
+		border-bottom: 1px solid var(--surface-border);
 	}
 }
 .no-padding {

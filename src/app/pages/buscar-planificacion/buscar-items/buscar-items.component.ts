@@ -1,8 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { VegiService } from 'src/app/services/vegi.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Producto, Receta } from 'src/app/interfaces/data-types';
 import { MessageService } from 'primeng/api';
+import { ComponentsService } from 'src/app/services/components.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+	ProductoAgregarPlan,
+	ProductoPlan,
+} from 'src/app/interfaces/data-types';
 @Component({
 	selector: 'app-buscar-items',
 	templateUrl: './buscar-items.component.html',
@@ -12,14 +17,25 @@ export class BuscarItemsComponent {
 	constructor(
 		private servicio: VegiService,
 		private spinner: NgxSpinnerService,
-		private messageService: MessageService
+		private messageService: MessageService,
+		private servicioComponentes: ComponentsService,
+		private router: Router,
+		private route: ActivatedRoute
 	) {}
-
-	items = new Array<any>();
 
 	@Input() tipoItem: string = '';
 
+	items = new Array<any>();
+
+	//favoritos = new Array<any>();
+
+	dialogAgregarVisible: boolean = false;
+
+	itemAgregar: any;
+
 	nombreItemBuscar: string = '';
+
+	copiaNombreItemBuscar: string = '';
 
 	sinResultadosTemplate: boolean = false;
 
@@ -52,6 +68,7 @@ export class BuscarItemsComponent {
 						this.sinResultadosTemplate = false;
 					} else {
 						this.items = [];
+						this.copiaNombreItemBuscar = this.nombreItemBuscar;
 						this.sinResultadosTemplate = true;
 					}
 					this.spinner.hide();
@@ -96,6 +113,7 @@ export class BuscarItemsComponent {
 						this.sinResultadosTemplate = false;
 					} else {
 						this.items = [];
+						this.copiaNombreItemBuscar = this.nombreItemBuscar;
 						this.sinResultadosTemplate = true;
 					}
 					this.spinner.hide();
@@ -125,7 +143,6 @@ export class BuscarItemsComponent {
 	}
 
 	async obtenerFavoritos() {
-		this.spinner.show();
 		await this.servicio.obtenerFavoritos().subscribe(
 			(data) => {
 				if (data.productos.length > 0 || data.recetas.length > 0) {
@@ -137,7 +154,6 @@ export class BuscarItemsComponent {
 					this.favoritoTemplate = true;
 					this.items = [];
 				}
-				this.spinner.hide();
 			},
 			(err) => {
 				this.spinner.hide();
@@ -197,4 +213,29 @@ export class BuscarItemsComponent {
 			}
 		);
 	}
+
+	agregarItemPlanificacion(item: any) {
+		let productoAgregarPlan = {} as ProductoAgregarPlan;
+		productoAgregarPlan.cantidad = item.get('cantidad')?.value;
+		productoAgregarPlan.dia = this.route.snapshot.params['dia'];
+		productoAgregarPlan.id_producto = item.get('id')?.value;
+		productoAgregarPlan.kcal = '200';
+		productoAgregarPlan.momento_dia =
+			this.route.snapshot.params['momento'].toUpperCase();
+		productoAgregarPlan.unidad_medida =
+			item.get('unidad')?.value.id_unidad_medida;
+		productoAgregarPlan.nombre_unidad = item.get('unidad')?.value.nombre;
+		productoAgregarPlan.nombre = item.get('nombre')?.value;
+
+		this.servicioComponentes.addProducto(productoAgregarPlan);
+		this.router.navigateByUrl('/planificacion');
+	}
 }
+
+/*dia: string;
+	momento_dia: string;
+	id_producto: string;
+	nombre: string;
+	nombre_unidad: string;
+	cantidad: string;
+	kcal: string;*/

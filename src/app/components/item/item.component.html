@@ -28,8 +28,8 @@
 		<div class="col-12 no-padding">
 			<div class="flex align-items-center justify-content-center">
 				<p-button
-					label="Añadir"
-					(click)="anhadirProductoPlanificacion()"
+					label="Agregar"
+					(click)="mostrarDialogAgregar()"
 				></p-button>
 
 				<a
@@ -50,3 +50,10 @@
 		</div>
 	</div>
 </div>
+
+<app-dialog-agregar
+	*ngIf="mostrarDialog"
+	[item]="item"
+	[visible]="mostrarDialog"
+	(agregarItemEvent)="agregarItemPlan($event)"
+></app-dialog-agregar>

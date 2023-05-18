@@ -4,12 +4,12 @@
 
 	<div class="grid">
 		<div class="col-12 sm:col-5 md:col-5 lg:col-5">
-			<h2 class="text-center">{{ infoReceta.info_receta[0].nombre }}</h2>
+			<h2 class="text-center">{{ infoReceta.info_receta.nombre }}</h2>
 			<div class="img-container">
 				<img
 					[src]="imageSrc"
 					(error)="updateUrl($event)"
-					alt="{{ infoReceta.info_receta[0].nombre }}"
+					alt=""
 					class="info-image shadow-2"
 				/>
 			</div>
@@ -25,28 +25,26 @@
 					<tr>
 						<td class="text-bold">Energía (kcal)</td>
 						<td>
-							{{ infoReceta.info_receta[0].kcal_prcn || '-' }}
+							{{ infoReceta.info_receta.kcal_prcn || '-' }}
 						</td>
 					</tr>
 					<tr></tr>
 					<tr>
 						<td class="text-bold">Proteínas (g)</td>
 						<td>
-							{{ infoReceta.info_receta[0].prot_prcn || '-' }}
+							{{ infoReceta.info_receta.prot_prcn || '-' }}
 						</td>
 					</tr>
 					<tr>
 						<td class="text-bold">Grasas Totales(g)</td>
 						<td>
-							{{
-								infoReceta.info_receta[0].gr_totales_prcn || '-'
-							}}
+							{{ infoReceta.info_receta.gr_totales_prcn || '-' }}
 						</td>
 					</tr>
 					<tr>
 						<td class="text-bold">Hidratos (g)</td>
 						<td>
-							{{ infoReceta.info_receta[0].hidratos_prcn || '-' }}
+							{{ infoReceta.info_receta.hidratos_prcn || '-' }}
 						</td>
 					</tr>
 				</tbody>

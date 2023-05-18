@@ -1,4 +1,4 @@
-import { Component, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -8,7 +8,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { FormsModule } from '@angular/forms';
 import { PrimengModule } from './modules/primeng.module';
 import { SharedComponentsModule } from './modules/shared-components.module';
-
+import { ReactiveFormsModule } from '@angular/forms';
 //compontentes
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -32,6 +32,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 		NgxSpinnerModule,
 		FormsModule,
 		SharedComponentsModule,
+		ReactiveFormsModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent],

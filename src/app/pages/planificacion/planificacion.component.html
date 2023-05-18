@@ -1,22 +1,36 @@
 <div class="card">
-	<h1 class="text-center">Planificación</h1>
-	<p-divider></p-divider>
-	<div class="plan-card grid flex flex-nowrap custom-scroll">
+	<div class="text-center section-title text-bold align-items-center">
+		Planificación
+	</div>
+	<div class="plan-card grid flex flex-nowrap custom-scroll" id="plan-scroll">
 		<div
 			class="plan-card-day col-12 sm:col-12 md:col-4 lg:col-4 xl:col-4 text-center font-bold border-round"
+			id="day-scroll"
 		>
-			Ayer
-		</div>
-
-		<div
-			class="plan-card-day col-12 sm:col-12 md:col-4 lg:col-4 xl:col-4 text-center font-bold border-round"
-		>
-			Hoy
+			<app-dia-planificacion [dia]="dias[0]"></app-dia-planificacion>
 		</div>
 		<div
 			class="plan-card-day col-12 sm:col-12 md:col-4 lg:col-4 xl:col-4 text-center font-bold border-round"
+			id="mid-day"
 		>
-			Mañana
+			<app-dia-planificacion [dia]="dias[1]"></app-dia-planificacion>
+		</div>
+		<div
+			class="plan-card-day col-12 sm:col-12 md:col-4 lg:col-4 xl:col-4 text-center font-bold border-round"
+		>
+			<app-dia-planificacion [dia]="dias[2]"></app-dia-planificacion>
+		</div>
+		<div class="scroll-arrow">
+			<p-button
+				styleClass="p-button-rounded p-button-lg"
+				icon="pi pi-angle-left"
+				(click)="scrollLeftPlan()"
+			></p-button>
+			<p-button
+				styleClass="p-button-rounded p-button-lg"
+				icon="pi pi-angle-right"
+				(click)="scrollRightDPlan()"
+			></p-button>
 		</div>
 	</div>
 </div>

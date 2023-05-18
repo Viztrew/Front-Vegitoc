@@ -22,7 +22,7 @@ const routes: Routes = [
 	},
 
 	{
-		path: 'buscar',
+		path: 'buscar/:dia/:momento',
 		loadChildren: () =>
 			import(
 				'../pages/buscar-planificacion/buscar-planificacion.module'

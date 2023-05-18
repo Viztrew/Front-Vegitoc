@@ -42,12 +42,12 @@ export class SidebarComponent implements OnInit {
 						icon: 'pi pi-calendar',
 						routerLink: ['/planificacion'],
 					},
-
+					/*
 					{
 						label: 'Buscar',
 						icon: 'pi pi-search',
 						routerLink: ['/buscar'],
-					},
+					},*/
 				],
 			},
 		];

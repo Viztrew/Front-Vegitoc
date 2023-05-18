@@ -8,11 +8,18 @@
 }
 
 .items-list {
-	height: 50vh;
+	height: 55vh;
+	max-height: min-content;
 	overflow-y: auto;
 	overflow-x: hidden;
 }
 
 .items-list .container {
 	width: 100%;
+}
+
+@media (max-height: 961px) {
+	.items-list {
+		height: 45vh;
+	}
 }

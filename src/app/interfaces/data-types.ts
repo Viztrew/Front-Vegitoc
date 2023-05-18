@@ -1,5 +1,5 @@
 export interface Producto {
-	id_producto: bigint;
+	id_producto: number;
 	nombre: string;
 	marca: string;
 	cantidad_embase: string;
@@ -8,7 +8,7 @@ export interface Producto {
 }
 
 export interface Receta {
-	id_preparacion: bigint;
+	id_preparacion: number;
 	nombre: string;
 	kcal_prcn: string;
 	link_imagen: string;
@@ -58,16 +58,14 @@ export interface InfoReceta {
 			hidratos: string;
 		}
 	];
-	info_receta: [
-		{
-			id_preparacion: number;
-			nombre: string;
-			kcal_prcn: string;
-			prot_prcn: string;
-			gr_totales_prcn: string;
-			hidratos_prcn: string;
-		}
-	];
+	info_receta: {
+		id_preparacion: number;
+		nombre: string;
+		kcal_prcn: string;
+		prot_prcn: string;
+		gr_totales_prcn: string;
+		hidratos_prcn: string;
+	};
 	pasos: [
 		{
 			id_preparacion: number;
@@ -75,4 +73,38 @@ export interface InfoReceta {
 			descripcion: string;
 		}
 	];
+}
+
+export interface UnidadMedida {
+	id_unidad_medida: number;
+	nombre: string;
+	unidad_base: string;
+	multiplicador: string;
+}
+
+export interface ProductoPlan {
+	id_plan_producto: number;
+	id_usuario: number;
+	fecha: string;
+	id_producto: string;
+	unidad_medida: number;
+	cantidad: string;
+	checked: boolean;
+	momento_dia: string;
+	nombre_unidad: string;
+	nombre: string;
+	kcal: string;
+}
+
+export interface ProductoAgregarPlan {
+	fecha: string;
+	dia: string;
+	momento_dia: string;
+	id_producto: string;
+	nombre: string;
+	unidad_medida: number;
+	nombre_unidad: string;
+	cantidad: number;
+	kcal: string;
+	checked: boolean;
 }

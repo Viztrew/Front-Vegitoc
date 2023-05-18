@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { ProductoAgregarPlan, ProductoPlan } from '../interfaces/data-types';
 
 @Injectable({
 	providedIn: 'root',
@@ -44,16 +45,30 @@ export class VegiService {
 		);
 	}
 
-	obtenerInformacionProducto(id_producto: bigint): Observable<any> {
+	obtenerInformacionProducto(id_producto: number): Observable<any> {
 		return this.http.get(
 			`${environment.baseUrl}/producto/informacionNutricionalProductoSimple/${id_producto}`,
 			this.HttpOptions
 		);
 	}
 
-	obtenerInformacionReceta(id_receta: bigint): Observable<any> {
+	obtenerInformacionReceta(id_receta: number): Observable<any> {
 		return this.http.get(
 			`${environment.baseUrl}/recetas/detalleReceta/${id_receta}`,
+			this.HttpOptions
+		);
+	}
+
+	obtenerUnidadesMedidaProducto(id_producto: number): Observable<any> {
+		return this.http.get(
+			`${environment.baseUrl}/producto/obtenerUnidadesMedida/${id_producto}`,
+			this.HttpOptions
+		);
+	}
+
+	obtenerPlanificacion(fecha: string): Observable<any> {
+		return this.http.get(
+			`${environment.baseUrl}/plan/obtenerPlanAlimentacion/:${fecha}`,
 			this.HttpOptions
 		);
 	}
@@ -66,7 +81,7 @@ export class VegiService {
 		);
 	}
 
-	agregarFavoritoProducto(id_producto: bigint): Observable<any> {
+	agregarFavoritoProducto(id_producto: number): Observable<any> {
 		return this.http.post(
 			`${environment.baseUrl}/usuario/agregarFavoritoProducto/${id_producto}`,
 			{},
@@ -74,7 +89,7 @@ export class VegiService {
 		);
 	}
 
-	agregarFavoritoReceta(id_receta: bigint): Observable<any> {
+	agregarFavoritoReceta(id_receta: number): Observable<any> {
 		return this.http.post(
 			`${environment.baseUrl}/usuario/agregarFavoritoPreaparacion/${id_receta}`,
 			{},
@@ -82,8 +97,18 @@ export class VegiService {
 		);
 	}
 
+	agregarProductoPlanificacion(
+		producto: ProductoAgregarPlan
+	): Observable<any> {
+		return this.http.post(
+			`${environment.baseUrl}/plan/generarPlanProducto`,
+			producto,
+			this.HttpOptions
+		);
+	}
+
 	// DELETE
-	quitarFavoritoProducto(id_producto: bigint): Observable<any> {
+	quitarFavoritoProducto(id_producto: number): Observable<any> {
 		return this.http.delete(
 			`${environment.baseUrl}/usuario/quitarFavoritoProducto/${id_producto}`,
 			this.HttpOptions

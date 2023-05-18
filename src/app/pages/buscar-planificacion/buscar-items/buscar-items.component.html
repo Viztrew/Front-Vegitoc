@@ -30,7 +30,11 @@
 
 <div class="items-list grid">
 	<div class="col-12 lg:col-6" *ngFor="let item of items">
-		<app-item [item]="item" [tipoItem]="tipoItem"></app-item>
+		<app-item
+			(agregarItemPlanificacionEvent)="agregarItemPlanificacion($event)"
+			[item]="item"
+			[tipoItem]="tipoItem"
+		></app-item>
 	</div>
 
 	<div class="container mt-5">
@@ -58,7 +62,7 @@
 				<i class="pi pi-times-circle" style="font-size: 2.5rem"></i>
 			</div>
 			<div class="flex justify-content-center">
-				<p>No hay resultados con '{{ nombreItemBuscar }}'</p>
+				<p>No hay resultados con '{{ copiaNombreItemBuscar }}'</p>
 			</div>
 		</div>
 
@@ -81,3 +85,8 @@
 		</div>
 	</div>
 </div>
+
+<app-dialog-agregar
+	[item]="itemAgregar"
+	(agregarItemEvent)="agregarItemPlanificacion($event)"
+></app-dialog-agregar>

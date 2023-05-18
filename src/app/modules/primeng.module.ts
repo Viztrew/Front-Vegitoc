@@ -14,7 +14,9 @@ import { ToastModule } from 'primeng/toast';
 import { MenuModule } from 'primeng/menu';
 import { AccordionModule } from 'primeng/accordion';
 import { TooltipModule } from 'primeng/tooltip';
-
+import { DialogModule } from 'primeng/dialog';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { CheckboxModule } from 'primeng/checkbox';
 // SPINNER
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
@@ -35,6 +37,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 		MenuModule,
 		AccordionModule,
 		TooltipModule,
+		DialogModule,
+		RadioButtonModule,
+		CheckboxModule,
 	],
 	exports: [
 		ButtonModule,
@@ -50,6 +55,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 		MenuModule,
 		AccordionModule,
 		TooltipModule,
+		DialogModule,
+		RadioButtonModule,
+		CheckboxModule,
 	],
 })
 export class PrimengModule {}
