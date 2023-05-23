@@ -56,4 +56,8 @@ export class VegiService {
 			this.HttpOptions
 		);
 	}
+
+	crearUsuario(usuario:any): Observable<any>{
+		return this.http.post(`${environment.baseUrl}/usuario/registrarUsuario`,usuario,this.HttpOptions)
+	}
 }

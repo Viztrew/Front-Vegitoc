@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators} from '@angular/forms';
 import { VegiService } from 'src/app/services/vegi.service';
-import  Swal  from 'sweetalert2';
 import { Router } from '@angular/router';
-import { PlanificacionComponent } from '../planificacion/planificacion.component';
 import { MessageService } from 'primeng/api';
-
 
 @Component({
   selector: 'app-login',
