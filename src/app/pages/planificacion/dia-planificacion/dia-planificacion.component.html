@@ -38,6 +38,7 @@
 							[(ngModel)]="producto.checked"
 							[binary]="true"
 							inputId="binary"
+							(click)="marcarCheckedPlanProducto(producto)"
 						></p-checkbox>
 					</div>
 					<div class="col-12">Calorías: {{ producto.kcal }} kcal</div>
@@ -64,6 +65,7 @@
 							[(ngModel)]="receta.checked"
 							[binary]="true"
 							inputId="binary"
+							(click)="marcarCheckedPlanReceta(receta)"
 						></p-checkbox>
 					</div>
 					<div class="col-12">Calorías: {{ receta.kcal }} kcal</div>

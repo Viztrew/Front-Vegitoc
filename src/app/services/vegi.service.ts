@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {
+	CheckedProducto,
+	CheckedReceta,
 	ProductoAgregarPlan,
 	RecetaAgregarPlan,
 } from '../interfaces/data-types';
@@ -14,7 +16,7 @@ import { timeout } from 'rxjs/operators';
 export class VegiService {
 	constructor(private http: HttpClient) {}
 
-	HttpOptions = {
+	private HttpOptions = {
 		headers: new HttpHeaders({
 			token: localStorage.getItem('session') || '',
 		}),
@@ -137,10 +139,20 @@ export class VegiService {
 	}
 
 	// PUT
-	marcarCheckedPlanProducto(id_plan_producto: bigint): Observable<any> {
-		let checked: {};
+	marcarCheckedPlanProducto(
+		checkedProducto: CheckedProducto
+	): Observable<any> {
 		return this.http.put(
-			`${environment.baseUrl}/plan/marcarCheckedPlanProducto${id_plan_producto}`,
+			`${environment.baseUrl}/plan/marcarCheckedPlanProducto`,
+			checkedProducto,
+			this.HttpOptions
+		);
+	}
+
+	marcarCheckedPlanReceta(checkedReceta: CheckedReceta): Observable<any> {
+		return this.http.put(
+			`${environment.baseUrl}/plan/marcarCheckedPlanPreparacion`,
+			checkedReceta,
 			this.HttpOptions
 		);
 	}

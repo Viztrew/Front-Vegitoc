@@ -82,7 +82,7 @@ export interface UnidadMedida {
 	multiplicador: string;
 }
 
-// interfaz para obtener productos del plan
+// interfaz para obtener planificacion
 export interface Planificacion {
 	productos: [
 		{
@@ -138,5 +138,17 @@ export interface RecetaAgregarPlan {
 	nombre: string;
 	cantidad: number;
 	kcal: string;
+	checked: boolean;
+}
+
+//interfaz para marcar el checked de una receta
+export interface CheckedReceta {
+	id_plan_preparacion: number;
+	checked: boolean;
+}
+
+//interfaz para marcar el checked de un producto
+export interface CheckedProducto {
+	id_plan_producto: number;
 	checked: boolean;
 }

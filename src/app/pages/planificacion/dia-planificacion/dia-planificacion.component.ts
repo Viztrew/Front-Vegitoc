@@ -7,6 +7,8 @@ import {
 	ProductoAgregarPlan,
 	Planificacion,
 	RecetaAgregarPlan,
+	CheckedProducto,
+	CheckedReceta,
 } from 'src/app/interfaces/data-types';
 import { ComponentsService } from 'src/app/services/components.service';
 import { VegiService } from 'src/app/services/vegi.service';
@@ -185,6 +187,68 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					});
 				}
 			},
+			(err) => {
+				if (err.status == 401) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sesión caducada',
+						detail: 'Inicia sesión nuevamente',
+						life: 3000,
+					});
+				} else {
+					if (err.status == 0) {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sin conexión',
+							detail: 'No se pudo conectar con el servidor',
+							life: 3000,
+						});
+					}
+				}
+			}
+		);
+	}
+
+	marcarCheckedPlanProducto(producto: any) {
+		let checkedProducto: CheckedProducto = {
+			id_plan_producto: producto.id_plan_producto,
+			checked: producto.checked,
+		};
+		this.servicio.marcarCheckedPlanProducto(checkedProducto).subscribe(
+			(data) => {},
+			(err) => {
+				if (err.status == 401) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sesión caducada',
+						detail: 'Inicia sesión nuevamente',
+						life: 3000,
+					});
+				} else {
+					if (err.status == 0) {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sin conexión',
+							detail: 'No se pudo conectar con el servidor',
+							life: 3000,
+						});
+					}
+				}
+			}
+		);
+	}
+
+	marcarCheckedPlanReceta(receta: any) {
+		let checkedReceta: CheckedReceta = {
+			id_plan_preparacion: receta.id_plan_preparacion,
+			checked: receta.checked,
+		};
+		this.servicio.marcarCheckedPlanReceta(checkedReceta).subscribe(
+			(data) => {},
 			(err) => {
 				if (err.status == 401) {
 					this.messageService.clear();
