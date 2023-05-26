@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { VegiService } from 'src/app/services/vegi.service';
 import { Producto } from 'src/app/interfaces/data-types';
 
 @Component({
@@ -11,8 +10,6 @@ export class PlanificacionComponent {
 	constructor() {}
 
 	dias = ['Ayer', 'Hoy', 'Mañana'];
-
-	productos = new Array<Producto>();
 
 	mover: any;
 

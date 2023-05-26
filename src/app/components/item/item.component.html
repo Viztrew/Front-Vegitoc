@@ -13,7 +13,8 @@
 		<a routerLink="{{ itemRoute }}" cursor-pointer>
 			<div class="col-12 no-padding">
 				<p class="text-bold">
-					{{ item.nombre }} - {{ item.cantidad_embase }}
+					{{ item.nombre }} -
+					{{ item.cantidad_embase || '1 porción' }}
 				</p>
 			</div>
 			<div class="col-12 no-padding">
@@ -53,6 +54,7 @@
 
 <app-dialog-agregar
 	*ngIf="mostrarDialog"
+	[titulo]="dia"
 	[item]="item"
 	[visible]="mostrarDialog"
 	(agregarItemEvent)="agregarItemPlan($event)"

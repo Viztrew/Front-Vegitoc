@@ -4,12 +4,14 @@
 
 	<div class="grid">
 		<div class="col-12 sm:col-5 md:col-5 lg:col-5">
-			<h2 class="text-center">{{ infoReceta.info_receta.nombre }}</h2>
+			<h2 class="text-center">
+				{{ infoReceta.info_receta.nombre }}
+			</h2>
 			<div class="img-container">
 				<img
 					[src]="imageSrc"
 					(error)="updateUrl($event)"
-					alt=""
+					alt="{{ infoReceta.info_receta.nombre }}"
 					class="info-image shadow-2"
 				/>
 			</div>
@@ -60,7 +62,7 @@
 			<div class="grid">
 				<div
 					class="card col-12 sm:col-12 md:col-6 lg:col-6"
-					*ngFor="let producto of infoReceta.lista_productos"
+					*ngFor="let producto of infoReceta?.lista_productos"
 				>
 					<div class="grid">
 						<div class="col-12 sm:col-12 md:col-12 lg:col-12">

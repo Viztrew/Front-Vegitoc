@@ -46,12 +46,25 @@ export class InfoProductoComponent implements OnInit {
 				},
 				(err) => {
 					this.spinner.hide();
-					this.messageService.add({
-						severity: 'error',
-						summary: 'Error',
-						detail: 'No se logró obtener el producto',
-						life: 3000,
-					});
+					if (err.status == 401) {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sesión caducada',
+							detail: 'Inicia sesión nuevamente',
+							life: 3000,
+						});
+					} else {
+						if (err.status == 0) {
+							this.messageService.clear();
+							this.messageService.add({
+								severity: 'error',
+								summary: 'Sin conexión',
+								detail: 'No se pudo conectar con el servidor',
+								life: 3000,
+							});
+						}
+					}
 				}
 			);
 	}

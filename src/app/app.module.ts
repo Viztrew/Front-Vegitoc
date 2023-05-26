@@ -9,7 +9,8 @@ import { FormsModule } from '@angular/forms';
 import { PrimengModule } from './modules/primeng.module';
 import { SharedComponentsModule } from './modules/shared-components.module';
 import { ReactiveFormsModule } from '@angular/forms';
-//compontentes
+
+// Compontentes
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';

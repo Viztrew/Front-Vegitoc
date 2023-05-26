@@ -30,6 +30,7 @@ a {
 	overflow-y: auto;
 	overflow-x: hidden;
 	.card {
+		border-radius: 4px;
 		margin-bottom: 1rem;
 		height: auto;
 		background: var(--surface-ground);
@@ -41,6 +42,7 @@ a {
 		border-bottom: 1px solid var(--surface-border);
 	}
 }
+
 .no-padding {
 	padding: 0;
 }
