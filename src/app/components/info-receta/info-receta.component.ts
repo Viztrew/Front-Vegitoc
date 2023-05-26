@@ -4,6 +4,7 @@ import { VegiService } from 'src/app/services/vegi.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from 'src/environments/environment';
 import { InfoReceta } from 'src/app/interfaces/data-types';
+import { MessageService } from 'primeng/api';
 @Component({
 	selector: 'app-info-receta',
 	templateUrl: './info-receta.component.html',
@@ -14,7 +15,8 @@ export class InfoRecetaComponent implements OnInit {
 		private route: ActivatedRoute,
 		private servicio: VegiService,
 		private spinner: NgxSpinnerService,
-		private router: Router
+		private router: Router,
+		private messageService: MessageService
 	) {}
 
 	infoReceta = {} as InfoReceta;
@@ -23,14 +25,14 @@ export class InfoRecetaComponent implements OnInit {
 
 	imagesUrl: string = '';
 
-	ngOnInit(): void {
+	async ngOnInit() {
+		await this.obtenerInformacionReceta();
 		this.imagesUrl = environment.imagesUrl;
 		this.imageSrc =
 			environment.imagesUrl +
 			'/' +
 			this.route.snapshot.params['id'] +
 			'.jpg';
-		this.obtenerInformacionReceta();
 	}
 
 	updateUrl(event: Event) {
@@ -44,16 +46,38 @@ export class InfoRecetaComponent implements OnInit {
 			.subscribe(
 				(data) => {
 					this.spinner.hide();
-					this.infoReceta = data;
+					if (data.info_receta) {
+						this.infoReceta = data;
+					} else {
+						this.router.navigateByUrl('/404');
+					}
 				},
 				(err) => {
 					this.spinner.hide();
-					console.log(err);
+					if (err.status == 401) {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sesión caducada',
+							detail: 'Inicia sesión nuevamente',
+							life: 3000,
+						});
+					} else {
+						if (err.status == 0) {
+							this.messageService.clear();
+							this.messageService.add({
+								severity: 'error',
+								summary: 'Sin conexión',
+								detail: 'No se pudo conectar con el servidor',
+								life: 3000,
+							});
+						}
+					}
 				}
 			);
 	}
 
 	async verProducto(id_producto: string) {
-		this.router.navigateByUrl('buscar/producto/' + id_producto);
+		this.router.navigateByUrl('info/producto/' + id_producto);
 	}
 }
