@@ -7,7 +7,7 @@
 			<div class="day-moment-title flex text-center border-round">
 				{{ momento }}
 				<p-button
-					pTooltip="Agregar producto"
+					pTooltip="Agregar alimento"
 					tooltipPosition="bottom"
 					class="p-button-rounded w-2rem h-2rem inline-flex p-button p-button-icon-only"
 					icon="pi pi-plus"
@@ -15,8 +15,8 @@
 				></p-button>
 			</div>
 		</div>
-		<div class="day-productos">
-			<div *ngFor="let producto of Planificacion">
+		<div class="day-item">
+			<div *ngFor="let producto of Planificacion?.productos">
 				<div *ngIf="!producto.momento_dia">sin productos</div>
 				<div class="card grid" *ngIf="momento == producto.momento_dia">
 					<div class="col-8">
@@ -43,18 +43,32 @@
 					<div class="col-12">Calorías: {{ producto.kcal }} kcal</div>
 				</div>
 			</div>
+			<div *ngFor="let receta of Planificacion?.preparaciones">
+				<div class="card grid" *ngIf="momento == receta.momento_dia">
+					<div class="col-8">
+						<div>
+							{{ receta.cantidad }}
+							porción de
+							{{ receta.nombre }}
+						</div>
+					</div>
+					<div class="col-4">
+						<p-button
+							icon="pi pi-pencil"
+							class="p-button-rounded w-2rem h-2rem p-button p-button-icon-only mr-2"
+							pTooltip="Editar"
+							tooltipPosition="bottom"
+						></p-button>
+						<p-checkbox
+							class="inline-flex"
+							[(ngModel)]="receta.checked"
+							[binary]="true"
+							inputId="binary"
+						></p-checkbox>
+					</div>
+					<div class="col-12">Calorías: {{ receta.kcal }} kcal</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
-
-<!--id_plan_producto: number;
-	id_usuario: number;
-	fecha: string;
-	id_producto: string;
-	unidad_medida: number;
-	cantidad: string;
-	checked: boolean;
-	momento_dia: string;
-	nombre_unidad: string;
-	nombre: string;
-	kcal: string;-->

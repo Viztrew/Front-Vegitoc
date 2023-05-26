@@ -6,8 +6,9 @@ import { ComponentsService } from 'src/app/services/components.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
 	ProductoAgregarPlan,
-	ProductoPlan,
+	RecetaAgregarPlan,
 } from 'src/app/interfaces/data-types';
+import { FormGroup } from '@angular/forms';
 @Component({
 	selector: 'app-buscar-items',
 	templateUrl: './buscar-items.component.html',
@@ -26,8 +27,6 @@ export class BuscarItemsComponent {
 	@Input() tipoItem: string = '';
 
 	items = new Array<any>();
-
-	//favoritos = new Array<any>();
 
 	dialogAgregarVisible: boolean = false;
 
@@ -60,7 +59,7 @@ export class BuscarItemsComponent {
 			this.sinResultadosTemplate = false;
 		} else {
 			this.spinner.show();
-			await this.servicio.buscarReceta(this.nombreItemBuscar).subscribe(
+			this.servicio.buscarReceta(this.nombreItemBuscar).subscribe(
 				(data) => {
 					this.buscarTemplate = false;
 					if (data.length > 0) {
@@ -76,6 +75,7 @@ export class BuscarItemsComponent {
 				(err) => {
 					this.spinner.hide();
 					if (err.status == 401) {
+						this.messageService.clear();
 						this.messageService.add({
 							severity: 'error',
 							summary: 'Sesión caducada',
@@ -84,6 +84,7 @@ export class BuscarItemsComponent {
 						});
 					} else {
 						if (err.status == 0) {
+							this.messageService.clear();
 							this.messageService.add({
 								severity: 'error',
 								summary: 'Sin conexión',
@@ -104,8 +105,7 @@ export class BuscarItemsComponent {
 			this.sinResultadosTemplate = false;
 		} else {
 			this.spinner.show();
-
-			await this.servicio.buscarProducto(this.nombreItemBuscar).subscribe(
+			this.servicio.buscarProducto(this.nombreItemBuscar).subscribe(
 				(data) => {
 					this.buscarTemplate = false;
 					if (data.length > 0) {
@@ -121,6 +121,7 @@ export class BuscarItemsComponent {
 				(err) => {
 					this.spinner.hide();
 					if (err.status == 401) {
+						this.messageService.clear();
 						this.messageService.add({
 							severity: 'error',
 							summary: 'Sesión caducada',
@@ -129,6 +130,7 @@ export class BuscarItemsComponent {
 						});
 					} else {
 						if (err.status == 0) {
+							this.messageService.clear();
 							this.messageService.add({
 								severity: 'error',
 								summary: 'Sin conexión',
@@ -143,7 +145,7 @@ export class BuscarItemsComponent {
 	}
 
 	async obtenerFavoritos() {
-		await this.servicio.obtenerFavoritos().subscribe(
+		this.servicio.obtenerFavoritos().subscribe(
 			(data) => {
 				if (data.productos.length > 0 || data.recetas.length > 0) {
 					this.favoritoTemplate = false;
@@ -158,6 +160,7 @@ export class BuscarItemsComponent {
 			(err) => {
 				this.spinner.hide();
 				if (err.status == 401) {
+					this.messageService.clear();
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Sesión caducada',
@@ -166,6 +169,7 @@ export class BuscarItemsComponent {
 					});
 				} else {
 					if (err.status == 0) {
+						this.messageService.clear();
 						this.messageService.add({
 							severity: 'error',
 							summary: 'Sin conexión',
@@ -180,7 +184,7 @@ export class BuscarItemsComponent {
 
 	async obtenerRecetasUsuario() {
 		this.spinner.show();
-		await this.servicio.obtenerRecetasUsuario().subscribe(
+		this.servicio.obtenerRecetasUsuario().subscribe(
 			(data) => {
 				if (data.length > 0) {
 					this.misRecetasTemplate = false;
@@ -194,6 +198,7 @@ export class BuscarItemsComponent {
 			(err) => {
 				this.spinner.hide();
 				if (err.status == 401) {
+					this.messageService.clear();
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Sesión caducada',
@@ -202,6 +207,7 @@ export class BuscarItemsComponent {
 					});
 				} else {
 					if (err.status == 0) {
+						this.messageService.clear();
 						this.messageService.add({
 							severity: 'error',
 							summary: 'Sin conexión',
@@ -214,28 +220,35 @@ export class BuscarItemsComponent {
 		);
 	}
 
-	agregarItemPlanificacion(item: any) {
-		let productoAgregarPlan = {} as ProductoAgregarPlan;
-		productoAgregarPlan.cantidad = item.get('cantidad')?.value;
-		productoAgregarPlan.dia = this.route.snapshot.params['dia'];
-		productoAgregarPlan.id_producto = item.get('id')?.value;
-		productoAgregarPlan.kcal = '200';
-		productoAgregarPlan.momento_dia =
-			this.route.snapshot.params['momento'].toUpperCase();
-		productoAgregarPlan.unidad_medida =
-			item.get('unidad')?.value.id_unidad_medida;
-		productoAgregarPlan.nombre_unidad = item.get('unidad')?.value.nombre;
-		productoAgregarPlan.nombre = item.get('nombre')?.value;
-
+	agregarProductoPlanificacion(item: FormGroup) {
+		let productoAgregarPlan: ProductoAgregarPlan = {
+			fecha: 'nada',
+			nombre: item.get('nombre')?.value,
+			id_producto: item.get('id')?.value,
+			cantidad: item.get('cantidad')?.value,
+			nombre_unidad: item.get('unidad')?.value.nombre,
+			unidad_medida: item.get('unidad')?.value.id_unidad_medida,
+			dia: this.route.snapshot.params['dia'],
+			momento_dia: this.route.snapshot.params['momento'].toUpperCase(),
+			kcal: '2',
+			checked: false,
+		};
 		this.servicioComponentes.addProducto(productoAgregarPlan);
 		this.router.navigateByUrl('/planificacion');
 	}
-}
 
-/*dia: string;
-	momento_dia: string;
-	id_producto: string;
-	nombre: string;
-	nombre_unidad: string;
-	cantidad: string;
-	kcal: string;*/
+	agregarRecetaPlanificacion(item: FormGroup) {
+		let recetaAgregarPlan: RecetaAgregarPlan = {
+			fecha: 'nada',
+			dia: this.route.snapshot.params['dia'],
+			momento_dia: this.route.snapshot.params['momento'].toUpperCase(),
+			id_preparacion: item.get('id')?.value,
+			nombre: item.get('nombre')?.value,
+			cantidad: item.get('cantidad')?.value,
+			kcal: '2',
+			checked: false,
+		};
+		this.servicioComponentes.addReceta(recetaAgregarPlan);
+		this.router.navigateByUrl('/planificacion');
+	}
+}

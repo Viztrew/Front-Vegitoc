@@ -82,20 +82,40 @@ export interface UnidadMedida {
 	multiplicador: string;
 }
 
-export interface ProductoPlan {
-	id_plan_producto: number;
-	id_usuario: number;
-	fecha: string;
-	id_producto: string;
-	unidad_medida: number;
-	cantidad: string;
-	checked: boolean;
-	momento_dia: string;
-	nombre_unidad: string;
-	nombre: string;
-	kcal: string;
+// interfaz para obtener productos del plan
+export interface Planificacion {
+	productos: [
+		{
+			id_plan_producto: number;
+			id_usuario: number;
+			fecha: string;
+			id_producto: string;
+			unidad_medida: number;
+			cantidad: string;
+			checked: boolean;
+			momento_dia: string;
+			nombre_unidad: string;
+			nombre: string;
+			kcal: string;
+		}
+	];
+
+	preparaciones: [
+		{
+			id_plan_preparacion: number;
+			id_usuario: number;
+			fecha: string;
+			id_preparacion: string;
+			nombre: string;
+			cantidad: string;
+			checked: boolean;
+			momento_dia: string;
+			kcal: string;
+		}
+	];
 }
 
+//interfaz para agregar productos al plan
 export interface ProductoAgregarPlan {
 	fecha: string;
 	dia: string;
@@ -104,6 +124,18 @@ export interface ProductoAgregarPlan {
 	nombre: string;
 	unidad_medida: number;
 	nombre_unidad: string;
+	cantidad: number;
+	kcal: string;
+	checked: boolean;
+}
+
+//interfaz para agregar recetas al plan
+export interface RecetaAgregarPlan {
+	fecha: string;
+	dia: string;
+	momento_dia: string;
+	id_preparacion: string;
+	nombre: string;
 	cantidad: number;
 	kcal: string;
 	checked: boolean;

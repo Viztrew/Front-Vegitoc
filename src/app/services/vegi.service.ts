@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { ProductoAgregarPlan, ProductoPlan } from '../interfaces/data-types';
+import {
+	ProductoAgregarPlan,
+	RecetaAgregarPlan,
+} from '../interfaces/data-types';
+import { timeout } from 'rxjs/operators';
 
 @Injectable({
 	providedIn: 'root',
@@ -18,10 +22,12 @@ export class VegiService {
 
 	// GET
 	obtenerFavoritos(): Observable<any> {
-		return this.http.get(
-			`${environment.baseUrl}/usuario/obtenerFavoritos`,
-			this.HttpOptions
-		);
+		return this.http
+			.get(
+				`${environment.baseUrl}/usuario/obtenerFavoritos`,
+				this.HttpOptions
+			)
+			.pipe(timeout(10000));
 	}
 
 	obtenerRecetasUsuario(): Observable<any> {
@@ -107,6 +113,14 @@ export class VegiService {
 		);
 	}
 
+	agregarRecetaPlanificacion(receta: RecetaAgregarPlan): Observable<any> {
+		return this.http.post(
+			`${environment.baseUrl}/plan/generarPlanPreparacion`,
+			receta,
+			this.HttpOptions
+		);
+	}
+
 	// DELETE
 	quitarFavoritoProducto(id_producto: number): Observable<any> {
 		return this.http.delete(
@@ -118,6 +132,15 @@ export class VegiService {
 	quitarFavoritoReceta(id_receta: bigint): Observable<any> {
 		return this.http.delete(
 			`${environment.baseUrl}/usuario/quitarFavoritoPreparacion/${id_receta}`,
+			this.HttpOptions
+		);
+	}
+
+	// PUT
+	marcarCheckedPlanProducto(id_plan_producto: bigint): Observable<any> {
+		let checked: {};
+		return this.http.put(
+			`${environment.baseUrl}/plan/marcarCheckedPlanProducto${id_plan_producto}`,
 			this.HttpOptions
 		);
 	}

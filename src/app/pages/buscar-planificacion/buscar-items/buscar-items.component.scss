@@ -1,14 +1,13 @@
 .input-buscar {
 	display: flex;
 	margin-bottom: 1rem;
-
 	input {
 		width: 100%;
 	}
 }
 
 .items-list {
-	height: 55vh;
+	height: 53vh;
 	max-height: min-content;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -16,10 +15,4 @@
 
 .items-list .container {
 	width: 100%;
-}
-
-@media (max-height: 961px) {
-	.items-list {
-		height: 45vh;
-	}
 }

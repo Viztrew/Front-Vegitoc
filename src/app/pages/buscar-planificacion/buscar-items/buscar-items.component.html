@@ -22,7 +22,7 @@
 		<p-button
 			label="Actualizar"
 			icon="pi pi-refresh"
-			styleClass="p-button-outlined"
+			styleClass="p-button-outlined mb-2"
 			(click)="obtenerFavoritos()"
 		></p-button>
 	</p-divider>
@@ -31,7 +31,12 @@
 <div class="items-list grid">
 	<div class="col-12 lg:col-6" *ngFor="let item of items">
 		<app-item
-			(agregarItemPlanificacionEvent)="agregarItemPlanificacion($event)"
+			(agregarProductoPlanificacionEvent)="
+				agregarProductoPlanificacion($event)
+			"
+			(agregarRecetaPlanificacionEvent)="
+				agregarRecetaPlanificacion($event)
+			"
 			[item]="item"
 			[tipoItem]="tipoItem"
 		></app-item>
@@ -85,8 +90,3 @@
 		</div>
 	</div>
 </div>
-
-<app-dialog-agregar
-	[item]="itemAgregar"
-	(agregarItemEvent)="agregarItemPlanificacion($event)"
-></app-dialog-agregar>
