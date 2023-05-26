@@ -3,53 +3,93 @@
 	[(visible)]="visible"
 	[breakpoints]="{ '1200px': '75vw' }"
 	[modal]="true"
-	[style]="{ width: '30vw' }"
+	[style]="{ width: '30vw', height: 'auto' }"
 	[draggable]="false"
 	[resizable]="false"
 >
 	<ng-template pTemplate="header">
-		<span class="text-xl font-bold">{{ item?.nombre || '' }}</span>
+		<span class="text-xl font-bold">Agregar para {{ titulo }} </span>
 	</ng-template>
 
-	<form
-		[formGroup]="formAgregar"
-		(ngSubmit)="agregarItemPlanificacion(formAgregar)"
-	>
-		<div class="flex justify-content-center flex-wrap gap-3">
-			<div *ngFor="let unidad of unidadesMedida" class="field-checkbox">
-				<p-radioButton
-					[inputId]="unidad.unidad_base"
-					name="unidad"
-					[value]="unidad"
-					formControlName="unidad"
-				></p-radioButton>
-				<label [for]="unidad.unidad_base" class="ml-2">{{
-					unidad.nombre
-				}}</label>
+	<ng-template pTemplate="content">
+		<div class="text-center">
+			<span class="font-bold">{{ item?.nombre || '' }}</span>
+		</div>
+		<p-divider></p-divider>
+		<form [formGroup]="formAgregar">
+			<div
+				*ngIf="unidadesMedida != undefined"
+				class="flex justify-content-center flex-wrap gap-3"
+			>
+				<div
+					*ngFor="let unidad of unidadesMedida"
+					class="field-checkbox"
+				>
+					<p-radioButton
+						[inputId]="unidad.unidad_base"
+						name="unidad"
+						[value]="unidad"
+						formControlName="unidad"
+					></p-radioButton>
+					<label [for]="unidad.unidad_base" class="ml-2">{{
+						unidad.nombre
+					}}</label>
+				</div>
 			</div>
-		</div>
 
-		<div class="flex justify-content-center mb-1">
-			<input
-				pInputText
-				type="number"
-				class="p-inputtext-sm"
-				placeholder="Cantidad"
-				formControlName="cantidad"
-			/>
-		</div>
-		<div *ngIf="infoItem">
-			<p>
-				<span class="text-bold"> Energía (kcal): </span>
-				{{ infoItem.azucares_100 }}
-			</p>
-		</div>
-		<div class="flex justify-content-center">
-			<p-button
-				label="Agregar"
-				type="submit"
-				[disabled]="formAgregar.invalid"
-			></p-button>
-		</div>
-	</form>
+			<div class="flex align-items-center justify-content-center mb-1">
+				<input
+					pInputText
+					type="number"
+					class="p-inputtext-sm"
+					placeholder="Cantidad"
+					formControlName="cantidad"
+					required
+				/>
+			</div>
+			<div
+				*ngIf="
+					formAgregar.controls['cantidad'].invalid &&
+					(formAgregar.controls['cantidad'].dirty ||
+						formAgregar.controls['cantidad'].touched)
+				"
+				class="flex align-items-center justify-content-center"
+			>
+				<div *ngIf="formAgregar.controls['cantidad'].errors">
+					<small class="p-error">
+						<span
+							*ngIf="
+								formAgregar.controls['cantidad'].errors[
+									'pattern'
+								]
+							"
+							class="text-sm"
+							>La cantidad debe ser mayor a 0</span
+						>
+						<span
+							*ngIf="
+								formAgregar.controls['cantidad'].errors[
+									'required'
+								]
+							"
+							>Ingrese cantidad</span
+						>
+					</small>
+				</div>
+			</div>
+
+			<div class="flex align-items-center justify-content-center mt-3">
+				Calorías: {{ calorias }} kcal
+			</div>
+		</form>
+	</ng-template>
+
+	<ng-template pTemplate="footer">
+		<button
+			pButton
+			label="Agregar"
+			(click)="agregarItemPlanificacion(formAgregar)"
+			[disabled]="formAgregar.invalid"
+		></button>
+	</ng-template>
 </p-dialog>
