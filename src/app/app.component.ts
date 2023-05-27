@@ -16,9 +16,9 @@ export class AppComponent implements OnInit {
 
 	ngOnInit() {
 		this.primengConfig.ripple = true;
-		if (localStorage.getItem('theme')) {
+		if (sessionStorage.getItem('theme')) {
 			this.themeService.switchTheme(
-				localStorage.getItem('theme') || 'saga-orange'
+				sessionStorage.getItem('theme') || 'saga-orange'
 			);
 		} else {
 			this.themeService.switchTheme('saga-orange');
