@@ -13,6 +13,7 @@ import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DialogAgregarComponent } from '../dialog-agregar/dialog-agregar.component';
 import { FormGroup } from '@angular/forms';
+import { Producto, Receta } from 'src/app/interfaces/data-types';
 
 @Component({
 	selector: 'app-item',
@@ -28,7 +29,7 @@ export class ItemComponent {
 		private route: ActivatedRoute
 	) {}
 
-	@Input() item: any;
+	@Input() item!: any;
 
 	@Input() tipoItem: string = '';
 

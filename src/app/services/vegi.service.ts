@@ -5,6 +5,8 @@ import { environment } from 'src/environments/environment';
 import {
 	CheckedProducto,
 	CheckedReceta,
+	PlanProducto,
+	PlanReceta,
 	ProductoAgregarPlan,
 	RecetaAgregarPlan,
 } from '../interfaces/data-types';
@@ -167,6 +169,22 @@ export class VegiService {
 		return this.http.put(
 			`${environment.baseUrl}/plan/marcarCheckedPlanPreparacion`,
 			checkedReceta,
+			this.HttpOptions
+		);
+	}
+
+	editarPlanProducto(planProducto: PlanProducto): Observable<any> {
+		return this.http.put(
+			`${environment.baseUrl}/plan/editarPlanProducto`,
+			planProducto,
+			this.HttpOptions
+		);
+	}
+
+	editarPlanPreparacion(planReceta: PlanReceta): Observable<any> {
+		return this.http.put(
+			`${environment.baseUrl}/plan/editarPlanPreparacion`,
+			planReceta,
 			this.HttpOptions
 		);
 	}

@@ -1,14 +1,17 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { DialogAgregarComponent } from 'src/app/components/dialog-agregar/dialog-agregar.component';
 import {
 	ProductoAgregarPlan,
 	Planificacion,
 	RecetaAgregarPlan,
 	CheckedProducto,
 	CheckedReceta,
+	PlanProducto,
+	PlanReceta,
 } from 'src/app/interfaces/data-types';
 import { ComponentsService } from 'src/app/services/components.service';
 import { VegiService } from 'src/app/services/vegi.service';
@@ -26,7 +29,14 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 		private messageService: MessageService,
 		private spinner: NgxSpinnerService
 	) {}
+
 	@Input() dia!: string;
+
+	@ViewChild(DialogAgregarComponent) dialogChild: any;
+
+	mostrarDialog: boolean = false;
+
+	itemEditar!: PlanProducto | PlanReceta;
 
 	Planificacion!: Planificacion;
 
@@ -61,6 +71,17 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 				}
 			}
 		);
+	}
+
+	async mostrarDialogEditar() {
+		if (this.dialogChild) {
+			this.mostrarDialog = false;
+			setTimeout(() => {
+				this.mostrarDialog = true;
+			}, 100);
+		} else {
+			this.mostrarDialog = true;
+		}
 	}
 
 	buscarProducto(dia: string, momento: string) {
@@ -284,6 +305,8 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						summary:
 							producto.nombre +
 							' ha sido eliminado de ' +
+							producto.momento_dia +
+							' de ' +
 							this.dia.toUpperCase(),
 						life: 2500,
 					});
@@ -324,6 +347,88 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						summary:
 							receta.nombre +
 							' ha sido eliminado de ' +
+							receta.momento_dia +
+							' de ' +
+							this.dia.toUpperCase(),
+						life: 2500,
+					});
+				}
+			},
+			(err) => {
+				if (err.status == 401) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sesión caducada',
+						detail: 'Inicia sesión nuevamente',
+						life: 3000,
+					});
+				} else {
+					if (err.status == 0) {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sin conexión',
+							detail: 'No se pudo conectar con el servidor',
+							life: 3000,
+						});
+					}
+				}
+			}
+		);
+	}
+
+	editarPlanProducto(planProducto: PlanProducto) {
+		this.servicio.editarPlanProducto(planProducto).subscribe(
+			(data) => {
+				if (data) {
+					this.editarProductoArrayPlan(planProducto);
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'success',
+						summary:
+							planProducto.nombre +
+							' ha sido editado de ' +
+							this.dia.toUpperCase(),
+						life: 2500,
+					});
+				}
+			},
+			(err) => {
+				if (err.status == 401) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sesión caducada',
+						detail: 'Inicia sesión nuevamente',
+						life: 3000,
+					});
+				} else {
+					if (err.status == 0) {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sin conexión',
+							detail: 'No se pudo conectar con el servidor',
+							life: 3000,
+						});
+					}
+				}
+			}
+		);
+	}
+
+	editarPlanPreparacion(planReceta: PlanReceta) {
+		this.servicio.editarPlanPreparacion(planReceta).subscribe(
+			(data) => {
+				if (data) {
+					this.editarRecetaArrayPlan(planReceta);
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'success',
+						summary:
+							planReceta.nombre +
+							' ha sido editado de ' +
 							this.dia.toUpperCase(),
 						life: 2500,
 					});
@@ -361,16 +466,15 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 			elemento.classList.add('zoom');
 		}
 		setTimeout(() => {
-			let i = 0;
-			for (; i < this.Planificacion.productos.length; i++) {
+			for (let i = 0; i < this.Planificacion.productos.length; i++) {
 				if (
 					producto.id_plan_producto ==
 					this.Planificacion.productos[i].id_plan_producto
 				) {
+					this.Planificacion.productos.splice(i, 1);
 					break;
 				}
 			}
-			this.Planificacion.productos.splice(i, 1);
 		}, 100);
 	}
 
@@ -382,17 +486,59 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 			elemento.classList.add('zoom');
 		}
 		setTimeout(() => {
-			let i = 0;
-			for (; i < this.Planificacion.preparaciones.length; i++) {
+			for (let i = 0; i < this.Planificacion.preparaciones.length; i++) {
 				if (
 					receta.id_plan_preparacion ==
 					this.Planificacion.preparaciones[i].id_plan_preparacion
 				) {
+					this.Planificacion.preparaciones.splice(i, 1);
 					break;
 				}
 			}
-			this.Planificacion.preparaciones.splice(i, 1);
 		}, 100);
+	}
+
+	editarProductoArrayPlan(planProducto: PlanProducto) {
+		for (let i = 0; i < this.Planificacion.productos.length; i++) {
+			if (
+				planProducto.id_plan_producto ==
+				this.Planificacion.productos[i].id_plan_producto
+			) {
+				this.Planificacion.productos.splice(i, 1, planProducto);
+				break;
+			}
+		}
+	}
+
+	editarRecetaArrayPlan(planReceta: PlanReceta) {
+		for (let i = 0; i < this.Planificacion.preparaciones.length; i++) {
+			if (
+				planReceta.id_plan_preparacion ==
+				this.Planificacion.preparaciones[i].id_plan_preparacion
+			) {
+				this.Planificacion.preparaciones.splice(i, 1, planReceta);
+				break;
+			}
+		}
+	}
+
+	editarRecetaPlan(receta: PlanReceta) {
+		this.itemEditar = receta;
+		this.mostrarDialogEditar();
+	}
+
+	editarProductoPlan(producto: PlanProducto) {
+		this.itemEditar = producto;
+		this.mostrarDialogEditar();
+	}
+
+	async editarItemPlan(item: any) {
+		this.dialogChild.visible = false;
+		if (item.id_plan_preparacion) {
+			this.editarPlanPreparacion(item);
+		} else if (item.id_plan_producto) {
+			this.editarPlanProducto(item);
+		}
 	}
 
 	ngOnDestroy() {

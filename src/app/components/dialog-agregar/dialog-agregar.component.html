@@ -8,7 +8,7 @@
 	[resizable]="false"
 >
 	<ng-template pTemplate="header">
-		<span class="text-xl font-bold">Agregar para {{ titulo }} </span>
+		<span class="text-xl font-bold">{{ tituloDialog }}</span>
 	</ng-template>
 
 	<ng-template pTemplate="content">
@@ -87,8 +87,8 @@
 	<ng-template pTemplate="footer">
 		<button
 			pButton
-			label="Agregar"
-			(click)="agregarItemPlanificacion(formAgregar)"
+			label="{{ labelButton }}"
+			(click)="agregarItemPlanificacion()"
 			[disabled]="formAgregar.invalid"
 		></button>
 	</ng-template>
