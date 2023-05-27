@@ -17,58 +17,94 @@
 		</div>
 		<div class="day-item">
 			<div *ngFor="let producto of Planificacion?.productos">
-				<div *ngIf="!producto.momento_dia">sin productos</div>
-				<div class="card grid" *ngIf="momento == producto.momento_dia">
-					<div class="col-8">
-						<div>
-							{{ producto.cantidad }}
-							{{ producto.nombre_unidad }} de
-							{{ producto.nombre }}
+				<div
+					class="card grid delete"
+					*ngIf="momento == producto.momento_dia"
+					id="{{ producto.id_producto }}-{{
+						producto.id_plan_producto
+					}}"
+				>
+					<div
+						class="col-1 delete-button flex justify-content-center"
+						pTooltip="Eliminar"
+						tooltipPosition="bottom"
+						(click)="eliminarPlanProducto(producto)"
+					>
+						<i class="pi pi-times"></i>
+					</div>
+					<div class="grid col-11">
+						<div class="col-9">
+							<div>
+								{{ producto.cantidad }}
+								{{ producto.nombre_unidad }} de
+								{{ producto.nombre }}
+							</div>
+						</div>
+						<div class="col-3">
+							<p-button
+								icon="pi pi-pencil"
+								class="p-button-rounded w-2rem h-2rem p-button p-button-icon-only mr-2"
+								pTooltip="Editar"
+								tooltipPosition="bottom"
+							></p-button>
+
+							<p-checkbox
+								class="inline-flex"
+								[(ngModel)]="producto.checked"
+								[binary]="true"
+								inputId="binary"
+								(click)="marcarCheckedPlanProducto(producto)"
+							></p-checkbox>
+						</div>
+						<div class="col-12">
+							Calorías: {{ producto.kcal }} kcal
 						</div>
 					</div>
-					<div class="col-4">
-						<p-button
-							icon="pi pi-pencil"
-							class="p-button-rounded w-2rem h-2rem p-button p-button-icon-only mr-2"
-							pTooltip="Editar"
-							tooltipPosition="bottom"
-						></p-button>
-						<p-checkbox
-							class="inline-flex"
-							[(ngModel)]="producto.checked"
-							[binary]="true"
-							inputId="binary"
-							(click)="marcarCheckedPlanProducto(producto)"
-						></p-checkbox>
-					</div>
-					<div class="col-12">Calorías: {{ producto.kcal }} kcal</div>
 				</div>
 			</div>
 			<div *ngFor="let receta of Planificacion?.preparaciones">
-				<div class="card grid" *ngIf="momento == receta.momento_dia">
-					<div class="col-8">
-						<div>
-							{{ receta.cantidad }}
-							porción de
-							{{ receta.nombre }}
+				<div
+					class="card grid delete"
+					*ngIf="momento == receta.momento_dia"
+					id="{{ receta.id_preparacion }}-{{
+						receta.id_plan_preparacion
+					}}"
+				>
+					<div
+						class="col-1 delete-button flex justify-content-center"
+						pTooltip="Eliminar"
+						tooltipPosition="bottom"
+						(click)="eliminarPlanReceta(receta)"
+					>
+						<i class="pi pi-times"></i>
+					</div>
+					<div class="col-11 grid">
+						<div class="col-7">
+							<div>
+								{{ receta.cantidad }}
+								porción de
+								{{ receta.nombre }}
+							</div>
+						</div>
+						<div class="col-4">
+							<p-button
+								icon="pi pi-pencil"
+								class="p-button-rounded w-2rem h-2rem p-button p-button-icon-only mr-2"
+								pTooltip="Editar"
+								tooltipPosition="bottom"
+							></p-button>
+							<p-checkbox
+								class="inline-flex"
+								[(ngModel)]="receta.checked"
+								[binary]="true"
+								inputId="binary"
+								(click)="marcarCheckedPlanReceta(receta)"
+							></p-checkbox>
+						</div>
+						<div class="col-12">
+							Calorías: {{ receta.kcal }} kcal
 						</div>
 					</div>
-					<div class="col-4">
-						<p-button
-							icon="pi pi-pencil"
-							class="p-button-rounded w-2rem h-2rem p-button p-button-icon-only mr-2"
-							pTooltip="Editar"
-							tooltipPosition="bottom"
-						></p-button>
-						<p-checkbox
-							class="inline-flex"
-							[(ngModel)]="receta.checked"
-							[binary]="true"
-							inputId="binary"
-							(click)="marcarCheckedPlanReceta(receta)"
-						></p-checkbox>
-					</div>
-					<div class="col-12">Calorías: {{ receta.kcal }} kcal</div>
 				</div>
 			</div>
 		</div>

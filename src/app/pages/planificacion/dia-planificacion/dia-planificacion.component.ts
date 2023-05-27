@@ -273,6 +273,128 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 		);
 	}
 
+	eliminarPlanProducto(producto: any) {
+		this.servicio.eliminarPlanProducto(producto.id_plan_producto).subscribe(
+			(data) => {
+				if (data) {
+					this.eliminarProductoArrayPlan(producto);
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'success',
+						summary:
+							producto.nombre +
+							' ha sido eliminado de ' +
+							this.dia.toUpperCase(),
+						life: 2500,
+					});
+				}
+			},
+			(err) => {
+				if (err.status == 401) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sesión caducada',
+						detail: 'Inicia sesión nuevamente',
+						life: 3000,
+					});
+				} else {
+					if (err.status == 0) {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sin conexión',
+							detail: 'No se pudo conectar con el servidor',
+							life: 3000,
+						});
+					}
+				}
+			}
+		);
+	}
+
+	eliminarPlanReceta(receta: any) {
+		this.servicio.eliminarPlanReceta(receta.id_plan_preparacion).subscribe(
+			(data) => {
+				if (data) {
+					this.eliminarRecetaArrayPlan(receta);
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'success',
+						summary:
+							receta.nombre +
+							' ha sido eliminado de ' +
+							this.dia.toUpperCase(),
+						life: 2500,
+					});
+				}
+			},
+			(err) => {
+				if (err.status == 401) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sesión caducada',
+						detail: 'Inicia sesión nuevamente',
+						life: 3000,
+					});
+				} else {
+					if (err.status == 0) {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sin conexión',
+							detail: 'No se pudo conectar con el servidor',
+							life: 3000,
+						});
+					}
+				}
+			}
+		);
+	}
+
+	eliminarProductoArrayPlan(producto: any) {
+		let elemento = document.getElementById(
+			producto.id_producto + '-' + producto.id_plan_producto
+		);
+		if (elemento) {
+			elemento.classList.add('zoom');
+		}
+		setTimeout(() => {
+			let i = 0;
+			for (; i < this.Planificacion.productos.length; i++) {
+				if (
+					producto.id_plan_producto ==
+					this.Planificacion.productos[i].id_plan_producto
+				) {
+					break;
+				}
+			}
+			this.Planificacion.productos.splice(i, 1);
+		}, 100);
+	}
+
+	eliminarRecetaArrayPlan(receta: any) {
+		let elemento = document.getElementById(
+			receta.id_preparacion + '-' + receta.id_plan_preparacion
+		);
+		if (elemento) {
+			elemento.classList.add('zoom');
+		}
+		setTimeout(() => {
+			let i = 0;
+			for (; i < this.Planificacion.preparaciones.length; i++) {
+				if (
+					receta.id_plan_preparacion ==
+					this.Planificacion.preparaciones[i].id_plan_preparacion
+				) {
+					break;
+				}
+			}
+			this.Planificacion.preparaciones.splice(i, 1);
+		}, 100);
+	}
+
 	ngOnDestroy() {
 		this.productoSubscription.unsubscribe();
 		this.recetaSubscription.unsubscribe();

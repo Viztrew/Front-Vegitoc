@@ -30,3 +30,40 @@
 	background-color: var(--surface-ground);
 	color: var(--highlight-text-color);
 }
+
+.delete-button {
+	align-items: center;
+	padding: 0;
+	border-right: 1px solid var(--surface-border);
+	transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.delete-button:hover {
+	background-color: red;
+	i {
+		color: white;
+	}
+}
+
+.delete.zoom {
+	animation: zoom forwards 0.7s ease-out 1;
+}
+
+@keyframes zoom {
+	0% {
+		transform: scale(1);
+		opacity: 1;
+	}
+	50% {
+		transform: scale(0);
+		opacity: 0;
+	}
+	100% {
+		width: 0;
+		min-width: 0;
+		transform: scale(0);
+		opacity: 0;
+		padding: 0;
+		margin: 0;
+	}
+}

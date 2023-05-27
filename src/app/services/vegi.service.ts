@@ -131,9 +131,23 @@ export class VegiService {
 		);
 	}
 
-	quitarFavoritoReceta(id_receta: bigint): Observable<any> {
+	quitarFavoritoReceta(id_receta: number): Observable<any> {
 		return this.http.delete(
 			`${environment.baseUrl}/usuario/quitarFavoritoPreparacion/${id_receta}`,
+			this.HttpOptions
+		);
+	}
+
+	eliminarPlanProducto(id_plan_producto: number): Observable<any> {
+		return this.http.delete(
+			`${environment.baseUrl}/plan/eliminarPlanProducto/${id_plan_producto}`,
+			this.HttpOptions
+		);
+	}
+
+	eliminarPlanReceta(id_plan_preparacion: number): Observable<any> {
+		return this.http.delete(
+			`${environment.baseUrl}/plan/eliminarPlanPreparacion/${id_plan_preparacion}`,
 			this.HttpOptions
 		);
 	}
