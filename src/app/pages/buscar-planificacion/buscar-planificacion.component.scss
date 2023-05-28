@@ -1,3 +1,9 @@
 :host ::ng-deep .p-tabview .p-tabview-panels {
 	padding: 1vh 0rem 0rem 0rem !important;
 }
+
+@media (max-width: 767px) {
+	.card {
+		padding-top: 0 !important;
+	}
+}

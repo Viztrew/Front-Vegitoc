@@ -32,16 +32,15 @@ export class SidebarComponent implements OnInit {
 			{
 				items: [
 					{
-						label: 'Home',
-						icon: 'pi pi-home',
-						routerLink: ['/home'],
-					},
-					{
 						label: 'Planificación',
 						icon: 'pi pi-calendar',
 						routerLink: ['/planificacion'],
 					},
-
+					{
+						label: 'Perfil',
+						icon: 'pi pi-cog',
+						routerLink: ['/perfil'],
+					},
 					{
 						label: 'Login',
 						icon: 'pi pi-user',
