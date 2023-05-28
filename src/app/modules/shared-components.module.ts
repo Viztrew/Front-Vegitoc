@@ -7,6 +7,7 @@ import { InfoProductoComponent } from '../components/info-producto/info-producto
 import { InfoRecetaComponent } from '../components/info-receta/info-receta.component';
 import { ItemComponent } from '../components/item/item.component';
 import { DialogAgregarComponent } from '../components/dialog-agregar/dialog-agregar.component';
+
 @NgModule({
 	declarations: [
 		InfoProductoComponent,
@@ -20,6 +21,8 @@ import { DialogAgregarComponent } from '../components/dialog-agregar/dialog-agre
 		InfoRecetaComponent,
 		ItemComponent,
 		DialogAgregarComponent,
+		FormsModule,
+		ReactiveFormsModule,
 	],
 })
 export class SharedComponentsModule {}
