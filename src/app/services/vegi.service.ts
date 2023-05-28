@@ -91,6 +91,14 @@ export class VegiService {
 		);
 	}
 
+	crearUsuario(usuario: any): Observable<any> {
+		return this.http.post(
+			`${environment.baseUrl}/usuario/registrarUsuario`,
+			usuario,
+			this.HttpOptions
+		);
+	}
+
 	agregarFavoritoProducto(id_producto: number): Observable<any> {
 		return this.http.post(
 			`${environment.baseUrl}/usuario/agregarFavoritoProducto/${id_producto}`,
