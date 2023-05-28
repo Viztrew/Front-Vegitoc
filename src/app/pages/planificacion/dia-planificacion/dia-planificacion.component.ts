@@ -102,6 +102,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 				(err) => {
 					this.spinner.hide();
 					if (err.status == 401) {
+						this.router.navigateByUrl('login');
 						this.messageService.clear();
 						this.messageService.add({
 							severity: 'error',
@@ -176,7 +177,26 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 				}
 			},
 			(err) => {
-				console.log(err);
+				if (err.status == 401) {
+					this.router.navigateByUrl('login');
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sesión caducada',
+						detail: 'Inicia sesión nuevamente',
+						life: 3000,
+					});
+				} else {
+					this.messageService.clear();
+					if (err.status == 0) {
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sin conexión',
+							detail: 'No se pudo conectar con el servidor',
+							life: 3000,
+						});
+					}
+				}
 			}
 		);
 	}
@@ -210,6 +230,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 			},
 			(err) => {
 				if (err.status == 401) {
+					this.router.navigateByUrl('login');
 					this.messageService.clear();
 					this.messageService.add({
 						severity: 'error',
@@ -241,6 +262,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 			(data) => {},
 			(err) => {
 				if (err.status == 401) {
+					this.router.navigateByUrl('login');
 					this.messageService.clear();
 					this.messageService.add({
 						severity: 'error',
@@ -272,6 +294,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 			(data) => {},
 			(err) => {
 				if (err.status == 401) {
+					this.router.navigateByUrl('login');
 					this.messageService.clear();
 					this.messageService.add({
 						severity: 'error',
@@ -314,6 +337,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 			},
 			(err) => {
 				if (err.status == 401) {
+					this.router.navigateByUrl('login');
 					this.messageService.clear();
 					this.messageService.add({
 						severity: 'error',
@@ -356,6 +380,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 			},
 			(err) => {
 				if (err.status == 401) {
+					this.router.navigateByUrl('login');
 					this.messageService.clear();
 					this.messageService.add({
 						severity: 'error',
@@ -396,6 +421,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 			},
 			(err) => {
 				if (err.status == 401) {
+					this.router.navigateByUrl('login');
 					this.messageService.clear();
 					this.messageService.add({
 						severity: 'error',
@@ -436,6 +462,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 			},
 			(err) => {
 				if (err.status == 401) {
+					this.router.navigateByUrl('login');
 					this.messageService.clear();
 					this.messageService.add({
 						severity: 'error',

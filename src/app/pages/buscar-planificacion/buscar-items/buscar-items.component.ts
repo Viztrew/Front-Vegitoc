@@ -75,6 +75,7 @@ export class BuscarItemsComponent {
 				(err) => {
 					this.spinner.hide();
 					if (err.status == 401) {
+						this.router.navigateByUrl('login');
 						this.messageService.clear();
 						this.messageService.add({
 							severity: 'error',
@@ -121,6 +122,7 @@ export class BuscarItemsComponent {
 				(err) => {
 					this.spinner.hide();
 					if (err.status == 401) {
+						this.router.navigateByUrl('login');
 						this.messageService.clear();
 						this.messageService.add({
 							severity: 'error',
@@ -160,6 +162,7 @@ export class BuscarItemsComponent {
 			(err) => {
 				this.spinner.hide();
 				if (err.status == 401) {
+					this.router.navigateByUrl('login');
 					this.messageService.clear();
 					this.messageService.add({
 						severity: 'error',
@@ -198,6 +201,7 @@ export class BuscarItemsComponent {
 			(err) => {
 				this.spinner.hide();
 				if (err.status == 401) {
+					this.router.navigateByUrl('login');
 					this.messageService.clear();
 					this.messageService.add({
 						severity: 'error',

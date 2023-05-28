@@ -34,14 +34,6 @@ const routes: Routes = [
 				(m) => m.InfoItemModule
 			),
 	},
-	{ path: '**', redirectTo: '/404' },
-	{
-		path: '404',
-		loadChildren: () =>
-			import('../pages/not-found/not-found.module').then(
-				(m) => m.NotFoundModule
-			),
-	},
 	{
 		path: 'login',
 		loadChildren: () =>
@@ -51,6 +43,15 @@ const routes: Routes = [
 		path: 'signup',
 		loadChildren: () =>
 			import('../pages/signup/signup.module').then((m) => m.SignupModule),
+	},
+
+	{ path: '**', redirectTo: '/404' },
+	{
+		path: '404',
+		loadChildren: () =>
+			import('../pages/not-found/not-found.module').then(
+				(m) => m.NotFoundModule
+			),
 	},
 ];
 

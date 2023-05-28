@@ -55,6 +55,7 @@ export class InfoRecetaComponent implements OnInit {
 				(err) => {
 					this.spinner.hide();
 					if (err.status == 401) {
+						this.router.navigateByUrl('login');
 						this.messageService.clear();
 						this.messageService.add({
 							severity: 'error',

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { VegiService } from 'src/app/services/vegi.service';
 import { InfoProducto } from 'src/app/interfaces/data-types';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -15,7 +15,8 @@ export class InfoProductoComponent implements OnInit {
 		private route: ActivatedRoute,
 		private servicio: VegiService,
 		private spinner: NgxSpinnerService,
-		private messageService: MessageService
+		private messageService: MessageService,
+		private router: Router
 	) {}
 
 	infoProducto = {} as InfoProducto;
@@ -47,6 +48,7 @@ export class InfoProductoComponent implements OnInit {
 				(err) => {
 					this.spinner.hide();
 					if (err.status == 401) {
+						this.router.navigateByUrl('login');
 						this.messageService.clear();
 						this.messageService.add({
 							severity: 'error',

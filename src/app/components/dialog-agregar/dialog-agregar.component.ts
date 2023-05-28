@@ -1,23 +1,16 @@
-import {
-	Component,
-	Input,
-	Output,
-	EventEmitter,
-	ElementRef,
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import {
 	FormBuilder,
 	FormControl,
 	FormGroup,
 	Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { Observable } from 'rxjs';
 import {
 	InfoProducto,
 	PlanProducto,
 	PlanReceta,
-	Producto,
 	UnidadMedida,
 } from 'src/app/interfaces/data-types';
 import { VegiService } from 'src/app/services/vegi.service';
@@ -31,7 +24,8 @@ export class DialogAgregarComponent {
 	constructor(
 		private servicio: VegiService,
 		private messageService: MessageService,
-		private formBuilder: FormBuilder
+		private formBuilder: FormBuilder,
+		private router: Router
 	) {}
 
 	@Input() item: any;
@@ -121,18 +115,66 @@ export class DialogAgregarComponent {
 	async obtenerUnidadesMedida() {
 		this.servicio
 			.obtenerUnidadesMedidaProducto(this.item.id_producto)
-			.subscribe((data) => {
-				this.unidadesMedida = data;
-				this.setUnidadPorDefecto();
-			});
+			.subscribe(
+				(data) => {
+					this.unidadesMedida = data;
+					this.setUnidadPorDefecto();
+				},
+				(err) => {
+					if (err.status == 401) {
+						this.router.navigateByUrl('login');
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sesión caducada',
+							detail: 'Inicia sesión nuevamente',
+							life: 3000,
+						});
+					} else {
+						if (err.status == 0) {
+							this.messageService.clear();
+							this.messageService.add({
+								severity: 'error',
+								summary: 'Sin conexión',
+								detail: 'No se pudo conectar con el servidor',
+								life: 3000,
+							});
+						}
+					}
+				}
+			);
 	}
 
 	async obtenerInformacionProducto() {
 		this.servicio
 			.obtenerInformacionProducto(this.item.id_producto)
-			.subscribe((data) => {
-				this.infoProducto = data[0];
-			});
+			.subscribe(
+				(data) => {
+					this.infoProducto = data[0];
+				},
+				(err) => {
+					if (err.status == 401) {
+						this.router.navigateByUrl('login');
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sesión caducada',
+							detail: 'Inicia sesión nuevamente',
+							life: 3000,
+						});
+					} else {
+						if (err.status == 0) {
+							this.messageService.clear();
+							this.messageService.add({
+								severity: 'error',
+								summary: 'Sin conexión',
+								detail: 'No se pudo conectar con el servidor',
+								life: 3000,
+							});
+						}
+					}
+				}
+			);
 	}
 
 	async agregarItemPlanificacion() {
