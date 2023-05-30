@@ -236,4 +236,12 @@ export class VegiService {
 			this.HttpOptions
 		);
 	}
+
+	editarInformacionUsuario(informacionUsuario:any): Observable<any>{
+		return this.http.put(
+			`${environment.baseUrl}/usuario/editarInformacion`,
+			informacionUsuario,
+			this.HttpOptions
+		);
+	}
 }

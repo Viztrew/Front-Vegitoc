@@ -23,6 +23,182 @@ export class PerfilComponent {
 		private mensaje: MessageService,
 		private formBuilder: FormBuilder){}
 
+		guardarInformacion(){
+			let nombre = this.formulario.get('nombreUsuario')?.value;
+			let fecha_nacimiento = this.datosUsuario[0].fecha_nacimiento;
+			let peso = this.formulario.get('peso')?.value;
+			let altura = this.formulario.get('altura')?.value;
+			let calorias = this.formulario.get('calorias')?.value;
+			let objetivo;
+			let nivel_act;
+			if(this.activeButton == 1){
+				objetivo = "BAJAR";
+			}
+			if(this.activeButton == 2){
+				objetivo = "MANTENER";
+			}
+			if(this.activeButton == 3){
+				objetivo = "SUBIR";
+			}
+			
+			if(this.activeButton2 == 1){
+				nivel_act = "BAJO";
+			}
+			if(this.activeButton2 == 2){
+				nivel_act = "MODERADO";
+			}
+			if(this.activeButton2 == 3){
+				nivel_act = "ALTO";
+			}
+
+			let infoUsuario = {
+				"nombre":nombre,
+				"fecha_nacimiento": fecha_nacimiento,
+				"peso":peso,
+				"altura":altura,
+				"tarjet_calorias":calorias,
+				"objetivo":objetivo,
+				"es_vegano":false,
+				"nivel_actividad":nivel_act
+			}
+			console.log(infoUsuario);
+
+			this.servicio.editarInformacionUsuario(infoUsuario).subscribe((data)=>{
+				console.log(data);
+				if(data){
+					this.mensaje.clear();
+					this.mensaje.add({
+						severity: 'success',
+						summary: 'La informacion se guardo correctamente!',
+						life: 3000,
+					});
+				}else{
+					this.mensaje.clear();
+					this.mensaje.add({
+						severity: 'error',
+						summary: 'No se pudo guardar la informacion!',
+						life: 3000,
+					});
+				}
+			})
+		}
+
+		cambiarValor(flag:any) {
+			// Realiza las operaciones necesarias para cambiar el valor según el valor del input
+			if(!this.formulario.get('peso')?.invalid && this.formulario.get('peso')?.dirty || !this.formulario.get('altura')?.invalid && this.formulario.get('altura')?.dirty || flag == 1){
+				const control = this.formulario.get('calorias');
+				const peso = this.formulario.get('peso');
+				const altura = this.formulario.get('altura');
+				let fechaNac = this.datosUsuario[0].fecha_nacimiento.split("T")[0];
+				fechaNac = fechaNac.split("-")[0];
+				let fechaAct = new Date().getFullYear();
+				let difAnos = fechaAct - fechaNac;
+				let formula = 0;
+				if(this.datosUsuario[0].sexo == "MASCULINO"){
+					 formula = (10 * peso?.value) + (6.25 * altura?.value) - (5 * difAnos) + 5;
+					if(this.activeButton2 == 1){
+						formula = formula * 1.2;
+					}
+					if(this.activeButton2 == 2){
+						formula = formula * 1.375;
+					}
+					if(this.activeButton2 == 3){
+						formula = formula * 1.55;
+					}
+					if(this.activeButton == 1){
+						formula = formula * 0.95;
+					}
+					if(this.activeButton == 3){
+						formula = formula * 1.05;
+					}
+				}else{
+					let formula = (10 * peso?.value) + (6.25 * altura?.value) - (5 * difAnos) - 161;
+					if(this.activeButton2 == 1){
+						formula = formula * 1.2;
+					}
+					if(this.activeButton2 == 2){
+						formula = formula * 1.375;
+					}
+					if(this.activeButton2 == 3){
+						formula = formula * 1.55;
+					}
+					if(this.activeButton == 1){
+						formula = formula * 0.95;
+					}
+					if(this.activeButton == 3){
+						formula = formula * 1.05;
+					}
+				}
+				control?.setValue(Math.trunc(formula));
+			}
+		}
+
+		cambiarValor2(){
+			if(this.formulario.dirty){
+			const control = this.formulario.get('calorias');
+			const peso = this.formulario.get('peso');
+			const altura = this.formulario.get('altura');
+			let fechaNac = this.datosUsuario[0].fecha_nacimiento.split("T")[0];
+			fechaNac = fechaNac.split("-")[0];
+			let fechaAct = new Date().getFullYear();
+			let difAnos = fechaAct - fechaNac;
+			let formula = 0;
+			if(peso?.value == '' || altura?.value == ''){
+				this.mensaje.clear();
+				this.mensaje.add({
+					severity: 'error',
+					summary: 'los datos de peso y edad no pueden estar vacios',
+					life: 3000,
+				});
+			}else
+				if(this.datosUsuario[0].sexo == "MASCULINO"){
+					formula = (10 * peso?.value) + (6.25 * altura?.value) - (5 * difAnos) + 5;
+				   if(this.activeButton2 == 1){
+					   formula = formula * 1.2;
+				   }
+				   if(this.activeButton2 == 2){
+					   formula = formula * 1.375;
+				   }
+				   if(this.activeButton2 == 3){
+					   formula = formula * 1.55;
+				   }
+				   if(this.activeButton == 1){
+					   formula = formula * 0.95;
+				   }
+				   if(this.activeButton == 3){
+					   formula = formula * 1.05;
+				   }
+			   }else{
+				   let formula = (10 * peso?.value) + (6.25 * altura?.value) - (5 * difAnos) - 161;
+				   if(this.activeButton2 == 1){
+					   formula = formula * 1.2;
+				   }
+				   if(this.activeButton2 == 2){
+					   formula = formula * 1.375;
+				   }
+				   if(this.activeButton2 == 3){
+					   formula = formula * 1.55;
+				   }
+				   if(this.activeButton == 1){
+					   formula = formula * 0.95;
+				   }
+				   if(this.activeButton == 3){
+					   formula = formula * 1.05;
+				   }
+			   }
+			   console.log(formula - control?.value);
+			   if(formula - control?.value > -200){
+					this.activeButton = 1;
+			   }
+			   if(formula - control?.value < 200){
+					this.activeButton = 3;
+			   }
+			   if(!(formula - control?.value < -200) && !(formula - control?.value > 200)){
+					this.activeButton = 2;
+			   }
+			}
+		}
+
 		cerrarSesion(){
 			this.servicio.logout();
 		}
@@ -46,7 +222,7 @@ export class PerfilComponent {
 		ngOnInit(): void {
 			this.servicio.loggedIn();
 			if(!this.servicio.isLoggedIn){
-				this.router.navigate(['']);
+				this.router.navigate(['/login']);
 			}
 			this.servicio.obtenerInformacionUsuario().subscribe(
 				(datos) =>{
@@ -77,8 +253,19 @@ export class PerfilComponent {
 					if(this.datosUsuario[0].objetivo == "SUBIR"){
 						this.activeButton = 3;
 					}
+					
+					if(this.datosUsuario[0].nivel_actividad == "BAJO"){
+						this.activeButton2 = 1;
+					}
+					if(this.datosUsuario[0].nivel_actividad == "MODERADO"){
+						this.activeButton2 = 2;
+					}
+					if(this.datosUsuario[0].nivel_actividad == "ALTO"){
+						this.activeButton2 = 3;
+					}
 					this.datosCargados = true;
 				}
 			)
+
 		}
 }
