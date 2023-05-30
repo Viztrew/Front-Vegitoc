@@ -1,13 +1,15 @@
 import { Component, ViewChild } from '@angular/core';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { VegiService } from 'src/app/services/vegi.service';
+import { Router } from '@angular/router';
 @Component({
 	selector: 'app-header',
 	templateUrl: './header.component.html',
 	styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-	constructor(private servicio: VegiService) {}
+	constructor(private servicio: VegiService,private router: Router) {}
+
 
 	@ViewChild(SidebarComponent) sidebar: any;
 
@@ -34,7 +36,7 @@ export class HeaderComponent {
 				localStorage.setItem('session', data.token);
 			}
 
-			console.log(data);
+		console.log(data);
 		});
 	}
 }

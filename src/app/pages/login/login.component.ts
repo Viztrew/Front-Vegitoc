@@ -21,6 +21,19 @@ export class LoginComponent {
 		private mensaje: MessageService
 	) {}
 
+	ngOnInit(): void{
+		this.servicio.loggedIn();
+		if(this.servicio.isLoggedIn){
+			this.mensaje.clear();
+			this.mensaje.add({
+				severity: 'error',
+				summary: 'Tu sesión ya esta iniciada',
+				life: 3000,
+			});
+			this.router.navigate(['/planificacion']);
+		}
+	}
+
 	hacerLogin() {
 		let usuario = {
 			email: this.userForm.value.usuario,
@@ -29,6 +42,7 @@ export class LoginComponent {
 		this.servicio.login(usuario).subscribe(
 			(data) => {
 				localStorage.setItem('session', data.token);
+				this.servicio.setHttpOptions();
 				this.router.navigateByUrl('planificacion');
 				this.mensaje.clear();
 				this.mensaje.add({
