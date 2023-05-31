@@ -1,10 +1,14 @@
-.iniciar{
-    text-align: center;
-    justify-content: center;
-    font-size: x-large;
-    line-height: 3.0;
+.iniciar {
+	text-align: center;
+	justify-content: center;
+	font-size: x-large;
+	line-height: 3;
 }
 
-.block{
-    text-align: center;
+.block {
+	text-align: center;
+}
+
+:host ::ng-deep .p-button {
+	width: 20vh;
 }

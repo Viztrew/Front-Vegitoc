@@ -2,8 +2,8 @@
 	<ng-template pTemplate="header">
 		<h2>Menú</h2>
 	</ng-template>
-	<ng-template pTemplate="content"
-		><div (click)="sidebarVisible = false">
+	<ng-template pTemplate="content">
+		<div (click)="sidebarVisible = false">
 			<p-menu [model]="menuItems"></p-menu>
 		</div>
 
@@ -15,7 +15,14 @@
 			></p-inputSwitch>
 		</div>
 	</ng-template>
+
 	<ng-template pTemplate="footer">
+		<p-button
+			icon="pi pi-sign-out"
+			label="Cerrar sesión"
+			(click)="logout()"
+		></p-button>
+		<p-divider></p-divider>
 		<p class="font-logo">SmartPlate</p>
 	</ng-template>
 </p-sidebar>

@@ -24,6 +24,19 @@ export class VegiService {
 		}),
 	};
 
+	async setHttpOptions() {
+		this.HttpOptions = {
+			headers: new HttpHeaders({
+				token: localStorage.getItem('session') || '',
+			}),
+		};
+	}
+
+	async logout() {
+		localStorage.removeItem('session');
+		await this.setHttpOptions();
+	}
+
 	// GET
 	obtenerFavoritos(): Observable<any> {
 		return this.http
@@ -83,8 +96,16 @@ export class VegiService {
 		);
 	}
 
+	obtenerInformacionUsuario(): Observable<any> {
+		return this.http.get(
+			`${environment.baseUrl}/usuario/infoUsuario`,
+			this.HttpOptions
+		);
+	}
+
 	// POST
 	login(usuario: Object): Observable<any> {
+		localStorage.removeItem('session');
 		return this.http.post(
 			`${environment.baseUrl}/usuario/loginUsuario`,
 			usuario

@@ -1,5 +1,5 @@
 <div class="day-title font-bold border-round">
-	{{ dia }}
+	{{ dia }} - {{ caloriasDiarias }}
 </div>
 <div>
 	<div *ngFor="let momento of momentosDia">
@@ -37,7 +37,13 @@
 							<div>
 								{{ producto.cantidad }}
 								{{ producto.nombre_unidad }} de
-								{{ producto.nombre }}
+								<span
+									class="item-title"
+									pTooltip="Ver producto"
+									tooltipPosition="top"
+									(click)="verProducto(producto)"
+									>{{ producto.nombre }}</span
+								>
 							</div>
 						</div>
 						<div class="col-2">
@@ -85,7 +91,13 @@
 							<div>
 								{{ receta.cantidad }}
 								porción de
-								{{ receta.nombre }}
+								<span
+									class="item-title"
+									pTooltip="Ver receta"
+									tooltipPosition="top"
+									(click)="verReceta(receta)"
+									>{{ receta.nombre }}</span
+								>
 							</div>
 						</div>
 						<div class="col-2">
@@ -115,6 +127,10 @@
 			</div>
 		</div>
 	</div>
+	<p-button
+		[disabled]="dia != 'Ayer' ? false : true"
+		label="Recomendación"
+	></p-button>
 </div>
 
 <app-dialog-agregar

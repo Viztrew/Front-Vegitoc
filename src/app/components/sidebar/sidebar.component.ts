@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.service';
 import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
+import { VegiService } from 'src/app/services/vegi.service';
 @Component({
 	selector: 'app-sidebar',
 	templateUrl: './sidebar.component.html',
@@ -9,7 +11,9 @@ import { MessageService } from 'primeng/api';
 export class SidebarComponent implements OnInit {
 	constructor(
 		private themeService: ThemeService,
-		private messageService: MessageService
+		private messageService: MessageService,
+		private router: Router,
+		private servicio: VegiService
 	) {}
 
 	menuItems: any = [];
@@ -49,6 +53,12 @@ export class SidebarComponent implements OnInit {
 				],
 			},
 		];
+	}
+
+	async logout() {
+		await this.router.navigateByUrl('login');
+		await this.servicio.logout();
+		window.location.reload();
 	}
 
 	changeTheme() {

@@ -1,8 +1,8 @@
 <div class="card">
-	<h1 class="text-center">Producto</h1>
-	<p-divider></p-divider>
-
-	<div class="grid">
+	<div class="text-center section-title text-bold align-items-center">
+		Producto
+	</div>
+	<div class="flex flex-wrap">
 		<div class="col-12 sm:col-5 md:col-5 lg:col-5">
 			<h2 class="text-center">{{ infoProducto.nombre }}</h2>
 			<div class="img-container">
@@ -14,8 +14,11 @@
 				/>
 			</div>
 		</div>
-		<div class="card col-12 sm:col-7 md:col-7 lg:col-7">
-			<h3 class="text-center">Información Nutricional</h3>
+		<div class="card info-nutricional col-12 sm:col-7 md:col-7 lg:col-7">
+			<div class="text-center text-bold">
+				<h2>Información Nutricional</h2>
+			</div>
+			<p-divider></p-divider>
 			<p>
 				<span class="text-bold">Tamaño de porción: </span>
 				<span>{{ infoProducto.porcion }}</span>

@@ -1,7 +1,7 @@
 <div class="card">
-	<h1 class="text-center">Receta</h1>
-	<p-divider></p-divider>
-
+	<div class="text-center section-title text-bold align-items-center">
+		Receta
+	</div>
 	<div class="grid">
 		<div class="col-12 sm:col-5 md:col-5 lg:col-5">
 			<h2 class="text-center">
@@ -16,8 +16,11 @@
 				/>
 			</div>
 		</div>
-		<div class="card col-12 sm:col-7 md:col-7 lg:col-7">
-			<h3 class="text-center">Información Nutricional</h3>
+		<div class="card info-nutricional col-12 sm:col-7 md:col-7 lg:col-7">
+			<div class="text-center text-bold">
+				<h2>Información Nutricional</h2>
+			</div>
+			<p-divider></p-divider>
 			<table class="info-table">
 				<tbody>
 					<tr>
@@ -59,17 +62,15 @@
 					<h2>Ingredientes</h2>
 				</div>
 			</p-divider>
-			<div class="grid">
+			<div class="flex flex-wrap">
 				<div
-					class="card col-12 sm:col-12 md:col-6 lg:col-6"
+					class="col-12 sm:col-12 md:col-6 lg:col-6"
 					*ngFor="let producto of infoReceta?.lista_productos"
 				>
-					<div class="grid">
+					<div class="flex flex-wrap card item-producto">
 						<div class="col-12 sm:col-12 md:col-12 lg:col-12">
-							<div
-								class="flex align-items-center justify-content-center"
-							>
-								<h3 class="text-center mr-3">
+							<div class="flex item-producto-title">
+								<h3 class="text-center mr-3 no-padding">
 									{{ producto.cantidad }}
 									{{ producto.nombre_unidad }} de
 									{{ producto.nombre_producto }}
@@ -83,22 +84,22 @@
 								></p-button>
 							</div>
 						</div>
-						<div class="col-5 sm:col-5 md:col-5 lg:col-5">
-							<div class="img-container">
-								<img
-									[src]="
-										imagesUrl +
-										'/' +
-										this.producto.id_producto +
-										'.jpg'
-									"
-									(error)="updateUrl($event)"
-									alt="{{ producto.nombre_producto }}"
-									class="info-image shadow-2"
-								/>
-							</div>
+						<div
+							class="img-container align-items-center col-12 sm:col-5 md:col-5 lg:col-5"
+						>
+							<img
+								[src]="
+									imagesUrl +
+									'/' +
+									this.producto.id_producto +
+									'.jpg'
+								"
+								(error)="updateUrl($event)"
+								alt="{{ producto.nombre_producto }}"
+								class="info-image shadow-2"
+							/>
 						</div>
-						<div class="col-7 sm:col-7 md:col-7 lg:col-7">
+						<div class="col-12 sm:col-7 md:col-7 lg:col-7">
 							<p>
 								<span class="text-bold"> Energía (kcal): </span>
 								{{ producto.kcal }}

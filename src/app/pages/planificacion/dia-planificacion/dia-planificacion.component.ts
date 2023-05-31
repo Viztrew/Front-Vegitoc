@@ -48,9 +48,11 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 
 	recetaSubscription!: Subscription;
 
-	ngOnInit(): void {
-		this.obtenerPlanificacion();
+	caloriasDiarias: number = 0;
 
+	async ngOnInit() {
+		this.obtenerPlanificacion();
+		this.obtenerInformacionUsuario();
 		this.productoSubscription =
 			this.servicioComponentes.productos$.subscribe((data) => {
 				if (data.dia?.toLowerCase() == this.dia.toLowerCase()) {
@@ -97,6 +99,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 			.subscribe(
 				(data) => {
 					this.Planificacion = data;
+					this.calcularTotalCaloriasDiarias();
 					this.spinner.hide();
 				},
 				(err) => {
@@ -123,6 +126,34 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					}
 				}
 			);
+	}
+
+	obtenerInformacionUsuario() {
+		this.servicio.obtenerInformacionUsuario().subscribe((data) => {});
+	}
+
+	calcularTotalCaloriasDiarias() {
+		this.caloriasDiarias = 0;
+		if (this.Planificacion.productos.length > 0) {
+			console.log(this.Planificacion.productos);
+
+			for (let i = 0; i < this.Planificacion.productos.length; i++) {
+				this.caloriasDiarias =
+					this.caloriasDiarias +
+					parseFloat(this.Planificacion.productos[i].kcal);
+			}
+		}
+
+		if (this.Planificacion.preparaciones.length > 0) {
+			console.log(this.Planificacion.preparaciones);
+			for (let i = 0; i < this.Planificacion.preparaciones.length; i++) {
+				console.log(this.caloriasDiarias);
+
+				this.caloriasDiarias =
+					this.caloriasDiarias +
+					parseFloat(this.Planificacion.preparaciones[i].kcal);
+			}
+		}
 	}
 
 	obtenerFecha(dia: string) {
@@ -566,6 +597,14 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 		} else if (item.id_plan_producto) {
 			this.editarPlanProducto(item);
 		}
+	}
+
+	async verProducto(producto: PlanProducto) {
+		this.router.navigateByUrl('info/producto/' + producto.id_producto);
+	}
+
+	async verReceta(receta: PlanReceta) {
+		this.router.navigateByUrl('info/receta/' + receta.id_preparacion);
 	}
 
 	ngOnDestroy() {

@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { VegiService } from 'src/app/services/vegi.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { async } from 'rxjs';
 
 @Component({
 	selector: 'app-login',
@@ -21,7 +22,7 @@ export class LoginComponent {
 		private mensaje: MessageService
 	) {}
 
-	hacerLogin() {
+	async hacerLogin() {
 		let usuario = {
 			email: this.userForm.value.usuario,
 			password: this.userForm.value.contrasena,
@@ -29,6 +30,7 @@ export class LoginComponent {
 		this.servicio.login(usuario).subscribe(
 			(data) => {
 				localStorage.setItem('session', data.token);
+				this.servicio.setHttpOptions();
 				this.router.navigateByUrl('planificacion');
 				this.mensaje.clear();
 				this.mensaje.add({

@@ -25,6 +25,13 @@
 	padding: 1vh 1vh 0vh 1vh;
 }
 
+.item-title {
+	cursor: pointer;
+}
+.item-title:hover {
+	color: var(--primary-color);
+}
+
 .card {
 	padding: 0;
 	background-color: var(--surface-ground);

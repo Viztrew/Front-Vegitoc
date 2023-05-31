@@ -25,8 +25,10 @@ export class InfoRecetaComponent implements OnInit {
 
 	imagesUrl: string = '';
 
+	noImageUrl = '../../../assets/img/nophoto.png';
+
 	async ngOnInit() {
-		await this.obtenerInformacionReceta();
+		this.obtenerInformacionReceta();
 		this.imagesUrl = environment.imagesUrl;
 		this.imageSrc =
 			environment.imagesUrl +
@@ -36,7 +38,9 @@ export class InfoRecetaComponent implements OnInit {
 	}
 
 	updateUrl(event: Event) {
-		this.imageSrc = '../../../assets/img/nophoto.png';
+		console.log(event);
+
+		this.imageSrc = this.noImageUrl;
 	}
 
 	async obtenerInformacionReceta() {
