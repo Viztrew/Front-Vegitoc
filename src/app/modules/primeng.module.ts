@@ -17,6 +17,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { DialogModule } from 'primeng/dialog';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { CheckboxModule } from 'primeng/checkbox';
+import { FieldsetModule } from 'primeng/fieldset';
 // SPINNER
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
@@ -40,6 +41,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 		DialogModule,
 		RadioButtonModule,
 		CheckboxModule,
+		FieldsetModule,
 	],
 	exports: [
 		ButtonModule,
@@ -58,6 +60,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 		DialogModule,
 		RadioButtonModule,
 		CheckboxModule,
+		FieldsetModule,
 	],
 })
 export class PrimengModule {}

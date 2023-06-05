@@ -18,7 +18,7 @@
 		<div class="day-item">
 			<div *ngFor="let producto of Planificacion?.productos">
 				<div
-					class="card flex flex-nowrap delete"
+					class="card flex flex-nowrap"
 					*ngIf="momento == producto.momento_dia"
 					id="{{ producto.id_producto }}-{{
 						producto.id_plan_producto
@@ -48,8 +48,8 @@
 						</div>
 						<div class="col-2">
 							<p-button
+								styleClass="p-button-rounded p-button-text p-button-raised"
 								icon="pi pi-pencil"
-								class="p-button-rounded w-2rem h-2rem p-button p-button-icon-only mr-2"
 								pTooltip="Editar"
 								tooltipPosition="bottom"
 								(click)="editarProductoPlan(producto)"
@@ -102,14 +102,13 @@
 						</div>
 						<div class="col-2">
 							<p-button
+								styleClass="p-button-outlined p-button-rounded"
 								icon="pi pi-pencil"
-								class="p-button-rounded w-2rem h-2rem p-button p-button-icon-only mr-2"
 								pTooltip="Editar"
 								tooltipPosition="bottom"
 								(click)="editarRecetaPlan(receta)"
 							></p-button>
 						</div>
-
 						<div class="col-12">
 							Calorías: {{ receta.kcal }} kcal
 						</div>

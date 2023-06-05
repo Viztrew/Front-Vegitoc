@@ -19,7 +19,7 @@ export class InfoRecetaComponent implements OnInit {
 		private messageService: MessageService
 	) {}
 
-	infoReceta = {} as InfoReceta;
+	infoReceta!: InfoReceta;
 
 	imageSrc: string = '';
 
@@ -38,8 +38,6 @@ export class InfoRecetaComponent implements OnInit {
 	}
 
 	updateUrl(event: Event) {
-		console.log(event);
-
 		this.imageSrc = this.noImageUrl;
 	}
 

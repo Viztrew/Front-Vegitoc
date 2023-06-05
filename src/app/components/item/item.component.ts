@@ -10,10 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { VegiService } from 'src/app/services/vegi.service';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { DialogAgregarComponent } from '../dialog-agregar/dialog-agregar.component';
 import { FormGroup } from '@angular/forms';
-import { Producto, Receta } from 'src/app/interfaces/data-types';
 
 @Component({
 	selector: 'app-item',
@@ -25,7 +23,6 @@ export class ItemComponent {
 		public router: Router,
 		private servicio: VegiService,
 		private messageService: MessageService,
-		private spinner: NgxSpinnerService,
 		private route: ActivatedRoute
 	) {}
 
@@ -36,6 +33,10 @@ export class ItemComponent {
 	@Output() agregarProductoPlanificacionEvent = new EventEmitter<any>();
 
 	@Output() agregarRecetaPlanificacionEvent = new EventEmitter<any>();
+
+	@Output() productoFavoritoEvent = new EventEmitter<any>();
+
+	@Output() recetaFavoritoEvent = new EventEmitter<any>();
 
 	@ViewChild(DialogAgregarComponent) dialogChild: any;
 
@@ -83,95 +84,11 @@ export class ItemComponent {
 		this.mostrarDialog = false;
 	}
 
-	async toggleFavorito() {
-		if (this.item.favorito) {
-			if (this.item.id_producto) {
-				this.quitarFavoritoProducto();
-			} else {
-				this.quitarFavoritoReceta();
-			}
+	toggleFavorito() {
+		if (this.item.id_preparacion) {
+			this.recetaFavoritoEvent.emit(this.item);
 		} else {
-			if (this.item.id_producto) {
-				this.agregarFavoritoProducto();
-			} else {
-				this.agregarFavoritoReceta();
-			}
+			this.productoFavoritoEvent.emit(this.item);
 		}
-	}
-
-	async agregarFavoritoProducto() {
-		this.item.favorito = true;
-		this.servicio.agregarFavoritoProducto(this.item.id_producto).subscribe(
-			(data) => {},
-			(err) => {
-				this.item.favorito = false;
-				this.messageService.add({
-					severity: 'error',
-					summary: 'Agregar a Favoritos',
-					detail:
-						'El producto "' +
-						this.item.nombre +
-						'" no se logró agregar a favoritos, intente nuevamente.',
-					life: 3000,
-				});
-			}
-		);
-	}
-
-	async quitarFavoritoProducto() {
-		this.item.favorito = false;
-		this.servicio.quitarFavoritoProducto(this.item.id_producto).subscribe(
-			(data) => {},
-			(err) => {
-				this.item.favorito = true;
-				this.messageService.add({
-					severity: 'error',
-					summary: 'Quitar de Favoritos',
-					detail:
-						'El producto "' +
-						this.item.nombre +
-						'" no se logró quitar de favoritos, intente nuevamente.',
-					life: 3000,
-				});
-			}
-		);
-	}
-
-	async agregarFavoritoReceta() {
-		this.item.favorito = true;
-		this.servicio.agregarFavoritoReceta(this.item.id_preparacion).subscribe(
-			(data) => {},
-			(err) => {
-				this.item.favorito = false;
-				this.messageService.add({
-					severity: 'error',
-					summary: 'Agregar a Favoritos',
-					detail:
-						'La receta "' +
-						this.item.nombre +
-						'" no se logró agregar a favoritos, intente nuevamente.',
-					life: 3000,
-				});
-			}
-		);
-	}
-
-	async quitarFavoritoReceta() {
-		this.item.favorito = false;
-		this.servicio.quitarFavoritoReceta(this.item.id_preparacion).subscribe(
-			(data) => {},
-			(err) => {
-				this.item.favorito = true;
-				this.messageService.add({
-					severity: 'error',
-					summary: 'Quitar de Favoritos',
-					detail:
-						'La receta "' +
-						this.item.nombre +
-						'" no se logró quitar de favoritos, intente nuevamente.',
-					life: 3000,
-				});
-			}
-		);
 	}
 }

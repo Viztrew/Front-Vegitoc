@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { DialogAgregarComponent } from 'src/app/components/dialog-agregar/dialog-agregar.component';
 import {
 	ProductoAgregarPlan,
@@ -115,14 +115,14 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						});
 					} else {
 						this.messageService.clear();
-						if (err.status == 0) {
-							this.messageService.add({
-								severity: 'error',
-								summary: 'Sin conexión',
-								detail: 'No se pudo conectar con el servidor',
-								life: 3000,
-							});
-						}
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sin conexión',
+							detail:
+								'No se pudo recuperar los productos del día ' +
+								this.dia,
+							life: 3000,
+						});
 					}
 				}
 			);
@@ -135,8 +135,6 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 	calcularTotalCaloriasDiarias() {
 		this.caloriasDiarias = 0;
 		if (this.Planificacion.productos.length > 0) {
-			console.log(this.Planificacion.productos);
-
 			for (let i = 0; i < this.Planificacion.productos.length; i++) {
 				this.caloriasDiarias =
 					this.caloriasDiarias +
@@ -145,7 +143,6 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 		}
 
 		if (this.Planificacion.preparaciones.length > 0) {
-			console.log(this.Planificacion.preparaciones);
 			for (let i = 0; i < this.Planificacion.preparaciones.length; i++) {
 				console.log(this.caloriasDiarias);
 
@@ -157,24 +154,31 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 	}
 
 	obtenerFecha(dia: string) {
-		let fecha = '0';
-		let date = new Date();
-		let year = date.getFullYear();
-		let month;
-		if (date.getMonth() + 1 < 10) {
-			month = '0' + (date.getMonth() + 1);
-		} else {
-			month = date.getMonth() + 1;
-		}
-
+		let fecha = '';
+		let fechaHoy = new Date();
+		let year: string;
+		let month: string;
+		let day: string;
 		if (dia.toLowerCase() == 'hoy') {
-			let day = date.getDate();
+			year = fechaHoy.getFullYear().toString();
+			month = (fechaHoy.getMonth() + 1).toString().padStart(2, '0');
+			day = fechaHoy.getDate().toString().padStart(2, '0');
 			fecha = year + '-' + month + '-' + day;
-		} else if (dia.toLowerCase() == 'ayer') {
-			let day = date.getDate() - 1;
+		}
+		if (dia.toLowerCase() == 'ayer') {
+			let fechaAyer = new Date(fechaHoy);
+			fechaAyer.setDate(fechaHoy.getDate() - 1);
+			year = fechaAyer.getFullYear().toString();
+			month = (fechaAyer.getMonth() + 1).toString().padStart(2, '0');
+			day = fechaAyer.getDate().toString().padStart(2, '0');
 			fecha = year + '-' + month + '-' + day;
-		} else if (dia.toLowerCase() == 'mañana') {
-			let day = date.getDate() + 1;
+		}
+		if (dia.toLowerCase() == 'mañana') {
+			let fechaManana = new Date(fechaHoy);
+			fechaManana.setDate(fechaHoy.getDate() + 1);
+			year = fechaManana.getFullYear().toString();
+			month = (fechaManana.getMonth() + 1).toString().padStart(2, '0');
+			day = fechaManana.getDate().toString().padStart(2, '0');
 			fecha = year + '-' + month + '-' + day;
 		}
 		return fecha;
@@ -195,6 +199,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'success',
 						summary:
+							'¡' +
 							producto.nombre +
 							' ha sido agregado para ' +
 							articulo +
@@ -247,6 +252,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'success',
 						summary:
+							'¡' +
 							receta.nombre +
 							' ha sido agregado para ' +
 							articulo +
@@ -445,6 +451,8 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						summary:
 							planProducto.nombre +
 							' ha sido editado de ' +
+							planProducto.momento_dia +
+							' de ' +
 							this.dia.toUpperCase(),
 						life: 2500,
 					});
@@ -486,6 +494,8 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						summary:
 							planReceta.nombre +
 							' ha sido editado de ' +
+							planReceta.momento_dia +
+							' de ' +
 							this.dia.toUpperCase(),
 						life: 2500,
 					});
@@ -611,4 +621,6 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 		this.productoSubscription.unsubscribe();
 		this.recetaSubscription.unsubscribe();
 	}
+
+	/*target - total - total-checked*/
 }

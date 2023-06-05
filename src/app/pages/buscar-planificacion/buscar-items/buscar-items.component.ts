@@ -5,10 +5,14 @@ import { MessageService } from 'primeng/api';
 import { ComponentsService } from 'src/app/services/components.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+	Favoritos,
+	Producto,
 	ProductoAgregarPlan,
+	Receta,
 	RecetaAgregarPlan,
 } from 'src/app/interfaces/data-types';
 import { FormGroup } from '@angular/forms';
+import { Subscription } from 'rxjs';
 @Component({
 	selector: 'app-buscar-items',
 	templateUrl: './buscar-items.component.html',
@@ -28,6 +32,11 @@ export class BuscarItemsComponent {
 
 	items = new Array<any>();
 
+	favoritos = {
+		productos: [{} as Producto],
+		recetas: [{} as Receta],
+	} as Favoritos;
+
 	dialogAgregarVisible: boolean = false;
 
 	itemAgregar: any;
@@ -40,13 +49,46 @@ export class BuscarItemsComponent {
 
 	buscarTemplate: boolean = true;
 
-	favoritoTemplate: boolean = true;
-
 	misRecetasTemplate: boolean = true;
+
+	favoritoRecetaTemplate: boolean = true;
+
+	favoritoProductoTemplate: boolean = true;
+
+	iconActualizar: string = 'pi pi-refresh';
+
+	productosFavoritosSubscription!: Subscription;
+
+	recetasFavoritosSubscription!: Subscription;
 
 	ngOnInit(): void {
 		if (this.tipoItem == 'favorito') {
 			this.obtenerFavoritos();
+			this.productosFavoritosSubscription =
+				this.servicioComponentes.productosFavoritos$.subscribe(
+					(producto) => {
+						if (producto.favorito == false) {
+							this.toggleProductoArrayFavoritos(producto);
+							this.agregarFavoritoProducto(producto);
+						} else if (producto.favorito) {
+							this.toggleProductoArrayFavoritos(producto);
+							this.quitarFavoritoProducto(producto);
+						}
+					}
+				);
+
+			this.recetasFavoritosSubscription =
+				this.servicioComponentes.recetasFavoritos$.subscribe(
+					(receta) => {
+						if (receta.favorito == false) {
+							this.toggleRecetaArrayFavoritos(receta);
+							this.agregarFavoritoReceta(receta);
+						} else if (receta.favorito) {
+							this.toggleRecetaArrayFavoritos(receta);
+							this.quitarFavoritoReceta(receta);
+						}
+					}
+				);
 		}
 		if (this.tipoItem == 'misrecetas') {
 			this.obtenerRecetasUsuario();
@@ -61,6 +103,10 @@ export class BuscarItemsComponent {
 			this.spinner.show();
 			this.servicio.buscarReceta(this.nombreItemBuscar).subscribe(
 				(data) => {
+					let container = document.getElementById('item-container');
+					if (container) {
+						container.scrollTop = 0;
+					}
 					this.buscarTemplate = false;
 					if (data.length > 0) {
 						this.items = data;
@@ -108,6 +154,10 @@ export class BuscarItemsComponent {
 			this.spinner.show();
 			this.servicio.buscarProducto(this.nombreItemBuscar).subscribe(
 				(data) => {
+					let container = document.getElementById('item-container');
+					if (container) {
+						container.scrollTop = 0;
+					}
 					this.buscarTemplate = false;
 					if (data.length > 0) {
 						this.items = data;
@@ -149,18 +199,20 @@ export class BuscarItemsComponent {
 	async obtenerFavoritos() {
 		this.servicio.obtenerFavoritos().subscribe(
 			(data) => {
-				if (data.productos.length > 0 || data.recetas.length > 0) {
-					this.favoritoTemplate = false;
-					let productos = data.productos;
-					let recetas = data.recetas;
-					this.items = productos.concat(recetas);
+				this.favoritos = data;
+				if (data.productos.length > 0) {
+					this.favoritoProductoTemplate = false;
 				} else {
-					this.favoritoTemplate = true;
-					this.items = [];
+					this.favoritoProductoTemplate = true;
+				}
+
+				if (data.recetas.length > 0) {
+					this.favoritoRecetaTemplate = false;
+				} else {
+					this.favoritoRecetaTemplate = true;
 				}
 			},
 			(err) => {
-				this.spinner.hide();
 				if (err.status == 401) {
 					this.router.navigateByUrl('login');
 					this.messageService.clear();
@@ -254,5 +306,168 @@ export class BuscarItemsComponent {
 		};
 		this.servicioComponentes.addReceta(recetaAgregarPlan);
 		this.router.navigateByUrl('/planificacion');
+	}
+
+	addProductoFavoritoServicio(producto: Producto) {
+		this.servicioComponentes.addProductoFavorito(producto);
+	}
+
+	addRecetaFavoritoServicio(receta: Receta) {
+		this.servicioComponentes.addRecetaFavorito(receta);
+	}
+
+	agregarFavoritoProducto(producto: Producto) {
+		this.servicioComponentes.addProductoFavorito({} as Producto);
+		this.servicio.agregarFavoritoProducto(producto.id_producto).subscribe(
+			(data) => {},
+			(err) => {
+				this.messageService.add({
+					severity: 'error',
+					summary: 'Agregar a Favoritos',
+					detail:
+						'El producto "' +
+						producto.nombre +
+						'" no se logró agregar a favoritos, intente nuevamente.',
+					life: 3000,
+				});
+			}
+		);
+	}
+
+	quitarFavoritoProducto(producto: Producto) {
+		this.servicioComponentes.addProductoFavorito({} as Producto);
+		this.servicio.quitarFavoritoProducto(producto.id_producto).subscribe(
+			(data) => {},
+			(err) => {
+				this.messageService.add({
+					severity: 'error',
+					summary: 'Quitar de Favoritos',
+					detail:
+						'El producto "' +
+						producto.nombre +
+						'" no se logró quitar de favoritos, intente nuevamente.',
+					life: 3000,
+				});
+			}
+		);
+	}
+
+	agregarFavoritoReceta(receta: Receta) {
+		this.servicioComponentes.addRecetaFavorito({} as Receta);
+		this.servicio.agregarFavoritoReceta(receta.id_preparacion).subscribe(
+			(data) => {},
+			(err) => {
+				this.messageService.add({
+					severity: 'error',
+					summary: 'Agregar a Favoritos',
+					detail:
+						'La receta "' +
+						receta.nombre +
+						'" no se logró agregar a favoritos, intente nuevamente.',
+					life: 3000,
+				});
+			}
+		);
+	}
+
+	quitarFavoritoReceta(receta: Receta) {
+		this.servicioComponentes.addRecetaFavorito({} as Receta);
+		this.servicio.quitarFavoritoReceta(receta.id_preparacion).subscribe(
+			(data) => {},
+			(err) => {
+				this.messageService.add({
+					severity: 'error',
+					summary: 'Quitar de Favoritos',
+					detail:
+						'La receta "' +
+						receta.nombre +
+						'" no se logró quitar de favoritos, intente nuevamente.',
+					life: 3000,
+				});
+			}
+		);
+	}
+
+	toggleProductoArrayFavoritos(producto: Producto) {
+		if (producto.favorito) {
+			let elemento = document.getElementById(
+				producto.id_producto + '-' + producto.nombre
+			);
+			if (elemento) {
+				elemento.classList.add('zoom');
+			}
+			if (this.favoritos.productos.length == 1) {
+				this.favoritoProductoTemplate = true;
+			}
+			producto.favorito = false;
+			setTimeout(() => {
+				for (let i = 0; i < this.favoritos.productos.length; i++) {
+					if (
+						this.favoritos.productos[i].id_producto ==
+						producto.id_producto
+					) {
+						this.favoritos.productos.splice(i, 1);
+						break;
+					}
+				}
+			}, 150);
+		} else {
+			producto.favorito = true;
+			let elemento = document.getElementById(
+				producto.id_producto + '-' + producto.nombre
+			);
+			if (elemento) {
+				elemento.classList.remove('zoom');
+			}
+			this.favoritos.productos.push(producto);
+			if (this.favoritoProductoTemplate) {
+				this.favoritoProductoTemplate = false;
+			}
+		}
+	}
+
+	toggleRecetaArrayFavoritos(receta: Receta) {
+		if (receta.favorito) {
+			let elemento = document.getElementById(
+				receta.id_preparacion + '-' + receta.nombre
+			);
+			if (elemento) {
+				elemento.classList.add('zoom');
+			}
+			if (this.favoritos.recetas.length == 1) {
+				this.favoritoRecetaTemplate = true;
+			}
+			receta.favorito = false;
+			setTimeout(() => {
+				for (let i = 0; i < this.favoritos.recetas.length; i++) {
+					if (
+						this.favoritos.recetas[i].id_preparacion ==
+						receta.id_preparacion
+					) {
+						this.favoritos.recetas.splice(i, 1);
+						break;
+					}
+				}
+			}, 100);
+		} else {
+			receta.favorito = true;
+			let elemento = document.getElementById(
+				receta.id_preparacion + '-' + receta.nombre
+			);
+			if (elemento) {
+				elemento.classList.remove('zoom');
+			}
+			this.favoritos.recetas.push(receta);
+			if (this.favoritos.recetas.length > 0) {
+				this.favoritoRecetaTemplate = false;
+			}
+		}
+	}
+
+	ngOnDestroy() {
+		if (this.tipoItem == 'favorito') {
+			this.productosFavoritosSubscription.unsubscribe();
+			this.recetasFavoritosSubscription.unsubscribe();
+		}
 	}
 }

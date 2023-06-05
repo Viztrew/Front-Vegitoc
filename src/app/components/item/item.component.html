@@ -1,7 +1,6 @@
 <div class="item flex flex-wrap">
 	<div
 		class="img-container align-items-center col-5 sm:col-5 md:col-5 lg:col-5"
-		style="background-color: antiquewhite"
 	>
 		<a routerLink="{{ itemRoute }}" cursor-pointer>
 			<img
@@ -12,7 +11,9 @@
 			/>
 		</a>
 	</div>
-	<div class="col-7 sm:col-7 md:col-7 lg:col-7">
+	<div
+		class="flex align-content-between flex-wrap col-7 sm:col-7 md:col-7 lg:col-7"
+	>
 		<a routerLink="{{ itemRoute }}" cursor-pointer>
 			<div class="col-12 no-padding">
 				<p class="text-bold">
@@ -23,13 +24,12 @@
 			<div class="col-12 no-padding">
 				<p>{{ item.marca }}</p>
 			</div>
+			<div class="col-12 no-padding">
+				<p>Kcal porción: {{ item.kcal_prcn }}</p>
+			</div>
 		</a>
 
-		<div class="col-12 no-padding">
-			<p>Kcal porción: {{ item.kcal_prcn }}</p>
-		</div>
-
-		<div class="col-12 no-padding">
+		<div class="col-12">
 			<div class="flex align-items-center justify-content-center">
 				<p-button
 					label="Agregar"

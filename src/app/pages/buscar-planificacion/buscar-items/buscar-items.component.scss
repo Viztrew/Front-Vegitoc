@@ -7,7 +7,7 @@
 }
 
 .items-list {
-	height: 53vh;
+	height: 55vh;
 	max-height: min-content;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -15,4 +15,23 @@
 
 .items-list .container {
 	width: 100%;
+}
+
+// estilos toggle favoritos
+:host ::ng-deep .p-fieldset .p-fieldset-content {
+	padding: 0;
+}
+:host ::ng-deep .p-fieldset.p-fieldset-toggleable .p-fieldset-legend {
+	width: 100%;
+	background-color: var(--surface-ground);
+}
+
+.favoritos {
+	padding: 0.5rem 0rem 0rem 0rem !important;
+}
+
+@media (min-width: 767px) {
+	.favoritos {
+		padding: 0.5rem !important;
+	}
 }

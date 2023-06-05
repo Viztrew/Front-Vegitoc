@@ -14,7 +14,10 @@ export interface Receta {
 	link_imagen: string;
 	favorito: boolean;
 }
-
+export interface Favoritos {
+	productos: [Producto];
+	recetas: [Receta];
+}
 export interface InfoProducto {
 	nombre: string;
 	porcion: string;
