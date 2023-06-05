@@ -22,7 +22,20 @@ export class LoginComponent {
 		private mensaje: MessageService
 	) {}
 
-	async hacerLogin() {
+	ngOnInit(): void {
+		this.servicio.loggedIn();
+		if (this.servicio.isLoggedIn) {
+			this.mensaje.clear();
+			this.mensaje.add({
+				severity: 'error',
+				summary: 'Tu sesión ya esta iniciada',
+				life: 3000,
+			});
+			this.router.navigate(['/planificacion']);
+		}
+	}
+
+	hacerLogin() {
 		let usuario = {
 			email: this.userForm.value.usuario,
 			password: this.userForm.value.contrasena,

@@ -11,12 +11,40 @@ import {
 	RecetaAgregarPlan,
 } from '../interfaces/data-types';
 import { timeout } from 'rxjs/operators';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class VegiService {
-	constructor(private http: HttpClient) {}
+	constructor(
+		private http: HttpClient,
+		private router: Router,
+		private location: Location
+	) {}
+	helper = new JwtHelperService();
+	isLoggedIn: boolean = false;
+
+	logout() {
+		localStorage.removeItem('session');
+		this.isLoggedIn = false;
+		this.router.navigate(['']);
+		window.location.reload();
+	}
+
+	loggedIn(): any {
+		const token = localStorage.getItem('session') ?? '';
+		if (this.helper.isTokenExpired(token) == true) {
+			this.logout;
+			return false;
+		}
+
+		if (this.isLoggedIn == false) {
+			this.isLoggedIn = true;
+		}
+	}
 
 	private HttpOptions = {
 		headers: new HttpHeaders({
@@ -30,11 +58,6 @@ export class VegiService {
 				token: localStorage.getItem('session') || '',
 			}),
 		};
-	}
-
-	async logout() {
-		localStorage.removeItem('session');
-		await this.setHttpOptions();
 	}
 
 	// GET
@@ -214,6 +237,14 @@ export class VegiService {
 		return this.http.put(
 			`${environment.baseUrl}/plan/editarPlanPreparacion`,
 			planReceta,
+			this.HttpOptions
+		);
+	}
+
+	editarInformacionUsuario(informacionUsuario: any): Observable<any> {
+		return this.http.put(
+			`${environment.baseUrl}/usuario/editarInformacion`,
+			informacionUsuario,
 			this.HttpOptions
 		);
 	}

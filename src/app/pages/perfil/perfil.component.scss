@@ -1,0 +1,20 @@
+.tamanoLetra {
+    font-size: 5vh;
+}
+
+.tamanoLetra2 {
+    font-size: 2vh;
+}
+
+.tamanoFoto {
+    width: 15vh;
+    height: 15vh;
+}
+
+.block {
+    text-align: center;
+}
+
+:host ::ng-deep .p-button {
+    width: 20vh;
+}

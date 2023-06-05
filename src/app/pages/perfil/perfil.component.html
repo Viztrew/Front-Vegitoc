@@ -1,19 +1,160 @@
-<div class="card">
-	<h5>Formulario</h5>
-	<div class="field">
-		<label for="firstname1">Nombre</label>
-		<input
-			id="firstname1"
-			type="text"
-			class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-		/>
+<div *ngIf="datosCargados" class="card justify-content-center">
+	<div class="flex justify-content-center">
+		<h5 class="tamanoLetra my-auto">Perfil</h5>
 	</div>
-	<div class="field">
-		<label for="lastname1">Apellido</label>
-		<input
-			id="lastname1"
-			type="text"
-			class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-		/>
+
+	<div class="flex justify-content-center">
+		<img src="./assets/img/perfil.jpg" class = "my-3 tamanoFoto">
+	</div>
+
+	<form [formGroup]="formulario" (ngSubmit)="guardarInformacion()">
+		<div class="flex justify-content-center">
+			<div class="field">
+				<label for="nombreUsuario" class="block">Usuario</label>
+				<input
+					type="text"
+					pInputText
+					placeholder=""
+					[readonly]="true"
+					formControlName="nombreUsuario"
+				/>
+			</div>
+			
+		</div>
+			
+		<div class="flex justify-content-center">
+			<div class="field">
+				<label for="fechaNac" class="block">Fecha de nacimiento</label>
+				<input
+					type="text"
+					pInputText
+					placeholder=""
+					[readonly]="true"
+					formControlName="fechaNac"
+				/>
+			</div>
+			
+		</div>
+
+		<div class="flex justify-content-center">
+			<div class="field">
+				<label for="peso" class="block">Peso (Kg)</label>
+				<input
+					type="text"
+					pInputText
+					placeholder=""
+					formControlName="peso"
+					(ngModelChange)="cambiarValor(0)"
+				/>
+				<small
+				class="p-error block"
+				*ngIf="
+					formulario.get('peso')?.invalid &&
+					formulario.get('peso')?.dirty
+				"
+				>Este campo es obligatorio <br>y solo debe contener numeros</small
+			>
+			</div>
+		</div>
+
+		<div class="flex justify-content-center">
+			<div class="field">
+				<label for="altura" class="block">Altura (cm)</label>
+				<input
+					type="text"
+					pInputText
+					placeholder=""
+					formControlName="altura"
+					(ngModelChange)="cambiarValor(0)"
+				/>
+				<small
+				class="p-error block"
+				*ngIf="
+					formulario.get('altura')?.invalid &&
+					formulario.get('altura')?.dirty
+				"
+				>Este campo es obligatorio <br> y solo debe contener numeros</small
+			>
+			</div>
+		</div>
+
+		<div class="flex justify-content-center">
+			<h5 class="tamanoLetra2 my-3">Target de calorias</h5>
+		</div>
+
+		<div class="flex justify-content-center">
+			<div class="field">
+				<input
+					type="text"
+					pInputText
+					placeholder=""
+					formControlName="calorias"
+					(input)="cambiarValor2()"
+				/>
+				<small
+				class="p-error block"
+				*ngIf="
+					formulario.get('calorias')?.invalid &&
+					formulario.get('calorias')?.dirty
+				"
+				>Este campo es obligatorio <br> y solo debe contener numeros</small
+			>
+			</div>
+		</div>
+	
+
+	<div class="flex justify-content-center">
+		<h5 class="tamanoLetra2 my-3">Objetivo</h5>
+	</div>
+
+	<div class="flex justify-content-center">
+		<p-button label="Disminuir peso"
+          [styleClass]="getButtonStyle(1)"
+          (click)="toggleButtonState(1); cambiarValor(1);"></p-button>
+	  </div>
+	  <div class="flex justify-content-center">
+		<p-button label="Mantener peso"
+          [styleClass]="getButtonStyle(2)"
+          (click)="toggleButtonState(2); cambiarValor(1);"></p-button>
+	  </div>
+	  <div class="flex justify-content-center">
+		<p-button label="Aumentar peso"
+          [styleClass]="getButtonStyle(3)"
+          (click)="toggleButtonState(3); cambiarValor(1);"></p-button>
+	  </div>
+
+	  <div class="flex justify-content-center">
+		<h5 class="tamanoLetra2 my-3">Nivel de actividad</h5>
+	</div>
+
+	<div class="flex justify-content-center">
+		<p-button label="Bajo"
+          [styleClass]="getButtonStyle2(1)"
+          (click)="toggleButtonState2(1); cambiarValor(1);"></p-button>
+	  </div>
+	  <div class="flex justify-content-center">
+		<p-button label="Moderado"
+          [styleClass]="getButtonStyle2(2)"
+          (click)="toggleButtonState2(2); cambiarValor(1);"></p-button>
+	  </div>
+	  <div class="flex justify-content-center">
+		<p-button label="Alto"
+          [styleClass]="getButtonStyle2(3)"
+          (click)="toggleButtonState2(3); cambiarValor(1);"></p-button>
+	  </div>
+	
+	  <div class="flex justify-content-center">
+		<p-button
+			type="Submit"
+			label="Guardar Informacion"
+			styleClass="p-button-raised p-button-warning my-3"
+			[disabled]="formulario.invalid"
+			
+		></p-button>
+	</div>
+	</form>
+
+	<div class="flex justify-content-center">
+		<p-button label="Cerrar Sesión" styleClass="p-button-raised p-button-danger" (click) = "cerrarSesion()" ></p-button>
 	</div>
 </div>
