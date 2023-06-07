@@ -15,6 +15,7 @@ import {
 } from 'src/app/interfaces/data-types';
 import { ComponentsService } from 'src/app/services/components.service';
 import { VegiService } from 'src/app/services/vegi.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-dia-planificacion',
@@ -49,6 +50,8 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 	recetaSubscription!: Subscription;
 
 	caloriasDiarias: number = 0;
+
+	imagesUrl = environment.imagesUrl;
 
 	async ngOnInit() {
 		this.obtenerPlanificacion();

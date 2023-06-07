@@ -68,24 +68,20 @@
 					*ngFor="let producto of infoReceta?.lista_productos"
 				>
 					<div class="flex flex-wrap card item-producto">
-						<div class="col-12 sm:col-12 md:col-12 lg:col-12">
-							<div class="flex item-producto-title">
-								<h3 class="text-center mr-3 no-padding">
-									{{ producto.cantidad }}
-									{{ producto.nombre_unidad }} de
-									{{ producto.nombre_producto }}
-								</h3>
-								<p-button
-									styleClass="p-button-outlined p-button-rounded"
-									icon="pi pi-eye"
-									(click)="verProducto(producto.id_producto)"
-									pTooltip="Ver producto"
-									tooltipPosition="bottom"
-								></p-button>
-							</div>
+						<div
+							class="col-12 sm:col-12 md:col-12 lg:col-12 pb-0 text-center"
+						>
+							<h2
+								class="item-title"
+								pTooltip="Ver producto"
+								tooltipPosition="top"
+								(click)="verProducto(producto.id_producto)"
+							>
+								{{ producto.nombre_producto }}
+							</h2>
 						</div>
 						<div
-							class="img-container align-items-center col-12 sm:col-5 md:col-5 lg:col-5"
+							class="img-container align-items-center col-5 sm:col-5 md:col-5 lg:col-5 pt-0"
 						>
 							<img
 								[src]="
@@ -99,7 +95,12 @@
 								class="info-image shadow-2"
 							/>
 						</div>
-						<div class="col-12 sm:col-7 md:col-7 lg:col-7">
+						<div class="col-7 sm:col-7 md:col-7 lg:col-7 pt-0">
+							<p>
+								<span class="text-bold"> Cantidad: </span>
+								{{ producto.cantidad }}
+								{{ producto.nombre_unidad }}
+							</p>
 							<p>
 								<span class="text-bold"> Energía (kcal): </span>
 								{{ producto.kcal }}
@@ -127,18 +128,10 @@
 				</div>
 			</p-divider>
 			<div
-				class="card col-12 sm:col-12 md:col-12 lg:col-12"
+				class="col-12 sm:col-12 md:col-12 lg:col-12 p-0"
 				*ngFor="let paso of infoReceta.pasos"
 			>
-				<p class="text-bold">Paso {{ paso.n_paso }}:</p>
-				<p-divider></p-divider>
-				<p>
-					{{ paso.descripcion }} y luego, Lorem, ipsum dolor sit amet
-					consectetur adipisicing elit. Impedit numquam perspiciatis,
-					doloribus magni tenetur, quibusdam fugit iure laborum
-					distinctio necessitatibus cum id voluptate ab dolore
-					asperiores deleniti corrupti sed sunt.
-				</p>
+				<app-paso-receta [paso]="paso"></app-paso-receta>
 			</div>
 		</div>
 	</div>

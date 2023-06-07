@@ -1,25 +1,5 @@
-.item {
-	background: var(--surface-ground);
-	border: 1px solid var(--surface-border);
-	margin-bottom: 3px;
-	box-shadow: var(--card-shadow);
-	border-radius: 3px;
-	transition: all 0.1s ease-in-out;
-	height: 100%;
-	max-height: max-content;
-	.item-image {
-		background-color: red;
-		width: 100%;
-		max-width: max-content;
-	}
-}
 .img-container {
 	padding: 0;
 	padding-top: 0.3rem;
 	padding-left: 0.3rem;
-}
-.item:hover {
-	transform: translateY(-3px);
-	box-shadow: 0 1px 5px var(--surface-border), 0 0 2px var(--surface-border),
-		0 1px 4px var(--surface-border);
 }

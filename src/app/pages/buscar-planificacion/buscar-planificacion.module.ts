@@ -4,10 +4,9 @@ import { BuscarPlanificacionRoutingModule } from './buscar-planificacion-routing
 import { BuscarPlanificacionComponent } from './buscar-planificacion.component';
 import { PrimengModule } from '../../modules/primeng.module';
 import { FormsModule } from '@angular/forms';
-import { BuscarItemsComponent } from 'src/app/pages/buscar-planificacion/buscar-items/buscar-items.component';
 import { SharedComponentsModule } from 'src/app/modules/shared-components.module';
 @NgModule({
-	declarations: [BuscarPlanificacionComponent, BuscarItemsComponent],
+	declarations: [BuscarPlanificacionComponent],
 	imports: [
 		CommonModule,
 		BuscarPlanificacionRoutingModule,

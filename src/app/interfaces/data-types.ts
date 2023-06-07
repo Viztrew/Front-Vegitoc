@@ -14,10 +14,12 @@ export interface Receta {
 	link_imagen: string;
 	favorito: boolean;
 }
+
 export interface Favoritos {
 	productos: [Producto];
 	recetas: [Receta];
 }
+
 export interface InfoProducto {
 	nombre: string;
 	porcion: string;
@@ -48,6 +50,14 @@ export interface InfoProducto {
 }
 
 export interface InfoReceta {
+	info_receta: {
+		id_preparacion: number;
+		nombre: string;
+		kcal_prcn: string;
+		prot_prcn: string;
+		gr_totales_prcn: string;
+		hidratos_prcn: string;
+	};
 	lista_productos: [
 		{
 			id_preparacion: number;
@@ -61,14 +71,6 @@ export interface InfoReceta {
 			hidratos: string;
 		}
 	];
-	info_receta: {
-		id_preparacion: number;
-		nombre: string;
-		kcal_prcn: string;
-		prot_prcn: string;
-		gr_totales_prcn: string;
-		hidratos_prcn: string;
-	};
 	pasos: [
 		{
 			id_preparacion: number;
@@ -76,6 +78,27 @@ export interface InfoReceta {
 			descripcion: string;
 		}
 	];
+}
+
+//interfaz para crear recetas
+export interface CrearReceta {
+	nombre: string;
+	lista_productos: [Ingrediente];
+	pasos: [Paso];
+}
+
+export interface Ingrediente {
+	id_producto: string;
+	nombre_producto: string;
+	cantidad: number;
+	id_unidad_medida: number;
+	nombre_unidad: string;
+	kcal: number;
+}
+
+export interface Paso {
+	n_paso: number;
+	descripcion: string;
 }
 
 export interface UnidadMedida {

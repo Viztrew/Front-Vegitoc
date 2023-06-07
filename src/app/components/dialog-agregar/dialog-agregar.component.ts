@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import {
 	InfoProducto,
+	Ingrediente,
 	PlanProducto,
 	PlanReceta,
 	UnidadMedida,
@@ -36,7 +37,11 @@ export class DialogAgregarComponent {
 
 	@Input() editar!: boolean;
 
-	@Output() agregarItemEvent = new EventEmitter<any>();
+	@Input() crearReceta!: boolean;
+
+	@Output() agregarItemPlanEvent = new EventEmitter<any>();
+
+	@Output() agregarItemRecetaEvent = new EventEmitter<any>();
 
 	labelButton!: string;
 
@@ -179,10 +184,16 @@ export class DialogAgregarComponent {
 
 	async agregarItemPlanificacion() {
 		if (this.editar) {
-			this.agregarItemEvent.emit(this.setValores());
+			this.agregarItemPlanEvent.emit(this.setValoresItemPlan());
 		} else {
 			await this.setValoresForm();
-			this.agregarItemEvent.emit(this.formAgregar);
+			if (this.crearReceta) {
+				this.agregarItemRecetaEvent.emit(
+					this.setValoresIngredienteReceta()
+				);
+			} else {
+				this.agregarItemPlanEvent.emit(this.formAgregar);
+			}
 		}
 	}
 	async setValoresForm() {
@@ -197,7 +208,20 @@ export class DialogAgregarComponent {
 		}
 	}
 
-	setValores(): any {
+	setValoresIngredienteReceta(): any {
+		let ingrediente: Ingrediente;
+		return (ingrediente = {
+			id_producto: this.formAgregar.controls['id'].value,
+			nombre_producto: this.formAgregar.controls['nombre'].value,
+			cantidad: this.formAgregar.controls['cantidad'].value,
+			id_unidad_medida:
+				this.formAgregar.get('unidad')?.value.id_unidad_medida,
+			nombre_unidad: this.formAgregar.get('unidad')?.value.nombre,
+			kcal: this.calorias,
+		});
+	}
+
+	setValoresItemPlan(): any {
 		if (this.item.id_producto) {
 			let planProducto: PlanProducto;
 			return (planProducto = {

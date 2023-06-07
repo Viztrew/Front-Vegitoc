@@ -7,13 +7,17 @@ import { InfoProductoComponent } from '../components/info-producto/info-producto
 import { InfoRecetaComponent } from '../components/info-receta/info-receta.component';
 import { ItemComponent } from '../components/item/item.component';
 import { DialogAgregarComponent } from '../components/dialog-agregar/dialog-agregar.component';
+import { BuscarItemsComponent } from '../components/buscar-items/buscar-items.component';
+import { PasoRecetaComponent } from '../components/paso-receta/paso-receta.component';
 
 @NgModule({
 	declarations: [
 		InfoProductoComponent,
 		InfoRecetaComponent,
 		ItemComponent,
+		BuscarItemsComponent,
 		DialogAgregarComponent,
+		PasoRecetaComponent,
 	],
 	imports: [CommonModule, FormsModule, ReactiveFormsModule, PrimengModule],
 	exports: [
@@ -23,6 +27,8 @@ import { DialogAgregarComponent } from '../components/dialog-agregar/dialog-agre
 		DialogAgregarComponent,
 		FormsModule,
 		ReactiveFormsModule,
+		BuscarItemsComponent,
+		PasoRecetaComponent,
 	],
 })
 export class SharedComponentsModule {}

@@ -2,7 +2,11 @@
 	<div
 		class="img-container align-items-center col-5 sm:col-5 md:col-5 lg:col-5"
 	>
-		<a routerLink="{{ itemRoute }}" cursor-pointer>
+		<a
+			*ngIf="!this.crearReceta"
+			routerLink="{{ itemRoute }}"
+			cursor-pointer
+		>
 			<img
 				[src]="imageSrc"
 				(error)="updateUrl($event)"
@@ -10,11 +14,37 @@
 				class="info-image shadow-2"
 			/>
 		</a>
+		<img
+			*ngIf="this.crearReceta"
+			[src]="imageSrc"
+			(error)="updateUrl($event)"
+			alt="{{ item.nombre }}"
+			class="info-image shadow-2"
+		/>
 	</div>
 	<div
 		class="flex align-content-between flex-wrap col-7 sm:col-7 md:col-7 lg:col-7"
 	>
-		<a routerLink="{{ itemRoute }}" cursor-pointer>
+		<a *ngIf="!this.crearReceta">
+			<div class="col-12 no-padding">
+				<p
+					class="text-bold item-title"
+					pTooltip="Ver {{ item.nombre }}"
+					tooltipPosition="top"
+					(click)="verItem()"
+				>
+					{{ item.nombre }} -
+					{{ item.cantidad_embase || '1 porción' }}
+				</p>
+			</div>
+			<div class="col-12 no-padding">
+				<p>{{ item.marca }}</p>
+			</div>
+			<div class="col-12 no-padding">
+				<p>Kcal porción: {{ item.kcal_prcn }}</p>
+			</div>
+		</a>
+		<div *ngIf="this.crearReceta">
 			<div class="col-12 no-padding">
 				<p class="text-bold">
 					{{ item.nombre }} -
@@ -27,29 +57,22 @@
 			<div class="col-12 no-padding">
 				<p>Kcal porción: {{ item.kcal_prcn }}</p>
 			</div>
-		</a>
-
+		</div>
 		<div class="col-12">
 			<div class="flex align-items-center justify-content-center">
 				<p-button
+					class="mr-2"
 					label="Agregar"
-					(click)="mostrarDialogAgregar()"
+					(click)="mostrarDialogAgregarPlan()"
 				></p-button>
-
-				<a
+				<p-button
 					*ngIf="tipoItem != 'misrecetas'"
-					class="star-icon"
-					(click)="toggleFavorito()"
-					cursor-pointer
+					styleClass="p-button-rounded p-button-warning  p-button-outlined"
+					[icon]="item.favorito ? 'pi pi-star-fill' : 'pi pi-star'"
 					pTooltip="Favorito"
 					tooltipPosition="bottom"
-				>
-					<i
-						[ngClass]="item.favorito ? 'pi-star-fill' : 'pi-star'"
-						class="pi"
-					>
-					</i>
-				</a>
+					(click)="toggleFavorito()"
+				></p-button>
 			</div>
 		</div>
 	</div>
@@ -60,6 +83,8 @@
 	[titulo]="dia"
 	[item]="item"
 	[editar]="false"
+	[crearReceta]="crearReceta"
 	[visible]="mostrarDialog"
-	(agregarItemEvent)="agregarItemPlan($event)"
+	(agregarItemPlanEvent)="agregarItemPlan($event)"
+	(agregarItemRecetaEvent)="agregarItemReceta($event)"
 ></app-dialog-agregar>

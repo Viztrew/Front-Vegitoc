@@ -1,0 +1,391 @@
+<div class="card card-steps">
+	<p-steps
+		[model]="items"
+		[readonly]="true"
+		[activeIndex]="activeIndex"
+		(activeIndexChange)="onActiveIndexChange($event)"
+	></p-steps>
+</div>
+<div class="card card-step-receta p-0">
+	<div class="flex flex-wrap justify-content-center" *ngIf="activeIndex == 0">
+		<div class="flex justify-content-center col-12 pb-0">
+			<img src="./assets/img/nophoto.png" class="shadow-2" />
+		</div>
+		<div class="flex justify-content-center col-12">
+			<p-fileUpload
+				mode="basic"
+				name="demo[]"
+				accept="image/*"
+				chooseLabel="Seleccionar imagen"
+			>
+			</p-fileUpload>
+		</div>
+
+		<div class="flex justify-content-center">
+			<form [formGroup]="infoForm">
+				<input
+					type="text"
+					pInputText
+					formControlName="nombre"
+					placeholder="Nombre de la receta"
+					maxlength="51"
+					minlength="5"
+				/>
+				<div
+					*ngIf="
+						infoForm.controls['nombre'].invalid &&
+						(infoForm.controls['nombre'].dirty ||
+							infoForm.controls['nombre'].touched)
+					"
+					class="flex align-items-center justify-content-center"
+				>
+					<div *ngIf="infoForm.controls['nombre'].errors">
+						<small class="p-error">
+							<span
+								*ngIf="
+									infoForm.controls['nombre'].errors[
+										'maxlength'
+									]
+								"
+								class="text-sm"
+								>No superar los 50 carácteres</span
+							><span
+								*ngIf="
+									infoForm.controls['nombre'].errors[
+										'minlength'
+									]
+								"
+								>Debe superar los 5 carácteres</span
+							>
+							<span
+								*ngIf="
+									infoForm.controls['nombre'].errors[
+										'required'
+									]
+								"
+								>Ingrese el nombre de la receta</span
+							>
+						</small>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="flex flex-wrap justify-content-center" *ngIf="activeIndex == 1">
+		<div class="col-12 sm:col-12 md:col-12 lg:col-12">
+			<div class="card flex justify-content-center">
+				<button
+					pButton
+					label="Agregar producto"
+					icon="pi pi-plus"
+					(click)="mostrarDialogIngredientes()"
+				></button>
+			</div>
+			<div *ngIf="cantidadIngredientes == 0">
+				<div class="flex justify-content-center">
+					<i class="pi pi-info-circle" style="font-size: 2.5rem"></i>
+				</div>
+				<div class="flex justify-content-center">
+					<p>
+						Puedes agregar un máximo de
+						<span class="text-bold">10 Ingredientes</span>
+					</p>
+				</div>
+			</div>
+			<div class="flex flex-wrap no-padding">
+				<div
+					class="col-12 sm:col-6 md:col-4 lg:col-4"
+					*ngFor="let producto of Receta?.lista_productos"
+				>
+					<div class="flex flex-wrap item">
+						<div
+							class="col-12 sm:col-12 md:col-12 lg:col-12 text-center pb-0 pt-0"
+						>
+							<h3 class="text-bold p-0">
+								{{ producto.nombre_producto }}
+							</h3>
+						</div>
+						<div
+							class="img-container align-items-center justify-content-center col-5 sm:col-5 md:col-5 lg:col-5 pt-0"
+						>
+							<img
+								[src]="
+									imagesUrl +
+									'/' +
+									this.producto.id_producto +
+									'.jpg'
+								"
+								alt="{{ producto.nombre_producto }}"
+								class="item-image shadow-2 justify-content-center"
+							/>
+						</div>
+						<div class="col-7 sm:col-7 md:col-7 lg:col-7 pt-0">
+							<p>
+								<span class="text-bold"> Cantidad: </span>
+								{{ producto.cantidad }}
+								{{ producto.nombre_unidad }}
+							</p>
+
+							<p>
+								<span class="text-bold"> Calorías: </span>
+								{{ producto.kcal }} Kcal
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="flex flex-wrap justify-content-center" *ngIf="activeIndex == 2">
+		<div class="col-12 sm:col-12 md:col-12 lg:col-12">
+			<div class="card flex justify-content-center">
+				<button
+					pButton
+					label="Agregar paso"
+					icon="pi pi-plus"
+					(click)="mostrarDialogPasos()"
+				></button>
+			</div>
+			<div *ngIf="cantidadPasos == 0">
+				<div class="flex justify-content-center">
+					<i class="pi pi-info-circle" style="font-size: 2.5rem"></i>
+				</div>
+				<div class="flex justify-content-center">
+					<p>
+						Puedes agregar un máximo de
+						<span class="text-bold">15 Pasos</span>
+					</p>
+				</div>
+			</div>
+			<div
+				class="col-12 sm:col-12 md:col-12 lg:col-12 p-0"
+				*ngFor="let paso of Receta?.pasos"
+			>
+				<app-paso-receta [paso]="paso"></app-paso-receta>
+			</div>
+		</div>
+	</div>
+
+	<div class="flex flex-wrap justify-content-center" *ngIf="activeIndex == 3">
+		<div class="flex flex-wrap">
+			<div class="col-12 sm:col-12 md:col-12 lg:col-12">
+				<h2 class="text-center">
+					{{ Receta.nombre }}
+				</h2>
+				<div class="img-container">
+					<img
+						src="./assets/img/nophoto.png"
+						class="shadow-2"
+						class="info-image shadow-2"
+					/>
+				</div>
+			</div>
+			<div class="col-12 sm:col-12 md:col-12 lg:col-12">
+				<p-divider align="center">
+					<div class="inline-flex align-items-center">
+						<h2>Ingredientes</h2>
+					</div>
+				</p-divider>
+				<div class="flex flex-wrap">
+					<div
+						class="col-12 sm:col-6 md:col-4 lg:col-4"
+						*ngFor="let producto of Receta?.lista_productos"
+					>
+						<div class="flex flex-wrap card item-producto">
+							<div
+								class="col-12 sm:col-12 md:col-12 lg:col-12 pb-0 text-center"
+							>
+								<h3 class="text-bold p-0">
+									{{ producto.nombre_producto }}
+								</h3>
+							</div>
+							<div
+								class="img-container align-items-center col-5 sm:col-5 md:col-5 lg:col-5 pt-0"
+							>
+								<img
+									[src]="
+										imagesUrl +
+										'/' +
+										this.producto.id_producto +
+										'.jpg'
+									"
+									alt="{{ producto.nombre_producto }}"
+									class="info-image shadow-2"
+								/>
+							</div>
+							<div class="col-7 sm:col-7 md:col-7 lg:col-7 pt-0">
+								<p>
+									<span class="text-bold"> Cantidad: </span>
+									{{ producto.cantidad }}
+									{{ producto.nombre_unidad }}
+								</p>
+								<p>
+									<span class="text-bold"> Calorías: </span>
+									{{ producto.kcal }} kcal
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<p-divider align="center">
+					<div class="inline-flex align-items-center">
+						<h2>Preparación</h2>
+					</div>
+				</p-divider>
+				<div
+					class="col-12 sm:col-12 md:col-12 lg:col-12 p-0"
+					*ngFor="let paso of Receta.pasos"
+				>
+					<app-paso-receta [paso]="paso"></app-paso-receta>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="card-buttons flex flex-wrap justify-content-center p-0">
+	<div class="flex justify-content-center">
+		<button
+			class="mr-1"
+			pButton
+			label="Atrás"
+			(click)="atras()"
+			[disabled]="activeIndex == 0"
+		></button>
+	</div>
+
+	<div class="flex justify-content-center">
+		<button
+			class="ml-1"
+			pButton
+			[label]="activeIndex != 3 ? 'Siguiente' : 'Crear'"
+			(click)="activeIndex != 3 ? siguiente() : mostrarDialogConfirmar()"
+			[disabled]="disableBotonSiguiente()"
+		></button>
+	</div>
+</div>
+
+<p-dialog
+	header="Agregar Ingrediente"
+	[(visible)]="dialogIngredientes"
+	[breakpoints]="{ '1200px': '90vw' }"
+	[modal]="true"
+	[style]="{ width: '50vw', height: 'auto' }"
+	[draggable]="false"
+	[resizable]="false"
+>
+	<p-tabView [scrollable]="false">
+		<p-tabPanel header="Productos" class="p-0">
+			<app-buscar-items
+				[tipoItem]="TipoItems[0]"
+				[crearReceta]="true"
+			></app-buscar-items>
+		</p-tabPanel>
+		<p-tabPanel header="Favoritos">
+			<app-buscar-items
+				[tipoItem]="TipoItems[1]"
+				[crearReceta]="true"
+			></app-buscar-items>
+		</p-tabPanel>
+	</p-tabView>
+</p-dialog>
+
+<p-dialog
+	header="Header"
+	[(visible)]="dialogPasos"
+	[breakpoints]="{ '1200px': '90vw' }"
+	[modal]="true"
+	[style]="{ width: '50vw', height: 'auto' }"
+	[draggable]="false"
+	[resizable]="false"
+>
+	<ng-template pTemplate="header">
+		<span class="text-xl font-bold">Paso {{ numero_paso }}</span>
+	</ng-template>
+
+	<ng-template pTemplate="content"
+		><form [formGroup]="pasosForm">
+			<textarea
+				class="textAreaPaso"
+				pInputTextarea
+				formControlName="descripcion"
+				maxlength="501"
+				placeholder="Descripción"
+				required
+			></textarea>
+			<div
+				*ngIf="
+					pasosForm.controls['descripcion'].invalid &&
+					(pasosForm.controls['descripcion'].dirty ||
+						pasosForm.controls['descripcion'].touched)
+				"
+				class="flex align-items-center justify-content-center"
+			>
+				<div *ngIf="pasosForm.controls['descripcion'].errors">
+					<small class="p-error">
+						<span
+							*ngIf="
+								pasosForm.controls['descripcion'].errors[
+									'maxlength'
+								]
+							"
+							class="text-sm"
+							>No superar los 500 carácteres</span
+						><span
+							*ngIf="
+								pasosForm.controls['descripcion'].errors[
+									'minlength'
+								]
+							"
+							>Debe superar los 10 carácteres</span
+						>
+						<span
+							*ngIf="
+								pasosForm.controls['descripcion'].errors[
+									'required'
+								]
+							"
+							>Ingrese la descripción del paso de la receta</span
+						>
+					</small>
+				</div>
+			</div>
+		</form>
+	</ng-template>
+	<ng-template pTemplate="footer">
+		<button
+			pButton
+			label="Agregar"
+			(click)="agregarPasoReceta()"
+			[disabled]="pasosForm.invalid"
+		></button>
+	</ng-template>
+</p-dialog>
+
+<p-dialog
+	header="Header"
+	[(visible)]="dialogConfirmar"
+	[breakpoints]="{ '1200px': '80vw' }"
+	[modal]="true"
+	[style]="{ width: '20vw', height: 'auto' }"
+	[draggable]="false"
+	[resizable]="false"
+	[closable]="false"
+>
+	<ng-template pTemplate="header">
+		<span class="text-xl font-bold text-center"
+			>¿Crear receta {{ Receta.nombre }}?</span
+		>
+	</ng-template>
+
+	<ng-template pTemplate="footer">
+		<p-button
+			styleClass="p-button-text"
+			label="Cancelar"
+			(click)="cerrarDialogConfirmar()"
+		></p-button>
+		<p-button label="Confirmar" (click)="crearReceta()"></p-button>
+	</ng-template>
+</p-dialog>

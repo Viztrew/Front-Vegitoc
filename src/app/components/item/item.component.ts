@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
 import { DialogAgregarComponent } from '../dialog-agregar/dialog-agregar.component';
 import { FormGroup } from '@angular/forms';
+import { Ingrediente } from 'src/app/interfaces/data-types';
 
 @Component({
 	selector: 'app-item',
@@ -30,6 +31,8 @@ export class ItemComponent {
 
 	@Input() tipoItem: string = '';
 
+	@Input() crearReceta!: boolean;
+
 	@Output() agregarProductoPlanificacionEvent = new EventEmitter<any>();
 
 	@Output() agregarRecetaPlanificacionEvent = new EventEmitter<any>();
@@ -37,6 +40,8 @@ export class ItemComponent {
 	@Output() productoFavoritoEvent = new EventEmitter<any>();
 
 	@Output() recetaFavoritoEvent = new EventEmitter<any>();
+
+	@Output() agregarIngredienteRecetaEvent = new EventEmitter<any>();
 
 	@ViewChild(DialogAgregarComponent) dialogChild: any;
 
@@ -50,8 +55,9 @@ export class ItemComponent {
 	dia!: string;
 
 	ngOnInit(): void {
-		this.dia = this.route.snapshot.params['dia'];
-
+		if (!this.crearReceta) {
+			this.dia = this.route.snapshot.params['dia'];
+		}
 		if (this.item.id_preparacion) {
 			this.imageSrc = '../../../assets/img/nophoto.png';
 			this.itemRoute = '/info/receta/' + this.item.id_preparacion;
@@ -66,7 +72,7 @@ export class ItemComponent {
 		this.imageSrc = '../../../assets/img/nophoto.png';
 	}
 
-	mostrarDialogAgregar() {
+	mostrarDialogAgregarPlan() {
 		if (this.dialogChild) {
 			this.dialogChild.visible = true;
 		} else {
@@ -84,11 +90,20 @@ export class ItemComponent {
 		this.mostrarDialog = false;
 	}
 
+	async agregarItemReceta(item: Ingrediente) {
+		this.agregarIngredienteRecetaEvent.emit(item);
+		this.mostrarDialog = false;
+	}
+
 	toggleFavorito() {
 		if (this.item.id_preparacion) {
 			this.recetaFavoritoEvent.emit(this.item);
 		} else {
 			this.productoFavoritoEvent.emit(this.item);
 		}
+	}
+
+	verItem() {
+		this.router.navigateByUrl(this.itemRoute);
 	}
 }

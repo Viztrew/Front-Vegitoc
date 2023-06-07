@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import {
+	Ingrediente,
 	Producto,
 	ProductoAgregarPlan,
 	Receta,
@@ -31,6 +32,11 @@ export class ComponentsService {
 	private recetas: BehaviorSubject<RecetaAgregarPlan> =
 		new BehaviorSubject<RecetaAgregarPlan>(this.receta);
 
+	ingredienteReceta = {} as Ingrediente;
+
+	private ingredienteRecetas: BehaviorSubject<Ingrediente> =
+		new BehaviorSubject<Ingrediente>(this.ingredienteReceta);
+
 	constructor() {}
 
 	//observables para componente buscar
@@ -46,6 +52,9 @@ export class ComponentsService {
 
 	public productos$: Observable<ProductoAgregarPlan> =
 		this.productos.asObservable();
+
+	public ingredienteRecetas$: Observable<Ingrediente> =
+		this.ingredienteRecetas.asObservable();
 
 	//se añade el producto a agregar a la lista de productos favoritos
 	public addProductoFavorito(producto: Producto): void {
@@ -65,5 +74,9 @@ export class ComponentsService {
 	//se añade la receta a agregar a la lista de recetas
 	public addReceta(receta: RecetaAgregarPlan): void {
 		this.recetas.next(receta);
+	}
+
+	public addIngredienteReceta(ingrediente: Ingrediente): void {
+		this.ingredienteRecetas.next(ingrediente);
 	}
 }

@@ -18,6 +18,10 @@ import { DialogModule } from 'primeng/dialog';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FieldsetModule } from 'primeng/fieldset';
+import { StepsModule } from 'primeng/steps';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { FileUploadModule } from 'primeng/fileupload';
+
 // SPINNER
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
@@ -42,6 +46,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 		RadioButtonModule,
 		CheckboxModule,
 		FieldsetModule,
+		StepsModule,
+		InputTextareaModule,
+		FileUploadModule,
 	],
 	exports: [
 		ButtonModule,
@@ -61,6 +68,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 		RadioButtonModule,
 		CheckboxModule,
 		FieldsetModule,
+		StepsModule,
+		InputTextareaModule,
+		FileUploadModule,
 	],
 })
 export class PrimengModule {}

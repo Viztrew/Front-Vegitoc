@@ -50,6 +50,11 @@ export class SidebarComponent implements OnInit {
 						icon: 'pi pi-user',
 						routerLink: ['/login'],
 					},
+					{
+						label: 'Crear receta',
+						icon: 'fa-solid fa-bowl-food',
+						routerLink: ['/crear-receta'],
+					},
 				],
 			},
 		];

@@ -4,16 +4,28 @@
 	</div>
 	<p-tabView [scrollable]="tabScroll">
 		<p-tabPanel header="Productos">
-			<app-buscar-items [tipoItem]="TipoItems[0]"></app-buscar-items>
+			<app-buscar-items
+				[tipoItem]="TipoItems[0]"
+				[crearReceta]="false"
+			></app-buscar-items>
 		</p-tabPanel>
 		<p-tabPanel header="Recetas">
-			<app-buscar-items [tipoItem]="TipoItems[1]"></app-buscar-items>
+			<app-buscar-items
+				[tipoItem]="TipoItems[1]"
+				[crearReceta]="false"
+			></app-buscar-items>
 		</p-tabPanel>
 		<p-tabPanel header="Favoritos">
-			<app-buscar-items [tipoItem]="TipoItems[2]"></app-buscar-items>
+			<app-buscar-items
+				[tipoItem]="TipoItems[2]"
+				[crearReceta]="false"
+			></app-buscar-items>
 		</p-tabPanel>
 		<p-tabPanel header="Mis recetas">
-			<app-buscar-items [tipoItem]="TipoItems[3]"></app-buscar-items>
+			<app-buscar-items
+				[tipoItem]="TipoItems[3]"
+				[crearReceta]="false"
+			></app-buscar-items>
 		</p-tabPanel>
 	</p-tabView>
 </div>

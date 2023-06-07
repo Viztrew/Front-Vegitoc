@@ -44,6 +44,13 @@ const routes: Routes = [
 		loadChildren: () =>
 			import('../pages/signup/signup.module').then((m) => m.SignupModule),
 	},
+	{
+		path: 'crear-receta',
+		loadChildren: () =>
+			import('../pages/crear-receta/crear-receta.module').then(
+				(m) => m.CrearRecetaModule
+			),
+	},
 
 	{ path: '**', redirectTo: '/404' },
 	{

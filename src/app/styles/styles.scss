@@ -29,6 +29,7 @@ a {
 	overflow-y: auto;
 	overflow-x: hidden;
 	.card {
+		border: 1px solid var(--surface-border);
 		border-radius: 4px;
 		margin-bottom: 1rem;
 		height: auto;
@@ -46,6 +47,34 @@ a {
 	}
 }
 
+.item {
+	border: 1px solid var(--surface-border);
+	background: var(--surface-ground);
+	margin-bottom: 3px;
+	box-shadow: 0 3px 5px #00000005, 0 0 2px #0000000d, 0 1px 4px #00000014;
+	border-radius: 3px;
+	transition: all 0.1s ease-in-out;
+	height: 100%;
+	max-height: max-content;
+	.item-image {
+		width: 100%;
+		max-width: max-content;
+	}
+}
+
+.item-title {
+	cursor: pointer;
+}
+.item-title:hover {
+	color: var(--primary-color);
+}
+
+.item:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 1px 5px var(--surface-border), 0 0 2px var(--surface-border),
+		0 1px 4px var(--surface-border);
+}
+
 .no-padding {
 	padding: 0;
 }
@@ -53,9 +82,7 @@ a {
 .star-icon {
 	width: 2.5rem;
 	height: 2.5rem;
-	border-radius: var(--border-radius);
 	margin-left: 0.5rem;
-	border: 1px solid var(--surface-border);
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;

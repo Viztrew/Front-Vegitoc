@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import {
 	CheckedProducto,
 	CheckedReceta,
+	CrearReceta,
 	PlanProducto,
 	PlanReceta,
 	ProductoAgregarPlan,
@@ -172,6 +173,14 @@ export class VegiService {
 	agregarRecetaPlanificacion(receta: RecetaAgregarPlan): Observable<any> {
 		return this.http.post(
 			`${environment.baseUrl}/plan/generarPlanPreparacion`,
+			receta,
+			this.HttpOptions
+		);
+	}
+
+	crearReceta(receta: CrearReceta): Observable<any> {
+		return this.http.post(
+			`${environment.baseUrl}/recetas/crearReceta`,
 			receta,
 			this.HttpOptions
 		);

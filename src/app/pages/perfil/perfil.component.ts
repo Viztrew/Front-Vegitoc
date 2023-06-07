@@ -13,66 +13,68 @@ export class PerfilComponent {
 	datosUsuario: any;
 	activeButton: number = 2;
 	activeButton2: number = 2;
-	formulario: FormGroup = this.formBuilder.group({
-	  });;
+	formulario: FormGroup = this.formBuilder.group({});
 	selectedButton: string = ''; // Botón "Mantener peso" seleccionado inicialmente
 	datosCargados: any = false;
 	constructor(
 		private servicio: VegiService,
 		private router: Router,
 		private mensaje: MessageService,
-		private formBuilder: FormBuilder){}
+		private formBuilder: FormBuilder
+	) {}
 
-		guardarInformacion(){
-			let nombre = this.formulario.get('nombreUsuario')?.value;
-			let fecha_nacimiento = this.datosUsuario[0].fecha_nacimiento;
-			let peso = this.formulario.get('peso')?.value;
-			let altura = this.formulario.get('altura')?.value;
-			let calorias = this.formulario.get('calorias')?.value;
-			let objetivo;
-			let nivel_act;
-			if(this.activeButton == 1){
-				objetivo = "BAJAR";
-			}
-			if(this.activeButton == 2){
-				objetivo = "MANTENER";
-			}
-			if(this.activeButton == 3){
-				objetivo = "SUBIR";
-			}
-			
-			if(this.activeButton2 == 1){
-				nivel_act = "BAJO";
-			}
-			if(this.activeButton2 == 2){
-				nivel_act = "MODERADO";
-			}
-			if(this.activeButton2 == 3){
-				nivel_act = "ALTO";
-			}
+	guardarInformacion() {
+		let nombre = this.formulario.get('nombreUsuario')?.value;
+		let fecha_nacimiento = this.datosUsuario[0].fecha_nacimiento;
+		let peso = this.formulario.get('peso')?.value;
+		let altura = this.formulario.get('altura')?.value;
+		let calorias = this.formulario.get('calorias')?.value;
+		let objetivo;
+		let nivel_act;
+		if (this.activeButton == 1) {
+			objetivo = 'BAJAR';
+		}
+		if (this.activeButton == 2) {
+			objetivo = 'MANTENER';
+		}
+		if (this.activeButton == 3) {
+			objetivo = 'SUBIR';
+		}
 
-			let infoUsuario = {
-				"nombre":nombre,
-				"fecha_nacimiento": fecha_nacimiento,
-				"peso":peso,
-				"altura":altura,
-				"tarjet_calorias":calorias,
-				"objetivo":objetivo,
-				"es_vegano":false,
-				"nivel_actividad":nivel_act
-			}
-			console.log(infoUsuario);
+		if (this.activeButton2 == 1) {
+			nivel_act = 'BAJO';
+		}
+		if (this.activeButton2 == 2) {
+			nivel_act = 'MODERADO';
+		}
+		if (this.activeButton2 == 3) {
+			nivel_act = 'ALTO';
+		}
 
-			this.servicio.editarInformacionUsuario(infoUsuario).subscribe((data)=>{
+		let infoUsuario = {
+			nombre: nombre,
+			fecha_nacimiento: fecha_nacimiento,
+			peso: peso,
+			altura: altura,
+			tarjet_calorias: calorias,
+			objetivo: objetivo,
+			es_vegano: false,
+			nivel_actividad: nivel_act,
+		};
+		console.log(infoUsuario);
+
+		this.servicio
+			.editarInformacionUsuario(infoUsuario)
+			.subscribe((data) => {
 				console.log(data);
-				if(data){
+				if (data) {
 					this.mensaje.clear();
 					this.mensaje.add({
 						severity: 'success',
 						summary: 'La informacion se guardo correctamente!',
 						life: 3000,
 					});
-				}else{
+				} else {
 					this.mensaje.clear();
 					this.mensaje.add({
 						severity: 'error',
@@ -80,192 +82,214 @@ export class PerfilComponent {
 						life: 3000,
 					});
 				}
-			})
-		}
+			});
+	}
 
-		cambiarValor(flag:any) {
-			// Realiza las operaciones necesarias para cambiar el valor según el valor del input
-			if(!this.formulario.get('peso')?.invalid && this.formulario.get('peso')?.dirty || !this.formulario.get('altura')?.invalid && this.formulario.get('altura')?.dirty || flag == 1){
-				const control = this.formulario.get('calorias');
-				const peso = this.formulario.get('peso');
-				const altura = this.formulario.get('altura');
-				let fechaNac = this.datosUsuario[0].fecha_nacimiento.split("T")[0];
-				fechaNac = fechaNac.split("-")[0];
-				let fechaAct = new Date().getFullYear();
-				let difAnos = fechaAct - fechaNac;
-				let formula = 0;
-				if(this.datosUsuario[0].sexo == "MASCULINO"){
-					 formula = (10 * peso?.value) + (6.25 * altura?.value) - (5 * difAnos) + 5;
-					if(this.activeButton2 == 1){
-						formula = formula * 1.2;
-					}
-					if(this.activeButton2 == 2){
-						formula = formula * 1.375;
-					}
-					if(this.activeButton2 == 3){
-						formula = formula * 1.55;
-					}
-					if(this.activeButton == 1){
-						formula = formula * 0.95;
-					}
-					if(this.activeButton == 3){
-						formula = formula * 1.05;
-					}
-				}else{
-					let formula = (10 * peso?.value) + (6.25 * altura?.value) - (5 * difAnos) - 161;
-					if(this.activeButton2 == 1){
-						formula = formula * 1.2;
-					}
-					if(this.activeButton2 == 2){
-						formula = formula * 1.375;
-					}
-					if(this.activeButton2 == 3){
-						formula = formula * 1.55;
-					}
-					if(this.activeButton == 1){
-						formula = formula * 0.95;
-					}
-					if(this.activeButton == 3){
-						formula = formula * 1.05;
-					}
-				}
-				control?.setValue(Math.trunc(formula));
-			}
-		}
-
-		cambiarValor2(){
-			if(this.formulario.dirty){
+	cambiarValor(flag: any) {
+		// Realiza las operaciones necesarias para cambiar el valor según el valor del input
+		if (
+			(!this.formulario.get('peso')?.invalid &&
+				this.formulario.get('peso')?.dirty) ||
+			(!this.formulario.get('altura')?.invalid &&
+				this.formulario.get('altura')?.dirty) ||
+			flag == 1
+		) {
 			const control = this.formulario.get('calorias');
 			const peso = this.formulario.get('peso');
 			const altura = this.formulario.get('altura');
-			let fechaNac = this.datosUsuario[0].fecha_nacimiento.split("T")[0];
-			fechaNac = fechaNac.split("-")[0];
+			let fechaNac = this.datosUsuario[0].fecha_nacimiento.split('T')[0];
+			fechaNac = fechaNac.split('-')[0];
 			let fechaAct = new Date().getFullYear();
 			let difAnos = fechaAct - fechaNac;
 			let formula = 0;
-			if(peso?.value == '' || altura?.value == ''){
+			if (this.datosUsuario[0].sexo == 'MASCULINO') {
+				formula =
+					10 * peso?.value + 6.25 * altura?.value - 5 * difAnos + 5;
+				if (this.activeButton2 == 1) {
+					formula = formula * 1.2;
+				}
+				if (this.activeButton2 == 2) {
+					formula = formula * 1.375;
+				}
+				if (this.activeButton2 == 3) {
+					formula = formula * 1.55;
+				}
+				if (this.activeButton == 1) {
+					formula = formula * 0.95;
+				}
+				if (this.activeButton == 3) {
+					formula = formula * 1.05;
+				}
+			} else {
+				let formula =
+					10 * peso?.value + 6.25 * altura?.value - 5 * difAnos - 161;
+				if (this.activeButton2 == 1) {
+					formula = formula * 1.2;
+				}
+				if (this.activeButton2 == 2) {
+					formula = formula * 1.375;
+				}
+				if (this.activeButton2 == 3) {
+					formula = formula * 1.55;
+				}
+				if (this.activeButton == 1) {
+					formula = formula * 0.95;
+				}
+				if (this.activeButton == 3) {
+					formula = formula * 1.05;
+				}
+			}
+			control?.setValue(Math.trunc(formula));
+		}
+	}
+
+	cambiarValor2() {
+		if (this.formulario.dirty) {
+			const control = this.formulario.get('calorias');
+			const peso = this.formulario.get('peso');
+			const altura = this.formulario.get('altura');
+			let fechaNac = this.datosUsuario[0].fecha_nacimiento.split('T')[0];
+			fechaNac = fechaNac.split('-')[0];
+			let fechaAct = new Date().getFullYear();
+			let difAnos = fechaAct - fechaNac;
+			let formula = 0;
+			if (peso?.value == '' || altura?.value == '') {
 				this.mensaje.clear();
 				this.mensaje.add({
 					severity: 'error',
 					summary: 'los datos de peso y edad no pueden estar vacios',
 					life: 3000,
 				});
-			}else
-				if(this.datosUsuario[0].sexo == "MASCULINO"){
-					formula = (10 * peso?.value) + (6.25 * altura?.value) - (5 * difAnos) + 5;
-				   if(this.activeButton2 == 1){
-					   formula = formula * 1.2;
-				   }
-				   if(this.activeButton2 == 2){
-					   formula = formula * 1.375;
-				   }
-				   if(this.activeButton2 == 3){
-					   formula = formula * 1.55;
-				   }
-				   if(this.activeButton == 1){
-					   formula = formula * 0.95;
-				   }
-				   if(this.activeButton == 3){
-					   formula = formula * 1.05;
-				   }
-			   }else{
-				   let formula = (10 * peso?.value) + (6.25 * altura?.value) - (5 * difAnos) - 161;
-				   if(this.activeButton2 == 1){
-					   formula = formula * 1.2;
-				   }
-				   if(this.activeButton2 == 2){
-					   formula = formula * 1.375;
-				   }
-				   if(this.activeButton2 == 3){
-					   formula = formula * 1.55;
-				   }
-				   if(this.activeButton == 1){
-					   formula = formula * 0.95;
-				   }
-				   if(this.activeButton == 3){
-					   formula = formula * 1.05;
-				   }
-			   }
-			   console.log(formula - control?.value);
-			   if(formula - control?.value > -200){
-					this.activeButton = 1;
-			   }
-			   if(formula - control?.value < 200){
-					this.activeButton = 3;
-			   }
-			   if(!(formula - control?.value < -200) && !(formula - control?.value > 200)){
-					this.activeButton = 2;
-			   }
-			}
-		}
-
-		cerrarSesion(){
-			this.servicio.logout();
-		}
-
-		getButtonStyle(buttonNumber: number) {
-		  return buttonNumber === this.activeButton ? 'p-button-rounded p-button-secondary my-1' : 'p-button-rounded p-button-warning my-1';
-		}
-	  
-		toggleButtonState(buttonNumber: number) {
-		  this.activeButton = buttonNumber;
-		}
-
-		getButtonStyle2(buttonNumber2: number) {
-			return buttonNumber2 === this.activeButton2 ? 'p-button-rounded p-button-secondary my-1' : 'p-button-rounded p-button-warning my-1';
-		  }
-		
-		  toggleButtonState2(buttonNumber2: number) {
-			this.activeButton2 = buttonNumber2;
-		  }
-
-		ngOnInit(): void {
-			this.servicio.loggedIn();
-			if(!this.servicio.isLoggedIn){
-				this.router.navigate(['/login']);
-			}
-			this.servicio.obtenerInformacionUsuario().subscribe(
-				(datos) =>{
-					this.datosUsuario = datos;
-					console.log(datos);
-					this.formulario = this.formBuilder.group({
-						nombreUsuario: this.datosUsuario[0].nombre,
-						fechaNac: this.datosUsuario[0].fecha_nacimiento.split("T")[0],
-						peso: [this.datosUsuario[0].peso,Validators.compose([
-							Validators.pattern("^[0-9,$]*$"),
-							Validators.required
-						  ])],
-						altura: [this.datosUsuario[0].altura,Validators.compose([
-							Validators.pattern("^[0-9,$]*$"),
-							Validators.required
-						  ])],
-						calorias: [this.datosUsuario[0].tarjet_calorias,Validators.compose([
-							Validators.pattern("^[0-9,$]*$"),
-							Validators.required
-						  ])]
-					});
-					if(this.datosUsuario[0].objetivo == "BAJAR"){
-						this.activeButton = 1;
-					}
-					if(this.datosUsuario[0].objetivo == "MANTENER"){
-						this.activeButton = 2;
-					}
-					if(this.datosUsuario[0].objetivo == "SUBIR"){
-						this.activeButton = 3;
-					}
-					
-					if(this.datosUsuario[0].nivel_actividad == "BAJO"){
-						this.activeButton2 = 1;
-					}
-					if(this.datosUsuario[0].nivel_actividad == "MODERADO"){
-						this.activeButton2 = 2;
-					}
-					if(this.datosUsuario[0].nivel_actividad == "ALTO"){
-						this.activeButton2 = 3;
-					}
-					this.datosCargados = true;
+			} else if (this.datosUsuario[0].sexo == 'MASCULINO') {
+				formula =
+					10 * peso?.value + 6.25 * altura?.value - 5 * difAnos + 5;
+				if (this.activeButton2 == 1) {
+					formula = formula * 1.2;
 				}
-			)
-
+				if (this.activeButton2 == 2) {
+					formula = formula * 1.375;
+				}
+				if (this.activeButton2 == 3) {
+					formula = formula * 1.55;
+				}
+				if (this.activeButton == 1) {
+					formula = formula * 0.95;
+				}
+				if (this.activeButton == 3) {
+					formula = formula * 1.05;
+				}
+			} else {
+				let formula =
+					10 * peso?.value + 6.25 * altura?.value - 5 * difAnos - 161;
+				if (this.activeButton2 == 1) {
+					formula = formula * 1.2;
+				}
+				if (this.activeButton2 == 2) {
+					formula = formula * 1.375;
+				}
+				if (this.activeButton2 == 3) {
+					formula = formula * 1.55;
+				}
+				if (this.activeButton == 1) {
+					formula = formula * 0.95;
+				}
+				if (this.activeButton == 3) {
+					formula = formula * 1.05;
+				}
+			}
+			console.log(formula - control?.value);
+			if (formula - control?.value > -200) {
+				this.activeButton = 1;
+			}
+			if (formula - control?.value < 200) {
+				this.activeButton = 3;
+			}
+			if (
+				!(formula - control?.value < -200) &&
+				!(formula - control?.value > 200)
+			) {
+				this.activeButton = 2;
+			}
 		}
+	}
+
+	cerrarSesion() {
+		this.servicio.logout();
+	}
+
+	getButtonStyle(buttonNumber: number) {
+		return buttonNumber === this.activeButton
+			? 'p-button-rounded p-button-secondary my-1'
+			: 'p-button-rounded p-button-warning my-1';
+	}
+
+	toggleButtonState(buttonNumber: number) {
+		this.activeButton = buttonNumber;
+	}
+
+	getButtonStyle2(buttonNumber2: number) {
+		return buttonNumber2 === this.activeButton2
+			? 'p-button-rounded p-button-secondary my-1'
+			: 'p-button-rounded p-button-warning my-1';
+	}
+
+	toggleButtonState2(buttonNumber2: number) {
+		this.activeButton2 = buttonNumber2;
+	}
+
+	ngOnInit(): void {
+		this.servicio.loggedIn();
+		if (!this.servicio.isLoggedIn) {
+			this.router.navigate(['/login']);
+		}
+		this.servicio.obtenerInformacionUsuario().subscribe((datos) => {
+			this.datosUsuario = datos;
+			console.log(datos);
+			this.formulario = this.formBuilder.group({
+				nombreUsuario: this.datosUsuario[0].nombre,
+				fechaNac: this.datosUsuario[0].fecha_nacimiento.split('T')[0],
+				peso: [
+					this.datosUsuario[0].peso,
+					Validators.compose([
+						Validators.pattern('^[0-9,$]*$'),
+						Validators.required,
+					]),
+				],
+				altura: [
+					this.datosUsuario[0].altura,
+					Validators.compose([
+						Validators.pattern('^[0-9,$]*$'),
+						Validators.required,
+					]),
+				],
+				calorias: [
+					this.datosUsuario[0].tarjet_calorias,
+					Validators.compose([
+						Validators.pattern('^[0-9,$]*$'),
+						Validators.required,
+					]),
+				],
+			});
+			if (this.datosUsuario[0].objetivo == 'BAJAR') {
+				this.activeButton = 1;
+			}
+			if (this.datosUsuario[0].objetivo == 'MANTENER') {
+				this.activeButton = 2;
+			}
+			if (this.datosUsuario[0].objetivo == 'SUBIR') {
+				this.activeButton = 3;
+			}
+
+			if (this.datosUsuario[0].nivel_actividad == 'BAJO') {
+				this.activeButton2 = 1;
+			}
+			if (this.datosUsuario[0].nivel_actividad == 'MODERADO') {
+				this.activeButton2 = 2;
+			}
+			if (this.datosUsuario[0].nivel_actividad == 'ALTO') {
+				this.activeButton2 = 3;
+			}
+			this.datosCargados = true;
+		});
+	}
 }

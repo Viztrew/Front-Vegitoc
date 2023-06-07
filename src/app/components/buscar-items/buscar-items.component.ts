@@ -6,6 +6,7 @@ import { ComponentsService } from 'src/app/services/components.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
 	Favoritos,
+	Ingrediente,
 	Producto,
 	ProductoAgregarPlan,
 	Receta,
@@ -29,6 +30,8 @@ export class BuscarItemsComponent {
 	) {}
 
 	@Input() tipoItem: string = '';
+
+	@Input() crearReceta!: boolean;
 
 	items = new Array<any>();
 
@@ -314,6 +317,10 @@ export class BuscarItemsComponent {
 
 	addRecetaFavoritoServicio(receta: Receta) {
 		this.servicioComponentes.addRecetaFavorito(receta);
+	}
+
+	addIngredienteReceta(ingrediente: Ingrediente) {
+		this.servicioComponentes.addIngredienteReceta(ingrediente);
 	}
 
 	agregarFavoritoProducto(producto: Producto) {
