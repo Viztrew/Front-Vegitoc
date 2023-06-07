@@ -4,6 +4,10 @@ import { SignupModule } from './signup.module';
 import { StepsModule } from 'primeng/steps';
 import { VegiService}  from 'src/app/services/vegi.service';
 import { AbstractControl } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
+
+
 
 @Component({
   selector: 'app-signup',
@@ -11,40 +15,31 @@ import { AbstractControl } from '@angular/forms';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent{
-  
 
-  
-  step = 1
-  sexo: string | null = null
-  objetivo: string | null = null
-  target: number | null = 0
-  ree: number | null = 0
-  factorActividad: number = 1.2
+//VALORES ANTIGUOS
 
-
+/*
   step1_correct:boolean = true
 
+  //Formulario creado con variables por separado
+ 
   value_correo: string = ''
   error_correo: boolean = false
-  controlCorreo: FormControl = new FormControl('', [
-    Validators.required, 
-    Validators.email
-  ])
   
   value_contrasena: string = ''
   error_contrasena: boolean = false
-  controlContrasena: FormControl = new FormControl('', [
+  controlContrasena = new FormControl('', [
     Validators.required,
-    Validators.maxLength(35),
+    Validators.maxLength(25),
     Validators.minLength(5)
   ])
 
   value_contrasenaConfir: string = ''
   error_contrasenaConfir: boolean = false
-  controlContrasenaRep: FormControl = new FormControl('', [
-    Validators.required,
-    Validators.maxLength(35),
-    Validators.minLength(5)
+  controlContrasenaRep = new FormControl('', [
+    Validators.required, 
+    Validators.minLength(5), 
+    Validators.maxLength(25)
   ])
 
   value_nombreUsuario: string = ''
@@ -58,71 +53,95 @@ export class SignupComponent{
 
   value_altura: string = ''
   error_altura: boolean = false
- 
+  
+*/
 
-  passwordMatch(){
-    if(this.value_contrasena != this.value_contrasenaConfir){
-      this.error_contrasena = true
-    }
-    else{
-      this.error_contrasena = false
-    }
-  }
-  //controlContrasena
+
   
-  userForm1 = this.fb.group({
-    correo: ['', Validators.required],
-    contrasena: ['', Validators.required],
-    contrasenaRep: ['', Validators.required]
-  })
-  
-//Se puede borrar????
-  userForm2 = this.fb.group({
-    nombreUsuario: ['', Validators.required],
-    fechaNacimiento: ['', Validators.required],
-    peso: ['', Validators.required],
-    altura: ['', Validators.required],
-  })
-  
+  step = 1
+  sexo: string | null = null
+  objetivo: string | null = null
+  target: number | null = 0
+  ree: number | null = 0
+  factorActividad: number = 1.2
+  actividad: string | null = null
+
+
+  //Formulario hecho con formbuilder de angular
+  userForm1 !:FormGroup;
+  userForm2 !: FormGroup;
   //Se puede borrar fb¿¿¿ pero se deja servicio¿¿¿
-  constructor(private fb: FormBuilder, private servicio:VegiService){};
-  /*
-  checkStep1(){
-    if(this.value_contrasena != this.value_contrasenaConfir){
-      this.error_contrasenaConfir = true
+  constructor(private formBuilder: FormBuilder, private servicio:VegiService, private router: Router, private mensaje: MessageService){};
 
-    }
-    else{
-      this.error_contrasenaConfir = false
-    }
-    if(this.value_correo==''){
-      this.error_correo = true
-    }
-    else{
-      this.error_correo = false
-    }
-    if(this.value_contrasena.length <= 5){
-      this.error_contrasena = true
-    }
-    else{
-      this.error_contrasena = false
-    }
 
-    if(!this.error_contrasena && !this.error_contrasenaConfir && !this.error_correo){
-      this.step++
-    }   
+  ngOnInit() {
 
-  }*/
+    this.iniciarFormulario();
+    this.userForm1.controls['contrasena'].valueChanges.subscribe(valorCampo=>{
+     if ( this.userForm1.controls['contrasena'].valid){
+      this.userForm1.controls['contrasenaRep'].enable();
+     }else{
+      this.userForm1.controls['contrasenaRep'].disable();
+     }
+
+     if (valorCampo == this.userForm1.controls['contrasenaRep'].value ){
+      console.log('contraseña: '+ valorCampo + ' contrasenaRep: ' +this.userForm1.controls['contrasenaRep'].value);
+      this.userForm1.setErrors({'esValido':true})
+    }else{
+      this.userForm1.setErrors({'esValido':false})
+    }
+    });
+
+    this.userForm1.controls['contrasenaRep'].valueChanges.subscribe(valorCampo =>{
+      console.log(this.userForm1);
+      
+      if (valorCampo != this.userForm1.controls['contrasena'].value ){
+        console.log('contrasenaRep: '+ valorCampo + ' contrasena: ' +this.userForm1.controls['contrasena'].value);
+      }
+    })
+
+    this.iniciarFormulario2();
+
+    
+  }
+
+  contrasenasCoinciden(): boolean {
+    const contraseña = this.userForm1.controls['contrasena'].value;
+    const contraseñaRep = this.userForm1.controls['contrasenaRep'].value;
+    return contraseña === contraseñaRep;
+  }
+
+  iniciarFormulario() {
+    this.userForm1 =  this.formBuilder.group({
+      correo: new FormControl ('', [Validators.required,Validators.email]),
+      contrasena:new FormControl ('', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]),
+      contrasenaRep:new FormControl ({value:'', disabled:true}, [Validators.required])
+    });
+    this.userForm1.setErrors({'esValido':false})
+  }
+
+  iniciarFormulario2(){
+  this.userForm2 = this.formBuilder.group({
+    nombreUsuario: new FormControl('', [Validators.required]),
+    fechaNacimiento: new FormControl ('', [Validators.required]),
+    peso: new FormControl ('', [Validators.required, Validators.max(300), Validators.min(30)]),
+    altura: new FormControl ('', [Validators.required, Validators.min(100), Validators.max(300)]),
+    })
+    this.userForm2.setErrors({'esValido':false})
+  }
+
+  
 
   enviar(){
     let usuario = {
-      //email: this.userForm1.value.correo,
+      email: this.userForm1.value.correo,
       nombre: this.userForm2.value.nombreUsuario,
-      //password:this.userForm1.value.contrasena,
+      password:this.userForm1.value.contrasena,
       fecha_nacimiento: this.userForm2.value.fechaNacimiento,
       peso:this.userForm2.value.peso,
       altura:this.userForm2.value.altura,
       sexo: this.sexo,
+      nivel_actividad: this.actividad,
       objetivo:this.objetivo,
       tarjet_calorias:this.target,
       es_vegano: false
@@ -130,8 +149,17 @@ export class SignupComponent{
 
     this.servicio.crearUsuario(usuario).subscribe(data => {
       if(data){
-        console.log('success')
-
+        this.mensaje.clear();
+        this.mensaje.add({
+          severity: 'success',
+          summary: '¡Bienvenido!',
+          detail: 'Se ha creado exitosamente la cuenta',
+          life: 3000,
+        });
+        this.router.navigateByUrl('planificacion');
+      }
+      else{
+        console.log('wtf')
       }
     })
   }
@@ -180,7 +208,6 @@ export class SignupComponent{
     }
   }
 
-
   reasignarObjetivo(target_: any){
     let caloriasMantener = this.getCaloriasMantener()
     if(caloriasMantener > target_){
@@ -196,7 +223,20 @@ export class SignupComponent{
   }
   switchActividad(factorActividad_: number){
     this.factorActividad = factorActividad_
+    if(this.factorActividad == 1.2){
+      this.actividad = 'BAJO'
+    }
+    else if(this.factorActividad == 1.375){
+      this.actividad = 'MODERADO'
+    }
+    else if(this.factorActividad == 1.55){
+      this.actividad = 'ALTO'
+    }
+    else{
+      console.log('wtf')
+    }
   }
+
   switchSexo(sexo_: string){
     this.sexo = sexo_
   }
@@ -230,13 +270,3 @@ export class SignupComponent{
       console.log(this.getAge(this.userForm2.value.fechaNacimiento))
     }
   }
-  /*registrar(){
-    let usuario = {email: this.userForm.value.correo,
-      password: this.userForm.value.contrasena,
-      pswConf: this.userForm.value.contrasenaConfir,
-      user: this.userForm.value.nombreUsuario,
-      date: this.userForm.value.fechaNacimiento,
-      weight: this.userForm.value.peso,
-      height: this.userForm.value.altura,
-      };
-  }*/

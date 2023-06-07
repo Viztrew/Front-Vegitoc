@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { Producto } from 'src/app/interfaces/data-types';
+import { VegiService } from 'src/app/services/vegi.service';
 
 @Component({
 	selector: 'app-planificacion',
@@ -7,7 +10,11 @@ import { Producto } from 'src/app/interfaces/data-types';
 	styleUrls: ['./planificacion.component.scss'],
 })
 export class PlanificacionComponent {
-	constructor() {}
+	constructor(
+		private servicio: VegiService,
+		private messageService: MessageService,
+		private router: Router
+	) {}
 
 	dias = ['Ayer', 'Hoy', 'Mañana'];
 
@@ -15,7 +22,11 @@ export class PlanificacionComponent {
 
 	anchoDiaPlan: number = 0;
 
-	ngOnInit(): void {
+	async ngOnInit() {
+		await this.servicio.loggedIn();
+		if (!this.servicio.isLoggedIn) {
+			this.router.navigate(['/login']);
+		}
 		this.mover = document.getElementById('plan-scroll');
 		this.scrollRightDPlan();
 	}

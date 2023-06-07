@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {
 	CheckedProducto,
@@ -25,27 +25,15 @@ export class VegiService {
 		private router: Router,
 		private location: Location
 	) {}
+
 	helper = new JwtHelperService();
+
 	isLoggedIn: boolean = false;
 
-	logout() {
-		localStorage.removeItem('session');
-		this.isLoggedIn = false;
-		this.router.navigate(['']);
-		window.location.reload();
-	}
+	private loginSubject: BehaviorSubject<boolean> =
+		new BehaviorSubject<boolean>(this.isLoggedIn);
 
-	loggedIn(): any {
-		const token = localStorage.getItem('session') ?? '';
-		if (this.helper.isTokenExpired(token) == true) {
-			this.logout;
-			return false;
-		}
-
-		if (this.isLoggedIn == false) {
-			this.isLoggedIn = true;
-		}
-	}
+	public login$: Observable<boolean> = this.loginSubject.asObservable();
 
 	private HttpOptions = {
 		headers: new HttpHeaders({
@@ -59,6 +47,26 @@ export class VegiService {
 				token: localStorage.getItem('session') || '',
 			}),
 		};
+	}
+
+	logout() {
+		localStorage.removeItem('session');
+		this.isLoggedIn = false;
+		window.location.reload();
+	}
+
+	loggedIn(): any {
+		const token = localStorage.getItem('session') ?? '';
+		if (this.helper.isTokenExpired(token) == true) {
+			this.logout;
+			return false;
+		}
+
+		if (this.isLoggedIn == false) {
+			this.loginSubject.next(true);
+			this.isLoggedIn = true;
+			return true;
+		}
 	}
 
 	// GET
@@ -139,8 +147,7 @@ export class VegiService {
 	crearUsuario(usuario: any): Observable<any> {
 		return this.http.post(
 			`${environment.baseUrl}/usuario/registrarUsuario`,
-			usuario,
-			this.HttpOptions
+			usuario
 		);
 	}
 

@@ -1,5 +1,6 @@
-<div class="topbar">
+<div class="topbar" [ngClass]="isLoggedIn ? '' : 'topbar-login'">
 	<p-button
+		*ngIf="isLoggedIn"
 		class="topbar-menu"
 		styleClass="p-button-rounded p-button-lg"
 		icon="pi pi-bars"
@@ -11,6 +12,7 @@
 	</a>
 
 	<p-button
+		*ngIf="isLoggedIn"
 		class="topbar-session"
 		styleClass="p-button-rounded p-button-lg"
 		icon="pi pi-user"

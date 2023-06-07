@@ -59,6 +59,19 @@ export class CrearRecetaComponent {
 	cantidadPasos: number = 0;
 
 	async ngOnInit() {
+		await this.servicio.loggedIn();
+
+		if (!this.servicio.isLoggedIn) {
+			this.messageService.clear();
+			this.messageService.add({
+				severity: 'error',
+				summary: 'Sesión caducada',
+				detail: 'Inicia sesión nuevamente',
+				life: 3000,
+			});
+			this.router.navigate(['/login']);
+		}
+
 		this.initInfoForm();
 
 		this.initPasosForm();

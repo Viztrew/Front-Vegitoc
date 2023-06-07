@@ -40,20 +40,16 @@ export class SidebarComponent implements OnInit {
 						icon: 'pi pi-calendar',
 						routerLink: ['/planificacion'],
 					},
-					{
-						label: 'Perfil',
-						icon: 'pi pi-cog',
-						routerLink: ['/perfil'],
-					},
-					{
-						label: 'Login',
-						icon: 'pi pi-user',
-						routerLink: ['/login'],
-					},
+
 					{
 						label: 'Crear receta',
-						icon: 'fa-solid fa-bowl-food',
+						icon: 'pi pi-book',
 						routerLink: ['/crear-receta'],
+					},
+					{
+						label: 'Perfil',
+						icon: 'pi pi-user',
+						routerLink: ['/perfil'],
 					},
 				],
 			},
@@ -61,9 +57,7 @@ export class SidebarComponent implements OnInit {
 	}
 
 	async logout() {
-		await this.router.navigateByUrl('login');
-		await this.servicio.logout();
-		window.location.reload();
+		this.servicio.logout();
 	}
 
 	changeTheme() {

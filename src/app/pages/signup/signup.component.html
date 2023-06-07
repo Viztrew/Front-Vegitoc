@@ -1,73 +1,92 @@
 <div class="card justify-content-center">
 	<h1 for="Registrar" class="registro">Registro</h1>
+
 	<p-divider></p-divider>
+	
 	<div class="flex justify-content-center">
 		<div *ngIf="step==1">
 			<div class="field">
-				<label for="usuario" class="block">Correo electronico</label>
+				<form [formGroup]="userForm1">
+				<label for="correo" class="block">Correo electronico</label>
 				<input
-					[formControl]="controlCorreo"
-					type="email"
+					formControlName="correo"
+					type="text"
 					pInputText
 					placeholder="Correo electronico"
+					required
 				/>
-				<small
-					class="p-error block" 
-					*ngIf="controlCorreo.invalid && (controlCorreo.dirty || controlCorreo.touched)">
-					<small 
-						class="p-error block"
-						*ngIf="controlCorreo.errors?.['required']">
-							El correo electrónico es obligatorio.
-					</small>
-					<small 
-						class="p-error block"
-						*ngIf="controlCorreo.errors?.['email']">
-							El correo electrónico no es válido.
-					</small>
-				</small>
+
+				<div *ngIf="userForm1.controls['correo'].invalid && (userForm1.controls['correo'].dirty || userForm1.controls['correo'].touched)">
+					<div *ngIf="userForm1.controls['correo'].errors">
+						<small 
+							class="p-error block"
+							*ngIf="userForm1.controls['correo'].errors['required']">
+								El correo electrónico es obligatorio.
+						</small>
+						<small 
+							class="p-error block"
+							*ngIf="userForm1.controls['correo'].errors['email']">
+								El correo electrónico no es válido.
+						</small>
+					</div>
+				</div>
                 
                 <label for="contrasena" class="block">Contraseña</label>
 				<input
-					[formControl]="controlContrasena"
+					formControlName="contrasena"
 					type="password"
 					pInputText
 					placeholder="Contraseña"
 				/>
-				<small
-					class="p-error block" 
-					*ngIf="controlContrasena.invalid && (controlContrasena.dirty || controlContrasena.touched)">
+				<div
+					*ngIf="userForm1.controls['contrasena'].invalid && (userForm1.controls['contrasena'].dirty || userForm1.controls['contrasena'].touched)">
+					<div *ngIf="userForm1.controls['contrasena'].errors">
 					<small 
 						class="p-error block"
-						*ngIf="controlContrasena.errors?.['required']">
+						*ngIf="userForm1.controls['contrasena'].errors?.['required']">
 							La contraseña es obligatoria.
 					</small>
-					<small></small>
-				</small>
-                <div class="field">
-                    <label for="contrasenaConfir" class="block">Repetir contraseña</label>
-                    <input
-						[(ngModel)]="value_contrasenaConfir"
+					
+					<small 
+						class="p-error block "
+						*ngIf="userForm1.controls['contrasena'].errors?.['minlength']">
+							La contraseña debe tener minimo 5 caracteres.
+					</small>
+					<small 
+						class="p-error block "s
+						*ngIf="userForm1.controls['contrasena'].errors?.['maxlength']">
+							La contraseña debe tener máximo 25 caracteres.
+					</small>
+				</div>
+				</div>
+                	<div class="field" >
+                    	<label for="contrasenaRep" class="block">Repetir contraseña</label>
+                    	<input
+						formControlName="contrasenaRep"
                         type="password"
                         pInputText
                         placeholder="Repetir contraseña"
                     />
                     <small
                         class="p-error block"
-                        *ngIf="error_contrasenaConfir"
-                        >Ingrese una contraseña</small
-						>
+                        *ngIf="!contrasenasCoinciden()"
+						>Las contraseñas no coinciden.
+					</small>
 				</div>
+				</form>
 			</div>
-			<!--(onClick)="checkStep1()-->
-			<p-button [disabled]="!controlCorreo.valid" 
-				icon="pi pi-iconName" class="flex justify-content-center" label="Continuar"></p-button>
+
+			<p-button [disabled]="userForm1.invalid || !contrasenasCoinciden()" (onClick)="siguiente()"
+			icon="pi pi-iconName" class="flex justify-content-center" label="Continuar"></p-button>
 		</div>
-		<form *ngIf="step==2">
+		
+		<div *ngIf="step==2">
+			<form [formGroup]="userForm2">
 				<div class="field">
-					
-					<label for="usuario" class="block">Nombre de usuario</label>
+
+					<label for="nombreUsuario" class="block">Nombre de usuario</label>
 					<input
-						[(ngModel)]="value_nombreUsuario"
+						formControlName="nombreUsuario"
 						type="text"
 						pInputText
 						placeholder="Nombre de usuario"
@@ -75,29 +94,36 @@
 					/>
 					<small
 						class="p-error block"
-						*ngIf="error_nombreUsuario"
-						>Este campo es obligatorio</small
-					>
+						*ngIf="userForm2.controls['nombreUsuario'].invalid && 
+						(userForm2.controls['nombreUsuario'].dirty || userForm2.controls['nombreUsuario'].touched)">
+						El nombre de usuario es obligatorio.</small
+						>
 				</div>
 
-				<div class="field">
-					
-					
-				</div>
 				<div class="field flex flex-column justify-content-center">
-					<label for="usuario" class="block">Fecha de nacimiento</label>
-					<input  
-						[(ngModel)]="value_fechaNacimiento"
-						type="date"
-						formControlName="fechaNacimiento"
-						>
-					<small
-						class="p-error block"
-						*ngIf="error_fechaNacimiento"
-						>Este campo es obligatorio</small
-					>
-				</div>
-				
+					
+						<label for="fechaNacimiento" class="block">Fecha de nacimiento</label>
+							<input  
+							formControlName="fechaNacimiento"
+							type="date"
+							formControlName="fechaNacimiento"
+							>
+							<small
+								class="p-error block"
+								*ngIf="userForm2.controls['fechaNacimiento'].touched && userForm2.controls['fechaNacimiento'].invalid"
+								>La fecha de nacimiento es obligatoria.
+							</small>
+							<small
+								class="p-error block"
+								*ngIf="getAge(userForm2.value.fechaNacimiento)>150"
+								>Ingrese una fecha valida.
+							</small>
+							<small
+								class="p-error block"
+								*ngIf="getAge(userForm2.value.fechaNacimiento)<18"
+								>Debe ser mayor de 18 años.
+							</small>
+					</div>
 				<div class="field">
 					
 					<label for="usuario" class="block">Peso (Kg)</label>
@@ -109,12 +135,15 @@
 					/>
 					<small
 						class="p-error block"
-						*ngIf="
-							userForm2.get('weight')?.invalid &&
-							userForm2.get('weight')?.dirty
-						"
-						>Este campo es obligatorio</small
-					>
+						*ngIf="userForm2.controls['peso'].invalid && 
+						(userForm2.controls['peso'].dirty || userForm2.controls['peso'].touched)"
+						>El peso es obligatorio
+					</small>
+					<small
+						class="p-error block"
+						*ngIf="userForm2.controls['peso'].errors?.['min']"
+						>Tiene que pesar minimo 30kg
+					</small>
 				</div>
 				<div class="field">
 					
@@ -128,17 +157,18 @@
 					<small
 						class="p-error block"
 						*ngIf="
-							userForm2.get('height')?.invalid &&
-							userForm2.get('height')?.dirty
+							userForm2.controls['altura'].invalid &&
+							userForm2.controls['altura'].touched
 						"
-						>Este campo es obligatorio</small
+						>La altura es obligatoria</small
 					>
 				</div>
 				<div class="flex">
 					<p-button (onClick)="anterior()" icon="pi pi-iconName" label="Anterior"></p-button>
 					<p-button (onClick)="siguiente()" icon="pi pi-iconName" label="Continuar"></p-button>
 				</div>
-		</form>
+			</form>
+		</div>
 		<form *ngIf="step==3">
 			<h2 class="boton">Sexo</h2>
 			<p-button class="boton" (onClick)="switchSexo('MASCULINO')"
@@ -160,7 +190,7 @@
 					icon="pi pi-iconName" label="Poco o nada"></p-button>
 				<p-button class="boton" (onClick)="switchActividad(1.375)"
 					[styleClass]="factorActividad== 1.375 ? '': 'p-button-outlined'" 
-					icon="pi pi-iconName" label="Moderado"></p-button>	
+					icon="pi pi-iconName" label="Moderado"></p-button>
 				<p-button class="boton" (onClick)="switchActividad(1.55)"
 					[styleClass]="factorActividad== 1.55 ? '': 'p-button-outlined'" 
 					icon="pi pi-iconName" label="Alto"></p-button>

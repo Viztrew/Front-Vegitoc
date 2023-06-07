@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { VegiService } from 'src/app/services/vegi.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
 	selector: 'app-perfil',
@@ -19,8 +20,9 @@ export class PerfilComponent {
 	constructor(
 		private servicio: VegiService,
 		private router: Router,
-		private mensaje: MessageService,
-		private formBuilder: FormBuilder
+		private messageService: MessageService,
+		private formBuilder: FormBuilder,
+		private spinner: NgxSpinnerService
 	) {}
 
 	guardarInformacion() {
@@ -68,17 +70,17 @@ export class PerfilComponent {
 			.subscribe((data) => {
 				console.log(data);
 				if (data) {
-					this.mensaje.clear();
-					this.mensaje.add({
+					this.messageService.clear();
+					this.messageService.add({
 						severity: 'success',
-						summary: 'La informacion se guardo correctamente!',
+						summary: '¡La información se guardó correctamente!',
 						life: 3000,
 					});
 				} else {
-					this.mensaje.clear();
-					this.mensaje.add({
+					this.messageService.clear();
+					this.messageService.add({
 						severity: 'error',
-						summary: 'No se pudo guardar la informacion!',
+						summary: '¡No se pudo guardar la información!',
 						life: 3000,
 					});
 				}
@@ -154,10 +156,10 @@ export class PerfilComponent {
 			let difAnos = fechaAct - fechaNac;
 			let formula = 0;
 			if (peso?.value == '' || altura?.value == '') {
-				this.mensaje.clear();
-				this.mensaje.add({
+				this.messageService.clear();
+				this.messageService.add({
 					severity: 'error',
-					summary: 'los datos de peso y edad no pueden estar vacios',
+					summary: 'Los datos de peso y edad no pueden estar vacíos',
 					life: 3000,
 				});
 			} else if (this.datosUsuario[0].sexo == 'MASCULINO') {
@@ -237,59 +239,78 @@ export class PerfilComponent {
 		this.activeButton2 = buttonNumber2;
 	}
 
-	ngOnInit(): void {
-		this.servicio.loggedIn();
+	obtenerInformacionUsuario() {
+		this.spinner.show();
+		this.servicio.obtenerInformacionUsuario().subscribe(
+			(datos) => {
+				this.datosUsuario = datos;
+				this.formulario = this.formBuilder.group({
+					nombreUsuario: this.datosUsuario[0].nombre,
+					fechaNac:
+						this.datosUsuario[0].fecha_nacimiento.split('T')[0],
+					peso: [
+						this.datosUsuario[0].peso,
+						Validators.compose([
+							Validators.pattern('^[0-9,$]*$'),
+							Validators.required,
+						]),
+					],
+					altura: [
+						this.datosUsuario[0].altura,
+						Validators.compose([
+							Validators.pattern('^[0-9,$]*$'),
+							Validators.required,
+						]),
+					],
+					calorias: [
+						this.datosUsuario[0].tarjet_calorias,
+						Validators.compose([
+							Validators.pattern('^[0-9,$]*$'),
+							Validators.required,
+						]),
+					],
+				});
+				if (this.datosUsuario[0].objetivo == 'BAJAR') {
+					this.activeButton = 1;
+				}
+				if (this.datosUsuario[0].objetivo == 'MANTENER') {
+					this.activeButton = 2;
+				}
+				if (this.datosUsuario[0].objetivo == 'SUBIR') {
+					this.activeButton = 3;
+				}
+
+				if (this.datosUsuario[0].nivel_actividad == 'BAJO') {
+					this.activeButton2 = 1;
+				}
+				if (this.datosUsuario[0].nivel_actividad == 'MODERADO') {
+					this.activeButton2 = 2;
+				}
+				if (this.datosUsuario[0].nivel_actividad == 'ALTO') {
+					this.activeButton2 = 3;
+				}
+				this.datosCargados = true;
+				this.spinner.hide();
+			},
+			(err) => {
+				this.spinner.hide();
+			}
+		);
+	}
+
+	async ngOnInit() {
+		await this.servicio.loggedIn();
 		if (!this.servicio.isLoggedIn) {
+			this.messageService.clear();
+			this.messageService.add({
+				severity: 'error',
+				summary: 'Sesión caducada',
+				detail: 'Inicia sesión nuevamente',
+				life: 3000,
+			});
 			this.router.navigate(['/login']);
 		}
-		this.servicio.obtenerInformacionUsuario().subscribe((datos) => {
-			this.datosUsuario = datos;
-			console.log(datos);
-			this.formulario = this.formBuilder.group({
-				nombreUsuario: this.datosUsuario[0].nombre,
-				fechaNac: this.datosUsuario[0].fecha_nacimiento.split('T')[0],
-				peso: [
-					this.datosUsuario[0].peso,
-					Validators.compose([
-						Validators.pattern('^[0-9,$]*$'),
-						Validators.required,
-					]),
-				],
-				altura: [
-					this.datosUsuario[0].altura,
-					Validators.compose([
-						Validators.pattern('^[0-9,$]*$'),
-						Validators.required,
-					]),
-				],
-				calorias: [
-					this.datosUsuario[0].tarjet_calorias,
-					Validators.compose([
-						Validators.pattern('^[0-9,$]*$'),
-						Validators.required,
-					]),
-				],
-			});
-			if (this.datosUsuario[0].objetivo == 'BAJAR') {
-				this.activeButton = 1;
-			}
-			if (this.datosUsuario[0].objetivo == 'MANTENER') {
-				this.activeButton = 2;
-			}
-			if (this.datosUsuario[0].objetivo == 'SUBIR') {
-				this.activeButton = 3;
-			}
 
-			if (this.datosUsuario[0].nivel_actividad == 'BAJO') {
-				this.activeButton2 = 1;
-			}
-			if (this.datosUsuario[0].nivel_actividad == 'MODERADO') {
-				this.activeButton2 = 2;
-			}
-			if (this.datosUsuario[0].nivel_actividad == 'ALTO') {
-				this.activeButton2 = 3;
-			}
-			this.datosCargados = true;
-		});
+		this.obtenerInformacionUsuario();
 	}
 }
