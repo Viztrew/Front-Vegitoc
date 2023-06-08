@@ -97,9 +97,23 @@ export class CrearRecetaComponent {
 					if (ingrediente?.id_producto) {
 						this.dialogIngredientes = false;
 						if (this.Receta.lista_productos) {
-							this.cantidadIngredientes =
-								this.cantidadIngredientes + 1;
-							this.Receta.lista_productos.push(ingrediente);
+							if (
+								this.validarIngredienteRepetido(
+									ingrediente.id_producto
+								)
+							) {
+								this.messageService.clear();
+								this.messageService.add({
+									severity: 'info',
+									summary: '¡Ingrediente repetido!',
+									detail: 'No puedes agregar el mismo producto mas de una vez',
+									life: 3000,
+								});
+							} else {
+								this.cantidadIngredientes =
+									this.cantidadIngredientes + 1;
+								this.Receta.lista_productos.push(ingrediente);
+							}
 						} else {
 							this.cantidadIngredientes = 1;
 							this.Receta.lista_productos = [ingrediente];
@@ -110,6 +124,15 @@ export class CrearRecetaComponent {
 					}
 				}
 			);
+	}
+
+	validarIngredienteRepetido(id_ingrediente: string): boolean {
+		for (let i = 0; i < this.Receta.lista_productos?.length; i++) {
+			if (id_ingrediente == this.Receta.lista_productos[i].id_producto) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	onActiveIndexChange(event: any) {
@@ -146,6 +169,51 @@ export class CrearRecetaComponent {
 				Validators.minLength(10),
 			]),
 		});
+	}
+
+	eliminarIngredienteArray(ingrediente: Ingrediente) {
+		let elemento = document.getElementById(ingrediente.id_producto);
+		if (elemento) {
+			elemento.classList.add('zoom');
+		}
+		setTimeout(() => {
+			for (let i = 0; i < this.Receta.lista_productos?.length; i++) {
+				if (
+					ingrediente.id_producto ==
+					this.Receta.lista_productos[i].id_producto
+				) {
+					this.Receta.lista_productos.splice(i, 1);
+					this.cantidadIngredientes = this.cantidadIngredientes - 1;
+					break;
+				}
+			}
+		}, 100);
+	}
+
+	eliminarPasoArray(paso: Paso) {
+		let elemento = document.getElementById(paso.n_paso.toString());
+		if (elemento) {
+			elemento.classList.add('zoom');
+		}
+		setTimeout(() => {
+			for (let i = 0; i < this.Receta.pasos?.length; i++) {
+				if (paso.n_paso == this.Receta.pasos[i].n_paso) {
+					this.Receta.pasos.splice(i, 1);
+					this.cantidadPasos = this.cantidadPasos - 1;
+					this.setNumeroPasosArray(i);
+					break;
+				}
+			}
+		}, 100);
+	}
+
+	setNumeroPasosArray(indice: number) {
+		let n_paso = 1;
+		for (let i = 0; i < this.Receta.pasos?.length; i++) {
+			this.Receta.pasos[i].n_paso = n_paso;
+			n_paso = n_paso + 1;
+		}
+		this.numero_paso = n_paso;
 	}
 
 	agregarPasoReceta() {

@@ -95,42 +95,62 @@
 			</div>
 			<div class="flex flex-wrap no-padding">
 				<div
+					*ngFor="let ingrediente of Receta?.lista_productos"
 					class="col-12 sm:col-6 md:col-4 lg:col-4"
-					*ngFor="let producto of Receta?.lista_productos"
 				>
-					<div class="flex flex-wrap item">
+					<div
+						class="flex flex-wrap item"
+						id="{{ ingrediente.id_producto }}"
+					>
 						<div
-							class="col-12 sm:col-12 md:col-12 lg:col-12 text-center pb-0 pt-0"
+							class="col-1 delete-button flex justify-content-center"
+							pTooltip="Eliminar"
+							tooltipPosition="bottom"
+							(click)="eliminarIngredienteArray(ingrediente)"
 						>
-							<h3 class="text-bold p-0">
-								{{ producto.nombre_producto }}
-							</h3>
+							<i class="pi pi-times"></i>
 						</div>
-						<div
-							class="img-container align-items-center justify-content-center col-5 sm:col-5 md:col-5 lg:col-5 pt-0"
-						>
-							<img
-								[src]="
-									imagesUrl +
-									'/' +
-									this.producto.id_producto +
-									'.jpg'
-								"
-								alt="{{ producto.nombre_producto }}"
-								class="item-image shadow-2 justify-content-center"
-							/>
-						</div>
-						<div class="col-7 sm:col-7 md:col-7 lg:col-7 pt-0">
-							<p>
-								<span class="text-bold"> Cantidad: </span>
-								{{ producto.cantidad }}
-								{{ producto.nombre_unidad }}
-							</p>
+						<div class="col-10 flex flex-wrap">
+							<div
+								class="col-12 sm:col-12 md:col-12 lg:col-12 text-center pb-0 pt-0"
+							>
+								<h3 class="text-bold p-0">
+									{{ ingrediente.nombre_producto }}
+								</h3>
+							</div>
+							<div
+								class="img-container align-items-center justify-content-center col-5 sm:col-5 md:col-5 lg:col-5 pt-0"
+							>
+								<img
+									[src]="
+										imagesUrl +
+										'/' +
+										this.ingrediente.id_producto +
+										'.jpg'
+									"
+									alt="{{ ingrediente.nombre_producto }}"
+									class="item-image shadow-2 justify-content-center"
+								/>
+							</div>
+							<div class="col-7 sm:col-7 md:col-7 lg:col-7 pt-0">
+								<p>
+									<span class="text-bold"> Cantidad: </span>
+									{{ ingrediente.cantidad }}
+									{{ ingrediente.nombre_unidad }}
+								</p>
 
-							<p>
-								<span class="text-bold"> Calorías: </span>
-								{{ producto.kcal }} Kcal
-							</p>
+								<p>
+									<span class="text-bold"> Calorías: </span>
+									{{ ingrediente.kcal }} Kcal
+								</p>
+							</div>
+						</div>
+						<div
+							class="col-1 edit-button flex justify-content-center"
+							pTooltip="Editar"
+							tooltipPosition="bottom"
+						>
+							<i class="pi pi-pencil"></i>
 						</div>
 					</div>
 				</div>
@@ -159,11 +179,39 @@
 					</p>
 				</div>
 			</div>
-			<div
-				class="col-12 sm:col-12 md:col-12 lg:col-12 p-0"
-				*ngFor="let paso of Receta?.pasos"
-			>
-				<app-paso-receta [paso]="paso"></app-paso-receta>
+			<div class="flex flex-wrap">
+				<div
+					class="col-12 sm:col-12 md:col-6 xl:col-6 pb-1"
+					*ngFor="let paso of Receta?.pasos"
+				>
+					<div
+						class="card card-paso flex flex-wrap p-0"
+						id="{{ paso.n_paso }}"
+					>
+						<div
+							class="col-1 delete-button flex justify-content-center"
+							pTooltip="Eliminar"
+							tooltipPosition="bottom"
+							(click)="eliminarPasoArray(paso)"
+						>
+							<i class="pi pi-times"></i>
+						</div>
+						<div class="col-10">
+							<p class="text-bold">Paso {{ paso.n_paso }}:</p>
+							<p-divider></p-divider>
+							<p class="text-justify">
+								{{ paso.descripcion }}
+							</p>
+						</div>
+						<div
+							class="col-1 edit-button flex justify-content-center"
+							pTooltip="Editar"
+							tooltipPosition="bottom"
+						>
+							<i class="pi pi-pencil"></i>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

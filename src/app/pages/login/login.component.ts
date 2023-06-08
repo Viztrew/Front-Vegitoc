@@ -27,7 +27,7 @@ export class LoginComponent {
 		if (this.servicio.isLoggedIn) {
 			this.mensaje.clear();
 			this.mensaje.add({
-				severity: 'error',
+				severity: 'info',
 				summary: 'Tu sesión ya esta iniciada',
 				life: 3000,
 			});

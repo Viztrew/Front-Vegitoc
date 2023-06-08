@@ -30,6 +30,8 @@ export class SidebarComponent implements OnInit {
 			} else {
 				this.themeChecked = false;
 			}
+		} else {
+			sessionStorage.setItem('theme', 'saga-orange');
 		}
 
 		this.menuItems = [
