@@ -1,16 +1,38 @@
-.registro{
-    text-align: center;
-    justify-content: center;
-    font-size: x-large;
-    line-height: 3.0;
+.registro {
+	text-align: center;
+	justify-content: center;
+	font-size: x-large;
+	line-height: 3;
 }
 
-.block{
-    text-align: center;
+.block {
+	text-align: center;
 }
 
-.boton{
-    display: flex;
-    justify-content: center;
-    padding: 15px;
+.boton {
+	display: flex;
+	justify-content: center;
+	padding: 15px;
+}
+
+.card {
+	padding: 0;
+}
+
+.background {
+	background-image: url('../../../assets/img/bground-signup.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+.p-inputtext {
+	border-radius: 10px;
+	width: 100%;
+}
+
+:host ::ng-deep .p-password {
+	width: 100%;
+	.p-inputtext {
+		border-radius: 10px;
+		width: 100%;
+	}
 }

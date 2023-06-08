@@ -147,8 +147,6 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 
 		if (this.Planificacion.preparaciones.length > 0) {
 			for (let i = 0; i < this.Planificacion.preparaciones.length; i++) {
-				console.log(this.caloriasDiarias);
-
 				this.caloriasDiarias =
 					this.caloriasDiarias +
 					parseFloat(this.Planificacion.preparaciones[i].kcal);

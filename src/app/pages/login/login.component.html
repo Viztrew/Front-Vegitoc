@@ -44,21 +44,21 @@
 							type="text"
 							pInputText
 							placeholder="Ej: email@smartplate.cl"
-							formControlName="email"
+							formControlName="username"
 						/>
 					</span>
 
 					<div
 						*ngIf="
-							userForm.controls['email'].dirty ||
-							userForm.controls['email'].touched
+							userForm.controls['username'].dirty ||
+							userForm.controls['username'].touched
 						"
 					>
-						<div *ngIf="userForm.controls['email'].errors">
+						<div *ngIf="userForm.controls['username'].errors">
 							<small class="p-error">
 								<span
 									*ngIf="
-										userForm.controls['email'].errors[
+										userForm.controls['username'].errors[
 											'required'
 										]
 									"
@@ -66,7 +66,7 @@
 									>Campo email es obligatorio</span
 								><span
 									*ngIf="
-										userForm.controls['email'].errors[
+										userForm.controls['username'].errors[
 											'email'
 										]
 									"
@@ -86,23 +86,24 @@
 						<input
 							type="password"
 							pInputText
-							formControlName="contrasena"
+							formControlName="current-password"
 						/>
 					</span>
 
 					<div
 						*ngIf="
-							userForm.controls['contrasena'].dirty ||
-							userForm.controls['contrasena'].touched
+							userForm.controls['current-password'].dirty ||
+							userForm.controls['current-password'].touched
 						"
 					>
-						<div *ngIf="userForm.controls['contrasena'].errors">
+						<div
+							*ngIf="userForm.controls['current-password'].errors"
+						>
 							<small class="p-error">
 								<span
 									*ngIf="
-										userForm.controls['contrasena'].errors[
-											'required'
-										]
+										userForm.controls['current-password']
+											.errors['required']
 									"
 									class="text-sm"
 									>Campo contraseña es obligatorio</span

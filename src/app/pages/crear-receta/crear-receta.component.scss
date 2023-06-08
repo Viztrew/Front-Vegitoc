@@ -34,6 +34,13 @@
 .card-paso {
 	height: 100%;
 	word-break: break-word;
+	transition: all 0.1s ease-in-out;
+}
+
+.card-paso:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 1px 5px var(--surface-border), 0 0 2px var(--surface-border),
+		0 1px 4px var(--surface-border);
 }
 
 .textAreaPaso {

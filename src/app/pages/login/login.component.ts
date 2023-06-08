@@ -12,8 +12,8 @@ import { async } from 'rxjs';
 })
 export class LoginComponent {
 	userForm = this.formBuilder.group({
-		email: new FormControl('', [Validators.required, Validators.email]),
-		contrasena: new FormControl('', [Validators.required]),
+		username: new FormControl('', [Validators.required, Validators.email]),
+		'current-password': new FormControl('', [Validators.required]),
 	});
 	constructor(
 		private formBuilder: FormBuilder,
@@ -37,8 +37,8 @@ export class LoginComponent {
 
 	hacerLogin() {
 		let usuario = {
-			email: this.userForm.value.email,
-			password: this.userForm.value.contrasena,
+			email: this.userForm.get('username')?.value,
+			password: this.userForm.get('current-password')?.value,
 		};
 		this.servicio.login(usuario).subscribe(
 			(data) => {

@@ -1,229 +1,370 @@
-<div class="card justify-content-center">
-	<h1 for="Registrar" class="registro">Registro</h1>
+<div class="card">
+	<div class="text-center section-title align-items-center">Registro</div>
+	<div *ngIf="step == 1">
+		<form
+			[formGroup]="userForm1"
+			class="flex justify-content-center flex-wrap col-12"
+		>
+			<div class="flex flex-wrap col-12 sm:col-12 md:col-8 xl:col-8">
+				<div
+					class="col-12 sm:col-4 md:col-4 xl:col-4 flex align-items-center"
+				>
+					<label for="correo" class="">Correo electónico</label>
+				</div>
 
-	<p-divider></p-divider>
-	
-	<div class="flex justify-content-center">
-		<div *ngIf="step==1">
-			<div class="field">
-				<form [formGroup]="userForm1">
-				<label for="correo" class="block">Correo electronico</label>
-				<input
-					formControlName="correo"
-					type="text"
-					pInputText
-					placeholder="Correo electronico"
-					required
-				/>
+				<div class="col-12 sm:col-8 md:col-8 xl:col-8">
+					<input
+						formControlName="correo"
+						type="text"
+						pInputText
+						placeholder="Ej: email@smartplate.cl"
+						required
+					/>
 
-				<div *ngIf="userForm1.controls['correo'].invalid && (userForm1.controls['correo'].dirty || userForm1.controls['correo'].touched)">
-					<div *ngIf="userForm1.controls['correo'].errors">
-						<small 
-							class="p-error block"
-							*ngIf="userForm1.controls['correo'].errors['required']">
+					<div
+						*ngIf="
+							userForm1.controls['correo'].invalid &&
+							(userForm1.controls['correo'].dirty ||
+								userForm1.controls['correo'].touched)
+						"
+					>
+						<div *ngIf="userForm1.controls['correo'].errors">
+							<small
+								class="p-error block"
+								*ngIf="
+									userForm1.controls['correo'].errors[
+										'required'
+									]
+								"
+							>
 								El correo electrónico es obligatorio.
-						</small>
-						<small 
-							class="p-error block"
-							*ngIf="userForm1.controls['correo'].errors['email']">
+							</small>
+							<small
+								class="p-error block"
+								*ngIf="
+									userForm1.controls['correo'].errors['email']
+								"
+							>
 								El correo electrónico no es válido.
-						</small>
+							</small>
+						</div>
 					</div>
 				</div>
-                
-                <label for="contrasena" class="block">Contraseña</label>
-				<input
-					formControlName="contrasena"
-					type="password"
-					pInputText
-					placeholder="Contraseña"
-				/>
 				<div
-					*ngIf="userForm1.controls['contrasena'].invalid && (userForm1.controls['contrasena'].dirty || userForm1.controls['contrasena'].touched)">
-					<div *ngIf="userForm1.controls['contrasena'].errors">
-					<small 
-						class="p-error block"
-						*ngIf="userForm1.controls['contrasena'].errors?.['required']">
-							La contraseña es obligatoria.
-					</small>
-					
-					<small 
-						class="p-error block "
-						*ngIf="userForm1.controls['contrasena'].errors?.['minlength']">
-							La contraseña debe tener minimo 5 caracteres.
-					</small>
-					<small 
-						class="p-error block "s
-						*ngIf="userForm1.controls['contrasena'].errors?.['maxlength']">
-							La contraseña debe tener máximo 25 caracteres.
-					</small>
+					class="col-12 sm:col-4 md:col-4 xl:col-4 flex align-items-center"
+				>
+					<label for="contrasena" class="text-left">Contraseña</label>
 				</div>
+				<div class="col-12 sm:col-8 md:col-8 xl:col-8">
+					<p-password
+						formControlName="contrasena"
+						[toggleMask]="true"
+						[feedback]="false"
+						[ngClass]="
+							userForm1.controls['contrasena'].invalid
+								? 'ng-invalid ng-dirty'
+								: ''
+						"
+					></p-password>
+					<div
+						*ngIf="
+							userForm1.controls['contrasena'].invalid &&
+							(userForm1.controls['contrasena'].dirty ||
+								userForm1.controls['contrasena'].touched)
+						"
+					>
+						<div *ngIf="userForm1.controls['contrasena'].errors">
+							<small
+								class="p-error block"
+								*ngIf="userForm1.controls['contrasena'].errors?.['required']"
+							>
+								La contraseña es obligatoria.
+							</small>
+
+							<small
+								class="p-error block"
+								*ngIf="userForm1.controls['contrasena'].errors?.['minlength']"
+							>
+								La contraseña debe tener minimo 5 caracteres.
+							</small>
+							<small
+								class="p-error block"
+								s
+								*ngIf="userForm1.controls['contrasena'].errors?.['maxlength']"
+							>
+								La contraseña debe tener máximo 25 caracteres.
+							</small>
+						</div>
+					</div>
 				</div>
-                	<div class="field" >
-                    	<label for="contrasenaRep" class="block">Repetir contraseña</label>
-                    	<input
+				<div
+					class="col-12 sm:col-4 md:col-4 xl:col-4 flex align-items-center"
+				>
+					<label for="contrasenaRep">Repetir contraseña</label>
+				</div>
+				<div class="col-12 sm:col-8 md:col-8 xl:col-8">
+					<p-password
 						formControlName="contrasenaRep"
-                        type="password"
-                        pInputText
-                        placeholder="Repetir contraseña"
-                    />
-                    <small
-                        class="p-error block"
-                        *ngIf="!contrasenasCoinciden()"
+						[toggleMask]="true"
+						[feedback]="false"
+						[ngClass]="
+							!contrasenasCoinciden() ? 'ng-invalid ng-dirty' : ''
+						"
+					></p-password>
+					<small class="p-error block" *ngIf="!contrasenasCoinciden()"
 						>Las contraseñas no coinciden.
 					</small>
 				</div>
-				</form>
+			</div>
+		</form>
+		<p-button
+			[disabled]="userForm1.invalid || !contrasenasCoinciden()"
+			(onClick)="siguiente()"
+			icon="pi pi-iconName"
+			class="flex justify-content-center"
+			label="Continuar"
+		></p-button>
+	</div>
+
+	<div *ngIf="step == 2">
+		<form [formGroup]="userForm2">
+			<div class="field">
+				<label for="nombreUsuario" class="block"
+					>Nombre de usuario</label
+				>
+				<input
+					formControlName="nombreUsuario"
+					type="text"
+					pInputText
+					placeholder="Nombre de usuario"
+					formControlName="nombreUsuario"
+				/>
+				<small
+					class="p-error block"
+					*ngIf="
+						userForm2.controls['nombreUsuario'].invalid &&
+						(userForm2.controls['nombreUsuario'].dirty ||
+							userForm2.controls['nombreUsuario'].touched)
+					"
+				>
+					El nombre de usuario es obligatorio.</small
+				>
 			</div>
 
-			<p-button [disabled]="userForm1.invalid || !contrasenasCoinciden()" (onClick)="siguiente()"
-			icon="pi pi-iconName" class="flex justify-content-center" label="Continuar"></p-button>
-		</div>
-		
-		<div *ngIf="step==2">
-			<form [formGroup]="userForm2">
-				<div class="field">
-
-					<label for="nombreUsuario" class="block">Nombre de usuario</label>
-					<input
-						formControlName="nombreUsuario"
-						type="text"
-						pInputText
-						placeholder="Nombre de usuario"
-						formControlName="nombreUsuario"
-					/>
-					<small
-						class="p-error block"
-						*ngIf="userForm2.controls['nombreUsuario'].invalid && 
-						(userForm2.controls['nombreUsuario'].dirty || userForm2.controls['nombreUsuario'].touched)">
-						El nombre de usuario es obligatorio.</small
-						>
-				</div>
-
-				<div class="field flex flex-column justify-content-center">
-					
-						<label for="fechaNacimiento" class="block">Fecha de nacimiento</label>
-							<input  
-							formControlName="fechaNacimiento"
-							type="date"
-							formControlName="fechaNacimiento"
-							>
-							<small
-								class="p-error block"
-								*ngIf="userForm2.controls['fechaNacimiento'].touched && userForm2.controls['fechaNacimiento'].invalid"
-								>La fecha de nacimiento es obligatoria.
-							</small>
-							<small
-								class="p-error block"
-								*ngIf="getAge(userForm2.value.fechaNacimiento)>150"
-								>Ingrese una fecha valida.
-							</small>
-							<small
-								class="p-error block"
-								*ngIf="getAge(userForm2.value.fechaNacimiento)<18"
-								>Debe ser mayor de 18 años.
-							</small>
-					</div>
-				<div class="field">
-					
-					<label for="usuario" class="block">Peso (Kg)</label>
-					<input
-						type="text"
-						pInputText
-						placeholder="Peso"
-						formControlName="peso"
-					/>
-					<small
-						class="p-error block"
-						*ngIf="userForm2.controls['peso'].invalid && 
-						(userForm2.controls['peso'].dirty || userForm2.controls['peso'].touched)"
-						>El peso es obligatorio
-					</small>
-					<small
-						class="p-error block"
-						*ngIf="userForm2.controls['peso'].errors?.['min']"
-						>Tiene que pesar minimo 30kg
-					</small>
-				</div>
-				<div class="field">
-					
-					<label for="usuario" class="block">Altura (Mts)</label>
-					<input
-						type="text"
-						pInputText
-						placeholder="Altura"
-						formControlName="altura"
-					/>
-					<small
-						class="p-error block"
-						*ngIf="
-							userForm2.controls['altura'].invalid &&
-							userForm2.controls['altura'].touched
-						"
-						>La altura es obligatoria</small
-					>
-				</div>
-				<div class="flex">
-					<p-button (onClick)="anterior()" icon="pi pi-iconName" label="Anterior"></p-button>
-					<p-button (onClick)="siguiente()" icon="pi pi-iconName" label="Continuar"></p-button>
-				</div>
-			</form>
-		</div>
-		<form *ngIf="step==3">
-			<h2 class="boton">Sexo</h2>
-			<p-button class="boton" (onClick)="switchSexo('MASCULINO')"
-				[styleClass]="sexo=='MASCULINO' ? '': 'p-button-outlined'" 
-				icon="pi pi-iconName" label="Masculino"></p-button>
-			<p-button class="boton" (onClick)="switchSexo('FEMENINO')"
-				[styleClass]="sexo=='FEMENINO' ? '': 'p-button-outlined'" 
-				icon="pi pi-iconName" label="Femenino"></p-button>	
-			<div class="flex">
-				<p-button (onClick)="anterior()" icon="pi pi-iconName" label="Anterior"></p-button>
-				<p-button (onClick)="siguiente()" icon="pi pi-iconName" label="Continuar" [disabled]="sexo ? false: true"></p-button>
-			</div>	
+			<div class="field flex flex-column justify-content-center">
+				<label for="fechaNacimiento" class="block"
+					>Fecha de nacimiento</label
+				>
+				<input
+					formControlName="fechaNacimiento"
+					type="date"
+					formControlName="fechaNacimiento"
+				/>
+				<small
+					class="p-error block"
+					*ngIf="
+						userForm2.controls['fechaNacimiento'].touched &&
+						userForm2.controls['fechaNacimiento'].invalid
+					"
+					>La fecha de nacimiento es obligatoria.
+				</small>
+				<small
+					class="p-error block"
+					*ngIf="getAge(userForm2.value.fechaNacimiento) > 150"
+					>Ingrese una fecha valida.
+				</small>
+				<small
+					class="p-error block"
+					*ngIf="getAge(userForm2.value.fechaNacimiento) < 18"
+					>Debe ser mayor de 18 años.
+				</small>
+			</div>
+			<div class="field">
+				<label for="usuario" class="block">Peso (Kg)</label>
+				<input
+					type="text"
+					pInputText
+					placeholder="Peso"
+					formControlName="peso"
+				/>
+				<small
+					class="p-error block"
+					*ngIf="
+						userForm2.controls['peso'].invalid &&
+						(userForm2.controls['peso'].dirty ||
+							userForm2.controls['peso'].touched)
+					"
+					>El peso es obligatorio
+				</small>
+				<small
+					class="p-error block"
+					*ngIf="userForm2.controls['peso'].errors?.['min']"
+					>Tiene que pesar minimo 30kg
+				</small>
+			</div>
+			<div class="field">
+				<label for="usuario" class="block">Altura (Mts)</label>
+				<input
+					type="text"
+					pInputText
+					placeholder="Altura"
+					formControlName="altura"
+				/>
+				<small
+					class="p-error block"
+					*ngIf="
+						userForm2.controls['altura'].invalid &&
+						userForm2.controls['altura'].touched
+					"
+					>La altura es obligatoria</small
+				>
+			</div>
 		</form>
-		<form *ngIf="step==4">
+		<p-button
+			(onClick)="anterior()"
+			icon="pi pi-iconName"
+			label="Anterior"
+		></p-button>
+		<p-button
+			(onClick)="siguiente()"
+			icon="pi pi-iconName"
+			label="Continuar"
+			[disabled]="userForm2.invalid"
+		></p-button>
+	</div>
+	<div *ngIf="step == 3">
+		<form>
+			<h2 class="boton">Sexo</h2>
+			<p-button
+				class="boton"
+				(onClick)="switchSexo('MASCULINO')"
+				[styleClass]="sexo == 'MASCULINO' ? '' : 'p-button-outlined'"
+				icon="pi pi-iconName"
+				label="Masculino"
+			></p-button>
+			<p-button
+				class="boton"
+				(onClick)="switchSexo('FEMENINO')"
+				[styleClass]="sexo == 'FEMENINO' ? '' : 'p-button-outlined'"
+				icon="pi pi-iconName"
+				label="Femenino"
+			></p-button>
+		</form>
+		<p-button
+			(onClick)="anterior()"
+			icon="pi pi-iconName"
+			label="Anterior"
+		></p-button>
+		<p-button
+			(onClick)="siguiente()"
+			icon="pi pi-iconName"
+			label="Continuar"
+			[disabled]="sexo ? false : true"
+		></p-button>
+	</div>
+	<div *ngIf="step == 4">
+		<form>
 			<h2 class="flex justify-content-center">Nivel de actividad</h2>
 			<div>
-				<p-button class="boton" (onClick)="switchActividad(1.2)"
-					[styleClass]="factorActividad== 1.2 ? '': 'p-button-outlined'" 
-					icon="pi pi-iconName" label="Poco o nada"></p-button>
-				<p-button class="boton" (onClick)="switchActividad(1.375)"
-					[styleClass]="factorActividad== 1.375 ? '': 'p-button-outlined'" 
-					icon="pi pi-iconName" label="Moderado"></p-button>
-				<p-button class="boton" (onClick)="switchActividad(1.55)"
-					[styleClass]="factorActividad== 1.55 ? '': 'p-button-outlined'" 
-					icon="pi pi-iconName" label="Alto"></p-button>
+				<p-button
+					class="boton"
+					(onClick)="switchActividad(1.2)"
+					[styleClass]="
+						factorActividad == 1.2 ? '' : 'p-button-outlined'
+					"
+					icon="pi pi-iconName"
+					label="Poco o nada"
+				></p-button>
+				<p-button
+					class="boton"
+					(onClick)="switchActividad(1.375)"
+					[styleClass]="
+						factorActividad == 1.375 ? '' : 'p-button-outlined'
+					"
+					icon="pi pi-iconName"
+					label="Moderado"
+				></p-button>
+				<p-button
+					class="boton"
+					(onClick)="switchActividad(1.55)"
+					[styleClass]="
+						factorActividad == 1.55 ? '' : 'p-button-outlined'
+					"
+					icon="pi pi-iconName"
+					label="Alto"
+				></p-button>
 			</div>
-			<div class="flex">
-				<p-button (onClick)="anterior()" icon="pi pi-iconName" label="Anterior"></p-button>
-				<p-button (onClick)="siguiente()" icon="pi pi-iconName" label="Continuar" 
-					[disabled]="factorActividad? false: true">
-				</p-button>
-			</div>	
 		</form>
-		<form *ngIf="step==5">
+		<p-button
+			(onClick)="anterior()"
+			icon="pi pi-iconName"
+			label="Anterior"
+		></p-button>
+		<p-button
+			(onClick)="siguiente()"
+			icon="pi pi-iconName"
+			label="Continuar"
+			[disabled]="factorActividad ? false : true"
+		>
+		</p-button>
+	</div>
+	<div *ngIf="step == 5">
+		<form>
 			<h2 class="flex justify-content-center">Objetivo</h2>
 			<div>
-				<p-button class="boton" (onClick)="switchObjetivo('SUBIR')"
-					[styleClass]="objetivo=='SUBIR' ? '': 'p-button-outlined'" 
-					icon="pi pi-iconName" label="Subir peso"></p-button>	
-				<p-button class="boton" (onClick)="switchObjetivo('MANTENER')"
-					[styleClass]="objetivo=='MANTENER' ? '': 'p-button-outlined'" 
-					icon="pi pi-iconName" label="Mantener peso"></p-button>	
-				<p-button class="boton" (onClick)="switchObjetivo('BAJAR')"
-					[styleClass]="objetivo=='BAJAR' ? '': 'p-button-outlined'" 
-					icon="pi pi-iconName" label="Bajar peso"></p-button>
-				<input type="number" [(ngModel)]="target" name="target"
-					(ngModelChange)="reasignarObjetivo($event)">
+				<p-button
+					class="boton"
+					(onClick)="switchObjetivo('SUBIR')"
+					[styleClass]="
+						objetivo == 'SUBIR' ? '' : 'p-button-outlined'
+					"
+					icon="pi pi-iconName"
+					label="Subir peso"
+				></p-button>
+				<p-button
+					class="boton"
+					(onClick)="switchObjetivo('MANTENER')"
+					[styleClass]="
+						objetivo == 'MANTENER' ? '' : 'p-button-outlined'
+					"
+					icon="pi pi-iconName"
+					label="Mantener peso"
+				></p-button>
+				<p-button
+					class="boton"
+					(onClick)="switchObjetivo('BAJAR')"
+					[styleClass]="
+						objetivo == 'BAJAR' ? '' : 'p-button-outlined'
+					"
+					icon="pi pi-iconName"
+					label="Bajar peso"
+				></p-button>
+				<input
+					type="number"
+					[(ngModel)]="target"
+					name="target"
+					(ngModelChange)="reasignarObjetivo($event)"
+				/>
 			</div>
-			<div class="flex">
-				<p-button (onClick)="anterior()" icon="pi pi-iconName" label="Anterior"></p-button>
-				<p-button (onClick)="siguiente()" icon="pi pi-iconName" label="Continuar" *ngIf="step!=5" 
-					[disabled]="objetivo ? false: true">
-				</p-button>
-				<p-button (onClick)="enviar()" *ngIf="step==5" icon="pi pi-iconName" label="Finalizar"></p-button>
-			</div>	
-		</form>	
+		</form>
+		<p-button
+			(onClick)="anterior()"
+			icon="pi pi-iconName"
+			label="Anterior"
+		></p-button>
+		<p-button
+			(onClick)="siguiente()"
+			icon="pi pi-iconName"
+			label="Continuar"
+			*ngIf="step != 5"
+			[disabled]="objetivo ? false : true"
+		>
+		</p-button>
+		<p-button
+			(onClick)="enviar()"
+			*ngIf="step == 5"
+			icon="pi pi-iconName"
+			label="Finalizar"
+		></p-button>
 	</div>
 </div>
