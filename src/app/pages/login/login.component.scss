@@ -1,8 +1,5 @@
-.iniciar {
-	text-align: center;
-	justify-content: center;
-	font-size: x-large;
-	line-height: 3;
+.login-title {
+	font-size: 2rem;
 }
 
 .block {
@@ -10,5 +7,65 @@
 }
 
 :host ::ng-deep .p-button {
-	width: 20vh;
+	.icon {
+		cursor: default;
+	}
+	@media (max-width: 1200px) {
+		width: 20vw;
+	}
+	@media (max-width: 767px) {
+		width: 50vw;
+	}
+	width: 15vw;
+	cursor: disabled;
+}
+
+.p-inputtext {
+	border-radius: 10px;
+	width: 30vw;
+}
+.card {
+	padding: 0;
+}
+.background {
+	background-image: url('../../../assets/img/bground.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.card-phrase {
+	border: 0;
+	background-color: var(--primary-color);
+	color: var(--primary-color-text);
+	i {
+		font-size: 1.2rem;
+	}
+}
+
+.card-phrase-title {
+	color: white;
+	span {
+		-webkit-text-stroke: 0.1px black;
+		color: var(--primary-color);
+	}
+}
+
+.signup-link {
+	color: var(--primary-700);
+}
+.signup-link:hover {
+	color: var(--primary-color);
+}
+
+// md
+@media (max-width: 1200px) {
+	.p-inputtext {
+		width: 40vw;
+	}
+}
+// sm
+@media (max-width: 767px) {
+	.p-inputtext {
+		width: 80vw;
+	}
 }

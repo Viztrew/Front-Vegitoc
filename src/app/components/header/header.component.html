@@ -7,7 +7,7 @@
 		(click)="showSidebar()"
 	></p-button>
 
-	<a class="topbar-logo" routerLink="">
+	<a class="topbar-logo" (click)="rutaLogo()">
 		<span class="font-logo">SmartPlate</span>
 	</a>
 
@@ -16,7 +16,6 @@
 		class="topbar-session"
 		styleClass="p-button-rounded p-button-lg"
 		icon="pi pi-user"
-		(click)="login()"
 	></p-button>
 </div>
 <app-sidebar></app-sidebar>

@@ -21,18 +21,16 @@ export class HeaderComponent {
 
 	isLoggedIn: boolean = false;
 
+	rutalogo: string = '/login';
+
 	async ngOnInit() {
 		await this.servicio.loggedIn();
 		this.isLoggedIn = this.servicio.isLoggedIn;
 
 		this.servicio.login$.subscribe((data) => {
-			console.log('suscripcion');
-
 			if (data) {
-				console.log('suscripcion -> login true');
 				this.isLoggedIn = true;
 			} else {
-				console.log('suscripcion -> login false');
 				this.isLoggedIn = false;
 			}
 		});
@@ -46,15 +44,11 @@ export class HeaderComponent {
 		this.profileMenuVisible = true;
 	}
 
-	login() {
-		console.log('login ->');
-
-		this.servicio.login(this.usuario).subscribe((data) => {
-			if (data) {
-				localStorage.setItem('session', data.token);
-			}
-
-			console.log(data);
-		});
+	rutaLogo() {
+		if (this.isLoggedIn) {
+			this.router.navigateByUrl('/planificacion');
+		} else {
+			this.router.navigateByUrl('/login');
+		}
 	}
 }

@@ -1,10 +1,8 @@
 <div *ngIf="datosCargados" class="card justify-content-center">
-	<div class="flex justify-content-center">
-		<h5 class="tamanoLetra my-auto">Perfil</h5>
-	</div>
+	<div class="text-center section-title align-items-center">Perfil</div>
 
 	<div class="flex justify-content-center">
-		<img src="./assets/img/perfil.jpg" class = "my-3 tamanoFoto">
+		<img src="./assets/img/perfil.jpg" class="my-3 tamanoFoto" />
 	</div>
 
 	<form [formGroup]="formulario" (ngSubmit)="guardarInformacion()">
@@ -19,9 +17,8 @@
 					formControlName="nombreUsuario"
 				/>
 			</div>
-			
 		</div>
-			
+
 		<div class="flex justify-content-center">
 			<div class="field">
 				<label for="fechaNac" class="block">Fecha de nacimiento</label>
@@ -33,7 +30,6 @@
 					formControlName="fechaNac"
 				/>
 			</div>
-			
 		</div>
 
 		<div class="flex justify-content-center">
@@ -47,13 +43,14 @@
 					(ngModelChange)="cambiarValor(0)"
 				/>
 				<small
-				class="p-error block"
-				*ngIf="
-					formulario.get('peso')?.invalid &&
-					formulario.get('peso')?.dirty
-				"
-				>Este campo es obligatorio <br>y solo debe contener numeros</small
-			>
+					class="p-error block"
+					*ngIf="
+						formulario.get('peso')?.invalid &&
+						formulario.get('peso')?.dirty
+					"
+					>Este campo es obligatorio <br />y solo debe contener
+					numeros</small
+				>
 			</div>
 		</div>
 
@@ -68,13 +65,14 @@
 					(ngModelChange)="cambiarValor(0)"
 				/>
 				<small
-				class="p-error block"
-				*ngIf="
-					formulario.get('altura')?.invalid &&
-					formulario.get('altura')?.dirty
-				"
-				>Este campo es obligatorio <br> y solo debe contener numeros</small
-			>
+					class="p-error block"
+					*ngIf="
+						formulario.get('altura')?.invalid &&
+						formulario.get('altura')?.dirty
+					"
+					>Este campo es obligatorio <br />
+					y solo debe contener numeros</small
+				>
 			</div>
 		</div>
 
@@ -92,69 +90,84 @@
 					(input)="cambiarValor2()"
 				/>
 				<small
-				class="p-error block"
-				*ngIf="
-					formulario.get('calorias')?.invalid &&
-					formulario.get('calorias')?.dirty
-				"
-				>Este campo es obligatorio <br> y solo debe contener numeros</small
-			>
+					class="p-error block"
+					*ngIf="
+						formulario.get('calorias')?.invalid &&
+						formulario.get('calorias')?.dirty
+					"
+					>Este campo es obligatorio <br />
+					y solo debe contener numeros</small
+				>
 			</div>
 		</div>
-	
 
-	<div class="flex justify-content-center">
-		<h5 class="tamanoLetra2 my-3">Objetivo</h5>
-	</div>
+		<div class="flex justify-content-center">
+			<h5 class="tamanoLetra2 my-3">Objetivo</h5>
+		</div>
 
-	<div class="flex justify-content-center">
-		<p-button label="Disminuir peso"
-          [styleClass]="getButtonStyle(1)"
-          (click)="toggleButtonState(1); cambiarValor(1);"></p-button>
-	  </div>
-	  <div class="flex justify-content-center">
-		<p-button label="Mantener peso"
-          [styleClass]="getButtonStyle(2)"
-          (click)="toggleButtonState(2); cambiarValor(1);"></p-button>
-	  </div>
-	  <div class="flex justify-content-center">
-		<p-button label="Aumentar peso"
-          [styleClass]="getButtonStyle(3)"
-          (click)="toggleButtonState(3); cambiarValor(1);"></p-button>
-	  </div>
+		<div class="flex justify-content-center">
+			<p-button
+				label="Disminuir peso"
+				[styleClass]="getButtonStyle(1)"
+				(click)="toggleButtonState(1); cambiarValor(1)"
+			></p-button>
+		</div>
+		<div class="flex justify-content-center">
+			<p-button
+				label="Mantener peso"
+				[styleClass]="getButtonStyle(2)"
+				(click)="toggleButtonState(2); cambiarValor(1)"
+			></p-button>
+		</div>
+		<div class="flex justify-content-center">
+			<p-button
+				label="Aumentar peso"
+				[styleClass]="getButtonStyle(3)"
+				(click)="toggleButtonState(3); cambiarValor(1)"
+			></p-button>
+		</div>
 
-	  <div class="flex justify-content-center">
-		<h5 class="tamanoLetra2 my-3">Nivel de actividad</h5>
-	</div>
+		<div class="flex justify-content-center">
+			<h5 class="tamanoLetra2 my-3">Nivel de actividad</h5>
+		</div>
 
-	<div class="flex justify-content-center">
-		<p-button label="Bajo"
-          [styleClass]="getButtonStyle2(1)"
-          (click)="toggleButtonState2(1); cambiarValor(1);"></p-button>
-	  </div>
-	  <div class="flex justify-content-center">
-		<p-button label="Moderado"
-          [styleClass]="getButtonStyle2(2)"
-          (click)="toggleButtonState2(2); cambiarValor(1);"></p-button>
-	  </div>
-	  <div class="flex justify-content-center">
-		<p-button label="Alto"
-          [styleClass]="getButtonStyle2(3)"
-          (click)="toggleButtonState2(3); cambiarValor(1);"></p-button>
-	  </div>
-	
-	  <div class="flex justify-content-center">
-		<p-button
-			type="Submit"
-			label="Guardar Informacion"
-			styleClass="p-button-raised p-button-warning my-3"
-			[disabled]="formulario.invalid"
-			
-		></p-button>
-	</div>
+		<div class="flex justify-content-center">
+			<p-button
+				label="Bajo"
+				[styleClass]="getButtonStyle2(1)"
+				(click)="toggleButtonState2(1); cambiarValor(1)"
+			></p-button>
+		</div>
+		<div class="flex justify-content-center">
+			<p-button
+				label="Moderado"
+				[styleClass]="getButtonStyle2(2)"
+				(click)="toggleButtonState2(2); cambiarValor(1)"
+			></p-button>
+		</div>
+		<div class="flex justify-content-center">
+			<p-button
+				label="Alto"
+				[styleClass]="getButtonStyle2(3)"
+				(click)="toggleButtonState2(3); cambiarValor(1)"
+			></p-button>
+		</div>
+
+		<div class="flex justify-content-center">
+			<p-button
+				type="Submit"
+				label="Guardar Informacion"
+				styleClass="p-button-raised p-button-warning my-3"
+				[disabled]="formulario.invalid"
+			></p-button>
+		</div>
 	</form>
 
 	<div class="flex justify-content-center">
-		<p-button label="Cerrar Sesión" styleClass="p-button-raised p-button-danger" (click) = "cerrarSesion()" ></p-button>
+		<p-button
+			label="Cerrar Sesión"
+			styleClass="p-button-raised p-button-danger"
+			(click)="cerrarSesion()"
+		></p-button>
 	</div>
 </div>
