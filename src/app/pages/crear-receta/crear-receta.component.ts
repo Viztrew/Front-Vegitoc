@@ -58,19 +58,13 @@ export class CrearRecetaComponent {
 
 	cantidadPasos: number = 0;
 
-	async ngOnInit() {
-		await this.servicio.loggedIn();
+	imagen!: string;
 
-		if (!this.servicio.isLoggedIn) {
-			this.messageService.clear();
-			this.messageService.add({
-				severity: 'error',
-				summary: 'Sesión caducada',
-				detail: 'Inicia sesión nuevamente',
-				life: 3000,
-			});
-			this.router.navigate(['/login']);
-		}
+	imgFile!: any;
+
+	async ngOnInit() {
+		this.imagen = './assets/img/nophoto.png';
+		await this.verificarLogin();
 
 		this.initInfoForm();
 
@@ -126,6 +120,21 @@ export class CrearRecetaComponent {
 			);
 	}
 
+	async verificarLogin() {
+		await this.servicio.loggedIn();
+
+		if (!this.servicio.isLoggedIn) {
+			this.messageService.clear();
+			this.messageService.add({
+				severity: 'error',
+				summary: 'Sesión caducada',
+				detail: 'Inicia sesión nuevamente',
+				life: 3000,
+			});
+			this.router.navigate(['/login']);
+		}
+	}
+
 	validarIngredienteRepetido(id_ingrediente: string): boolean {
 		for (let i = 0; i < this.Receta.lista_productos?.length; i++) {
 			if (id_ingrediente == this.Receta.lista_productos[i].id_producto) {
@@ -138,16 +147,52 @@ export class CrearRecetaComponent {
 	onActiveIndexChange(event: any) {
 		this.activeIndex = event;
 	}
+	cambiarFoto($event: any) {
+		const [file] = $event.target.files;
+		let extension = 'jpg';
+		let nombreFinal = 'this.Usuario.idusuario' + '.' + extension;
 
-	onUpload(event: any) {
-		for (let file of event.files) {
-			this.uploadedFiles.push(file);
-		}
+		this.imgFile = {
+			fileRaw: file,
+			fileName: nombreFinal,
+		};
+	}
+	onselect(e: any) {
+		let extension = 'jpg';
+		let nombreFinal = 'imagen-nueva-receta' + '.' + extension;
+		let file = e.target.files;
+		this.imgFile = {
+			fileRaw: file,
+			fileName: nombreFinal,
+		};
+		/*
+		if (e.target.files) {
+			
+			
+			var filesAmount = e.target.files.length;
+			for (let i = 0; i < filesAmount; i++) {
+				var reader = new FileReader();
+				reader.readAsDataURL(e.target.files[i]);
+				reader.onload = (events: any) => {
+					this.imagen = events.target.result;
+				};
+			}*/
+	}
 
-		this.messageService.add({
-			severity: 'info',
-			summary: 'File Uploaded',
-			detail: '',
+	enviarFoto() {
+		const body = new FormData();
+		body.append('myFile', this.imgFile.fileRaw, this.imgFile.fileName);
+		console.log(body);
+
+		this.servicio.guardarFotoReceta(body).subscribe((valor) => {
+			if (valor) {
+				this.messageService.add({
+					severity: 'success',
+					summary: 'Sesión caducada',
+					detail: 'Inicia sesión nuevamente',
+					life: 3000,
+				});
+			}
 		});
 	}
 
@@ -314,6 +359,7 @@ export class CrearRecetaComponent {
 		this.spinner.show();
 		this.servicio.crearReceta(this.Receta).subscribe(
 			(data) => {
+				this.enviarFoto();
 				this.spinner.hide();
 				this.router.navigateByUrl('info/receta/' + data.id_preparacion);
 				this.messageService.clear();

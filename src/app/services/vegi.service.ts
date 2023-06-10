@@ -193,6 +193,14 @@ export class VegiService {
 		);
 	}
 
+	guardarFotoReceta(fotoReceta: any): Observable<any> {
+		return this.http.post(
+			`localhost:3000/recetas/guardarFotos`,
+			fotoReceta,
+			this.HttpOptions
+		);
+	}
+
 	// DELETE
 	quitarFavoritoProducto(id_producto: number): Observable<any> {
 		return this.http.delete(

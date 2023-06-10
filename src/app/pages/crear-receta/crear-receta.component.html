@@ -1,7 +1,7 @@
 <div class="card card-steps">
 	<p-steps
 		[model]="items"
-		[readonly]="true"
+		[readonly]="false"
 		[activeIndex]="activeIndex"
 		(activeIndexChange)="onActiveIndexChange($event)"
 	></p-steps>
@@ -9,16 +9,15 @@
 <div class="card card-step-receta p-0">
 	<div class="flex flex-wrap justify-content-center" *ngIf="activeIndex == 0">
 		<div class="flex justify-content-center col-12 pb-0">
-			<img src="./assets/img/nophoto.png" class="shadow-2" />
+			<img src="{{ imagen }}" class="shadow-2" style="width: 10vw" />
 		</div>
 		<div class="flex justify-content-center col-12">
-			<p-fileUpload
-				mode="basic"
-				name="demo[]"
+			<input
+				class="form-control form-control-sm"
+				type="file"
 				accept="image/*"
-				chooseLabel="Seleccionar imagen"
-			>
-			</p-fileUpload>
+				(change)="cambiarFoto($event)"
+			/>
 		</div>
 
 		<div class="flex justify-content-center">

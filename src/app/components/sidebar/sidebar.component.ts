@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.service';
 import { MessageService } from 'primeng/api';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { VegiService } from 'src/app/services/vegi.service';
 @Component({
 	selector: 'app-sidebar',
@@ -12,7 +12,7 @@ export class SidebarComponent implements OnInit {
 	constructor(
 		private themeService: ThemeService,
 		private messageService: MessageService,
-		private router: Router,
+		private route: ActivatedRoute,
 		private servicio: VegiService
 	) {}
 
@@ -22,7 +22,11 @@ export class SidebarComponent implements OnInit {
 
 	sidebarVisible: boolean = false;
 
+	rutaActual!: any;
+
 	ngOnInit() {
+		this.rutaActual = this.route.snapshot.url.join('/');
+
 		let theme = sessionStorage.getItem('theme');
 		if (theme) {
 			if (theme == 'arya-orange') {
@@ -56,6 +60,10 @@ export class SidebarComponent implements OnInit {
 				],
 			},
 		];
+	}
+
+	mostrarRuta() {
+		console.log(this.route.snapshot.url);
 	}
 
 	async logout() {
