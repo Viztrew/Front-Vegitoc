@@ -25,10 +25,18 @@ export class InfoRecetaComponent implements OnInit {
 
 	imagesUrl: string = '';
 
+	imagesRecetaUrl!: string;
+
 	noImageUrl = '../../../assets/img/nophoto.png';
 
 	async ngOnInit() {
 		await this.obtenerInformacionReceta();
+		this.imagesRecetaUrl =
+			environment.baseUrl +
+			'/' +
+			this.route.snapshot.params['id'] +
+			'.jpg';
+
 		this.imagesUrl = environment.imagesUrl;
 		this.imageSrc =
 			environment.imagesUrl +

@@ -243,9 +243,12 @@ export class PerfilComponent {
 		this.spinner.show();
 		this.servicio.obtenerInformacionUsuario().subscribe(
 			(datos) => {
+				console.log(datos);
+
 				this.datosUsuario = datos;
 				this.formulario = this.formBuilder.group({
 					nombreUsuario: this.datosUsuario[0].nombre,
+					sexo: this.datosUsuario[0].sexo.toLowerCase(),
 					fechaNac:
 						this.datosUsuario[0].fecha_nacimiento.split('T')[0],
 					peso: [

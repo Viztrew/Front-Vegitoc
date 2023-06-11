@@ -22,6 +22,7 @@ import { StepsModule } from 'primeng/steps';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FileUploadModule } from 'primeng/fileupload';
 import { PasswordModule } from 'primeng/password';
+
 // SPINNER
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 

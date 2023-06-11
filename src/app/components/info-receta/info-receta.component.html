@@ -5,9 +5,9 @@
 			<h2 class="text-center">
 				{{ infoReceta.info_receta.nombre }}
 			</h2>
-			<div class="img-container">
+			<div class="flex justify-content-center img-container">
 				<img
-					[src]="imageSrc"
+					[src]="imagesRecetaUrl"
 					(error)="updateUrl($event)"
 					alt="{{ infoReceta.info_receta.nombre }}"
 					class="info-image shadow-2"

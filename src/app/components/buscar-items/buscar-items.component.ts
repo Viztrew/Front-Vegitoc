@@ -58,7 +58,7 @@ export class BuscarItemsComponent {
 
 	favoritoProductoTemplate: boolean = true;
 
-	iconActualizar: string = 'pi pi-refresh';
+	mostrarSpinnerBuscar: boolean = false;
 
 	productosFavoritosSubscription!: Subscription;
 
@@ -103,7 +103,7 @@ export class BuscarItemsComponent {
 			this.buscarTemplate = true;
 			this.sinResultadosTemplate = false;
 		} else {
-			this.spinner.show();
+			this.mostrarSpinnerBuscar = true;
 			this.servicio.buscarReceta(this.nombreItemBuscar).subscribe(
 				(data) => {
 					let container = document.getElementById('item-container');
@@ -119,10 +119,10 @@ export class BuscarItemsComponent {
 						this.copiaNombreItemBuscar = this.nombreItemBuscar;
 						this.sinResultadosTemplate = true;
 					}
-					this.spinner.hide();
+					this.mostrarSpinnerBuscar = false;
 				},
 				(err) => {
-					this.spinner.hide();
+					this.mostrarSpinnerBuscar = false;
 					if (err.status == 401) {
 						this.router.navigateByUrl('login');
 						this.messageService.clear();
@@ -154,7 +154,7 @@ export class BuscarItemsComponent {
 			this.buscarTemplate = true;
 			this.sinResultadosTemplate = false;
 		} else {
-			this.spinner.show();
+			this.mostrarSpinnerBuscar = true;
 			this.servicio.buscarProducto(this.nombreItemBuscar).subscribe(
 				(data) => {
 					let container = document.getElementById('item-container');
@@ -170,10 +170,10 @@ export class BuscarItemsComponent {
 						this.copiaNombreItemBuscar = this.nombreItemBuscar;
 						this.sinResultadosTemplate = true;
 					}
-					this.spinner.hide();
+					this.mostrarSpinnerBuscar = false;
 				},
 				(err) => {
-					this.spinner.hide();
+					this.mostrarSpinnerBuscar = false;
 					if (err.status == 401) {
 						this.router.navigateByUrl('login');
 						this.messageService.clear();

@@ -59,7 +59,8 @@ export class ItemComponent {
 			this.dia = this.route.snapshot.params['dia'];
 		}
 		if (this.item.id_preparacion) {
-			this.imageSrc = '../../../assets/img/nophoto.png';
+			this.imageSrc =
+				environment.baseUrl + '/' + this.item.id_preparacion + '.jpg';
 			this.itemRoute = '/info/receta/' + this.item.id_preparacion;
 		} else {
 			this.imageSrc =

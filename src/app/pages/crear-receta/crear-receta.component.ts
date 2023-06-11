@@ -30,7 +30,16 @@ export class CrearRecetaComponent {
 	) {}
 	uploadedFiles: any[] = [];
 
-	infoForm!: FormGroup;
+	infoForm: FormGroup = this.formBuilder.group({
+		imagen: new FormControl('./assets/img/placeholder-image.jpg', [
+			Validators.required,
+		]),
+		nombre: new FormControl('', [
+			Validators.required,
+			Validators.maxLength(50),
+			Validators.minLength(5),
+		]),
+	});
 
 	pasosForm!: FormGroup;
 
@@ -63,12 +72,15 @@ export class CrearRecetaComponent {
 	imgFile!: any;
 
 	async ngOnInit() {
-		this.imagen = './assets/img/nophoto.png';
+		console.log(this.infoForm.controls['imagen'].value);
+
+		this.imagen = this.infoForm.controls['imagen'].value;
+
 		await this.verificarLogin();
 
-		this.initInfoForm();
+		await this.initInfoForm();
 
-		this.initPasosForm();
+		await this.initPasosForm();
 
 		this.items = [
 			{
@@ -147,36 +159,50 @@ export class CrearRecetaComponent {
 	onActiveIndexChange(event: any) {
 		this.activeIndex = event;
 	}
+
 	cambiarFoto($event: any) {
 		const [file] = $event.target.files;
 		let extension = 'jpg';
-		let nombreFinal = 'this.Usuario.idusuario' + '.' + extension;
+		let nombreFinal = 'foto' + '.' + extension;
 
 		this.imgFile = {
 			fileRaw: file,
 			fileName: nombreFinal,
 		};
 	}
-	onselect(e: any) {
-		let extension = 'jpg';
-		let nombreFinal = 'imagen-nueva-receta' + '.' + extension;
-		let file = e.target.files;
-		this.imgFile = {
-			fileRaw: file,
-			fileName: nombreFinal,
-		};
-		/*
-		if (e.target.files) {
-			
-			
-			var filesAmount = e.target.files.length;
-			for (let i = 0; i < filesAmount; i++) {
-				var reader = new FileReader();
-				reader.readAsDataURL(e.target.files[i]);
-				reader.onload = (events: any) => {
-					this.imagen = events.target.result;
-				};
-			}*/
+
+	validateImageSize(event: any) {
+		const file = event.target.files[0];
+		const maxSizeInBytes = 1024 * 1024; // Tamaño máximo permitido en bytes (1MB)
+
+		if (file.size > maxSizeInBytes) {
+			alert('El tamaño de la imagen supera el límite permitido.');
+			// Borra el valor del input
+		}
+	}
+
+	onSelect(event: any) {
+		let maxSizeInBytes = 1024 * 1024;
+		const file = event.target.files[0];
+		if (file.size <= maxSizeInBytes) {
+			var reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = (events: any) => {
+				this.imagen = events.target.result;
+				this.infoForm.controls['imagen'].setValue(this.imagen);
+			};
+			this.cambiarFoto(event);
+		} else {
+			this.messageService.add({
+				severity: 'info',
+				summary: 'Imagen muy pesada',
+				detail: 'El tamaño de la imagen no debe superar 1MB',
+				life: 3000,
+			});
+			this.infoForm.controls['imagen'].setValue('');
+			this.imagen = './assets/img/placeholder-image.jpg';
+			event.target.value = '';
+		}
 	}
 
 	enviarFoto() {
@@ -196,8 +222,9 @@ export class CrearRecetaComponent {
 		});
 	}
 
-	initInfoForm() {
+	async initInfoForm() {
 		this.infoForm = this.formBuilder.group({
+			imagen: new FormControl('', [Validators.required]),
 			nombre: new FormControl('', [
 				Validators.required,
 				Validators.maxLength(50),
@@ -206,7 +233,7 @@ export class CrearRecetaComponent {
 		});
 	}
 
-	initPasosForm() {
+	async initPasosForm() {
 		this.pasosForm = this.formBuilder.group({
 			descripcion: new FormControl('', [
 				Validators.required,
