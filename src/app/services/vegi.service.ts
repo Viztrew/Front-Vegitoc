@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {
 	CheckedProducto,
@@ -11,11 +11,10 @@ import {
 	ProductoAgregarPlan,
 	RecetaAgregarPlan,
 } from '../interfaces/data-types';
-import { timeout } from 'rxjs/operators';
+import { timeout, delay } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-
 @Injectable({
 	providedIn: 'root',
 })
@@ -41,10 +40,15 @@ export class VegiService {
 		}),
 	};
 
+	private msTimeout = 20000;
+
 	async setHttpOptions() {
 		this.HttpOptions = {
 			headers: new HttpHeaders({
 				token: localStorage.getItem('session') || '',
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Headers': 'Content-Type',
+				'Access-Control-Allow-Methods': 'GET,POST,DELETE,PUT',
 			}),
 		};
 	}
@@ -69,6 +73,12 @@ export class VegiService {
 		}
 	}
 
+	mockHttp = {
+		get: () => {
+			return of('Respuesta simulada').pipe(delay(25000));
+		},
+	};
+
 	// GET
 	obtenerFavoritos(): Observable<any> {
 		return this.http
@@ -76,87 +86,100 @@ export class VegiService {
 				`${environment.baseUrl}/usuario/obtenerFavoritos`,
 				this.HttpOptions
 			)
-			.pipe(timeout(10000));
+			.pipe(timeout(this.msTimeout));
 	}
 
 	obtenerRecetasUsuario(): Observable<any> {
-		return this.http.get(
-			`${environment.baseUrl}/recetas/recetasUsuario`,
-			this.HttpOptions
-		);
+		return this.http
+			.get(
+				`${environment.baseUrl}/recetas/recetasUsuario`,
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	buscarProducto(producto: string): Observable<any> {
-		return this.http.get(
-			`${environment.baseUrl}/producto/buscarProducto/${producto}`,
-			this.HttpOptions
-		);
+		return this.http
+			.get(
+				`${environment.baseUrl}/producto/buscarProducto/${producto}`,
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	buscarReceta(receta: string): Observable<any> {
-		return this.http.get(
-			`${environment.baseUrl}/recetas/buscarReceta/${receta}`,
-			this.HttpOptions
-		);
+		return this.http
+			.get(
+				`${environment.baseUrl}/recetas/buscarReceta/${receta}`,
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	obtenerInformacionProducto(id_producto: number): Observable<any> {
-		return this.http.get(
-			`${environment.baseUrl}/producto/informacionNutricionalProductoSimple/${id_producto}`,
-			this.HttpOptions
-		);
+		return this.http
+			.get(
+				`${environment.baseUrl}/producto/informacionNutricionalProductoSimple/${id_producto}`,
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	obtenerInformacionReceta(id_receta: number): Observable<any> {
-		return this.http.get(
-			`${environment.baseUrl}/recetas/detalleReceta/${id_receta}`,
-			this.HttpOptions
-		);
+		return this.http
+			.get(
+				`${environment.baseUrl}/recetas/detalleReceta/${id_receta}`,
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	obtenerUnidadesMedidaProducto(id_producto: number): Observable<any> {
-		return this.http.get(
-			`${environment.baseUrl}/producto/obtenerUnidadesMedida/${id_producto}`,
-			this.HttpOptions
-		);
+		return this.http
+			.get(
+				`${environment.baseUrl}/producto/obtenerUnidadesMedida/${id_producto}`,
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	obtenerPlanificacion(fecha: string): Observable<any> {
-		return this.http.get(
-			`${environment.baseUrl}/plan/obtenerPlanAlimentacion/:${fecha}`,
-			this.HttpOptions
-		);
+		return this.http
+			.get(
+				`${environment.baseUrl}/plan/obtenerPlanAlimentacion/:${fecha}`,
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	obtenerInformacionUsuario(): Observable<any> {
-		return this.http.get(
-			`${environment.baseUrl}/usuario/infoUsuario`,
-			this.HttpOptions
-		);
+		return this.http
+			.get(`${environment.baseUrl}/usuario/infoUsuario`, this.HttpOptions)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	// POST
 	login(usuario: Object): Observable<any> {
 		localStorage.removeItem('session');
-		return this.http.post(
-			`${environment.baseUrl}/usuario/loginUsuario`,
-			usuario
-		);
+		return this.http
+			.post(`${environment.baseUrl}/usuario/loginUsuario`, usuario)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	crearUsuario(usuario: any): Observable<any> {
-		return this.http.post(
-			`${environment.baseUrl}/usuario/registrarUsuario`,
-			usuario
-		);
+		return this.http
+			.post(`${environment.baseUrl}/usuario/registrarUsuario`, usuario)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	agregarFavoritoProducto(id_producto: number): Observable<any> {
-		return this.http.post(
-			`${environment.baseUrl}/usuario/agregarFavoritoProducto/${id_producto}`,
-			{},
-			this.HttpOptions
-		);
+		return this.http
+			.post(
+				`${environment.baseUrl}/usuario/agregarFavoritoProducto/${id_producto}`,
+				{},
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	agregarFavoritoReceta(id_receta: number): Observable<any> {
@@ -170,91 +193,113 @@ export class VegiService {
 	agregarProductoPlanificacion(
 		producto: ProductoAgregarPlan
 	): Observable<any> {
-		return this.http.post(
-			`${environment.baseUrl}/plan/generarPlanProducto`,
-			producto,
-			this.HttpOptions
-		);
+		return this.http
+			.post(
+				`${environment.baseUrl}/plan/generarPlanProducto`,
+				producto,
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	agregarRecetaPlanificacion(receta: RecetaAgregarPlan): Observable<any> {
-		return this.http.post(
-			`${environment.baseUrl}/plan/generarPlanPreparacion`,
-			receta,
-			this.HttpOptions
-		);
+		return this.http
+			.post(
+				`${environment.baseUrl}/plan/generarPlanPreparacion`,
+				receta,
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	crearReceta(receta: CrearReceta): Observable<any> {
-		return this.http.post(
-			`${environment.baseUrl}/recetas/crearReceta`,
-			receta,
-			this.HttpOptions
-		);
+		return this.http
+			.post(
+				`${environment.baseUrl}/recetas/crearReceta`,
+				receta,
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	guardarFotoReceta(fotoReceta: any): Observable<any> {
-		return this.http.post(
-			`localhost:3000/recetas/guardarFotos`,
-			fotoReceta,
-			this.HttpOptions
-		);
+		return this.http
+			.post(
+				`${environment.baseUrl}/recetas/guardarFotos`,
+				fotoReceta,
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	// DELETE
 	quitarFavoritoProducto(id_producto: number): Observable<any> {
-		return this.http.delete(
-			`${environment.baseUrl}/usuario/quitarFavoritoProducto/${id_producto}`,
-			this.HttpOptions
-		);
+		return this.http
+			.delete(
+				`${environment.baseUrl}/usuario/quitarFavoritoProducto/${id_producto}`,
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	quitarFavoritoReceta(id_receta: number): Observable<any> {
-		return this.http.delete(
-			`${environment.baseUrl}/usuario/quitarFavoritoPreparacion/${id_receta}`,
-			this.HttpOptions
-		);
+		return this.http
+			.delete(
+				`${environment.baseUrl}/usuario/quitarFavoritoPreparacion/${id_receta}`,
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	eliminarPlanProducto(id_plan_producto: number): Observable<any> {
-		return this.http.delete(
-			`${environment.baseUrl}/plan/eliminarPlanProducto/${id_plan_producto}`,
-			this.HttpOptions
-		);
+		return this.http
+			.delete(
+				`${environment.baseUrl}/plan/eliminarPlanProducto/${id_plan_producto}`,
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	eliminarPlanReceta(id_plan_preparacion: number): Observable<any> {
-		return this.http.delete(
-			`${environment.baseUrl}/plan/eliminarPlanPreparacion/${id_plan_preparacion}`,
-			this.HttpOptions
-		);
+		return this.http
+			.delete(
+				`${environment.baseUrl}/plan/eliminarPlanPreparacion/${id_plan_preparacion}`,
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	// PUT
 	marcarCheckedPlanProducto(
 		checkedProducto: CheckedProducto
 	): Observable<any> {
-		return this.http.put(
-			`${environment.baseUrl}/plan/marcarCheckedPlanProducto`,
-			checkedProducto,
-			this.HttpOptions
-		);
+		return this.http
+			.put(
+				`${environment.baseUrl}/plan/marcarCheckedPlanProducto`,
+				checkedProducto,
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	marcarCheckedPlanReceta(checkedReceta: CheckedReceta): Observable<any> {
-		return this.http.put(
-			`${environment.baseUrl}/plan/marcarCheckedPlanPreparacion`,
-			checkedReceta,
-			this.HttpOptions
-		);
+		return this.http
+			.put(
+				`${environment.baseUrl}/plan/marcarCheckedPlanPreparacion`,
+				checkedReceta,
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	editarPlanProducto(planProducto: PlanProducto): Observable<any> {
-		return this.http.put(
-			`${environment.baseUrl}/plan/editarPlanProducto`,
-			planProducto,
-			this.HttpOptions
-		);
+		return this.http
+			.put(
+				`${environment.baseUrl}/plan/editarPlanProducto`,
+				planProducto,
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
 	}
 
 	editarPlanPreparacion(planReceta: PlanReceta): Observable<any> {
@@ -266,10 +311,12 @@ export class VegiService {
 	}
 
 	editarInformacionUsuario(informacionUsuario: any): Observable<any> {
-		return this.http.put(
-			`${environment.baseUrl}/usuario/editarInformacion`,
-			informacionUsuario,
-			this.HttpOptions
-		);
+		return this.http
+			.put(
+				`${environment.baseUrl}/usuario/editarInformacion`,
+				informacionUsuario,
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
 	}
 }
