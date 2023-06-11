@@ -285,7 +285,7 @@ export class DialogAgregarComponent {
 						this.calorias = Math.round(
 							this.itemKcal.kcal * cantidad
 						);
-					} else if (this.itemKcal?.unidad == 'g') {
+					} else {
 						this.calorias = Math.round(
 							(this.itemKcal.kcal / 100) * cantidad
 						);
@@ -320,10 +320,10 @@ export class DialogAgregarComponent {
 					this.itemKcal.kcal *
 						this.formAgregar.controls['cantidad'].value
 				);
-			} else if (unidad?.unidad_base == 'g') {
+			} else {
 				this.itemKcal = {
 					kcal: parseFloat(this.infoProducto.kcal_100),
-					unidad: 'g',
+					unidad: unidad?.unidad_base,
 				};
 				this.calorias = Math.round(
 					(this.itemKcal.kcal / 100) *
