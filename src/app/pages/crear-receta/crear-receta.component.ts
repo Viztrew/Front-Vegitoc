@@ -212,12 +212,6 @@ export class CrearRecetaComponent {
 
 		this.servicio.guardarFotoReceta(body).subscribe((valor) => {
 			if (valor) {
-				this.messageService.add({
-					severity: 'success',
-					summary: 'Sesión caducada',
-					detail: 'Inicia sesión nuevamente',
-					life: 3000,
-				});
 			}
 		});
 	}

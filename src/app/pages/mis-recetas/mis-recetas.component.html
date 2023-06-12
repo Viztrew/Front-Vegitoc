@@ -1,0 +1,68 @@
+<div class="card">
+	<div class="text-center section-title align-items-center">Mis recetas</div>
+	<div class="flex flex-wrap">
+		<div
+			class="col-12 sm:col-12 md:col-6 lg:col-6"
+			*ngFor="let receta of Recetas"
+		>
+			<div class="item flex flex-wrap" id="{{ receta.id_preparacion }}">
+				<div
+					class="col-1 delete-button flex justify-content-center"
+					pTooltip="Eliminar"
+					tooltipPosition="bottom"
+					(click)="eliminarReceta(receta)"
+				>
+					<i class="pi pi-times"></i>
+				</div>
+				<div
+					class="img-container align-items-center col-5 sm:col-5 md:col-5 lg:col-5"
+				>
+					<a cursor-pointer>
+						<img
+							[src]="
+								imgRecetaUrl +
+								'/' +
+								this.receta.id_preparacion +
+								'.jpg'
+							"
+							alt="{{ receta.nombre }}"
+							class="info-image shadow-2"
+						/>
+					</a>
+				</div>
+				<div
+					class="flex align-content-between flex-wrap col-6 sm:col-6 md:col-6 lg:col-6"
+				>
+					<a
+						[routerLink]="
+							'/info/receta/' + this.receta.id_preparacion
+						"
+					>
+						<div class="col-12 no-padding">
+							<p
+								class="text-bold item-title"
+								pTooltip="Ver {{ receta.nombre }}"
+								tooltipPosition="top"
+							>
+								{{ receta.nombre }} -
+								{{ '1 porción' }}
+							</p>
+						</div>
+						<div class="col-12 no-padding">
+							<p>Kcal porción: {{ receta.kcal_prcn }}</p>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div *ngIf="misRecetasTemplate">
+		<div class="flex justify-content-center">
+			<i class="pi pi-book" style="font-size: 2.5rem"></i>
+		</div>
+		<div class="flex justify-content-center">
+			<p>Sin recetas propias</p>
+		</div>
+	</div>
+</div>

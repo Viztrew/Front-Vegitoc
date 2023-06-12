@@ -13,6 +13,7 @@ const routes: Routes = [
 		loadChildren: () =>
 			import('../pages/perfil/perfil.module').then((m) => m.PerfilModule),
 	},
+
 	{
 		path: 'planificacion',
 		loadChildren: () =>
@@ -43,6 +44,14 @@ const routes: Routes = [
 		path: 'signup',
 		loadChildren: () =>
 			import('../pages/signup/signup.module').then((m) => m.SignupModule),
+	},
+
+	{
+		path: 'mis-recetas',
+		loadChildren: () =>
+			import('../pages/mis-recetas/mis-recetas.module').then(
+				(m) => m.MisRecetasModule
+			),
 	},
 	{
 		path: 'crear-receta',

@@ -623,5 +623,20 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 		this.recetaSubscription.unsubscribe();
 	}
 
+	obtenerRecomendacion() {
+		console.log('recomendacion');
+
+		this.servicio
+			.obtenerRecomendacion(this.obtenerFecha(this.dia))
+			.subscribe(
+				(data) => {
+					console.log(data);
+				},
+				(err) => {
+					console.log(err);
+				}
+			);
+	}
+
 	/*target - total - total-checked*/
 }

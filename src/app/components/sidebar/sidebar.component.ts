@@ -40,6 +40,7 @@ export class SidebarComponent implements OnInit {
 
 		this.menuItems = [
 			{
+				label: 'Principal',
 				items: [
 					{
 						label: 'Planificación',
@@ -48,14 +49,24 @@ export class SidebarComponent implements OnInit {
 					},
 
 					{
-						label: 'Crear receta',
-						icon: 'pi pi-book',
-						routerLink: ['/crear-receta'],
-					},
-					{
 						label: 'Perfil',
 						icon: 'pi pi-user',
 						routerLink: ['/perfil'],
+					},
+				],
+			},
+			{
+				label: 'Recetas',
+				items: [
+					{
+						label: 'Mis recetas',
+						icon: 'pi pi-book ',
+						routerLink: ['/mis-recetas'],
+					},
+					{
+						label: 'Crear receta',
+						icon: 'fa-regular fa-pen-to-square',
+						routerLink: ['/crear-receta'],
 					},
 				],
 			},

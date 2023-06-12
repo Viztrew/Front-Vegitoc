@@ -158,6 +158,15 @@ export class VegiService {
 			.pipe(timeout(this.msTimeout));
 	}
 
+	obtenerRecomendacion(fecha: string): Observable<any> {
+		return this.http
+			.get(
+				`${environment.recomendacionUrl}/recomendacion/:${fecha}`,
+				this.HttpOptions
+			)
+			.pipe(timeout(60000));
+	}
+
 	// POST
 	login(usuario: Object): Observable<any> {
 		localStorage.removeItem('session');
@@ -264,6 +273,15 @@ export class VegiService {
 		return this.http
 			.delete(
 				`${environment.baseUrl}/plan/eliminarPlanPreparacion/${id_plan_preparacion}`,
+				this.HttpOptions
+			)
+			.pipe(timeout(this.msTimeout));
+	}
+
+	eliminarReceta(id_receta: number): Observable<any> {
+		return this.http
+			.delete(
+				`${environment.baseUrl}/recetas/eliminarReceta/${id_receta}`,
 				this.HttpOptions
 			)
 			.pipe(timeout(this.msTimeout));
