@@ -4,9 +4,10 @@ import { PrimengModule } from '../../modules/primeng.module';
 import { FormsModule } from '@angular/forms';
 import { SharedComponentsModule } from 'src/app/modules/shared-components.module';
 import { InfoItemRoutingModule } from './info-item-routing.module';
+import { InfoItemComponent } from './info-item.component';
 
 @NgModule({
-	declarations: [],
+	declarations: [InfoItemComponent],
 	imports: [
 		CommonModule,
 		PrimengModule,

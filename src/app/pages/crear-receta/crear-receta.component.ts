@@ -72,8 +72,6 @@ export class CrearRecetaComponent {
 	imgFile!: any;
 
 	async ngOnInit() {
-		console.log(this.infoForm.controls['imagen'].value);
-
 		this.imagen = this.infoForm.controls['imagen'].value;
 
 		await this.verificarLogin();
@@ -208,8 +206,6 @@ export class CrearRecetaComponent {
 	enviarFoto() {
 		const body = new FormData();
 		body.append('myFile', this.imgFile.fileRaw, this.imgFile.fileName);
-		console.log(body);
-
 		this.servicio.guardarFotoReceta(body).subscribe((valor) => {
 			if (valor) {
 			}

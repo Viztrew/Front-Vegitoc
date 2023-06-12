@@ -16,6 +16,7 @@ import {
 import { ComponentsService } from 'src/app/services/components.service';
 import { VegiService } from 'src/app/services/vegi.service';
 import { environment } from 'src/environments/environment';
+import { DialogRecomendacionComponent } from '../dialog-recomendacion/dialog-recomendacion.component';
 
 @Component({
 	selector: 'app-dia-planificacion',
@@ -33,9 +34,15 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 
 	@Input() dia!: string;
 
-	@ViewChild(DialogAgregarComponent) dialogChild: any;
+	@ViewChild(DialogAgregarComponent) dialogChildEditar: any;
 
-	mostrarDialog: boolean = false;
+	@ViewChild(DialogRecomendacionComponent) dialogChildRecomendar: any;
+
+	dialogEditarItemPlan: boolean = false;
+
+	dialogConfirmarRecomendacion: boolean = false;
+
+	dialogRecomendacion: boolean = false;
 
 	itemEditar!: PlanProducto | PlanReceta;
 
@@ -44,6 +51,8 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 	momentosDia = ['DESAYUNO', 'ALMUERZO', 'CENA'];
 
 	checked: boolean = false;
+
+	checkedTrue: boolean = true;
 
 	productoSubscription!: Subscription;
 
@@ -78,14 +87,14 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 		);
 	}
 
-	async mostrarDialogEditar() {
-		if (this.dialogChild) {
-			this.mostrarDialog = false;
+	async showDialogEditar() {
+		if (this.dialogChildEditar) {
+			this.dialogEditarItemPlan = false;
 			setTimeout(() => {
-				this.mostrarDialog = true;
+				this.dialogEditarItemPlan = true;
 			}, 100);
 		} else {
-			this.mostrarDialog = true;
+			this.dialogEditarItemPlan = true;
 		}
 	}
 
@@ -593,16 +602,16 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 
 	editarRecetaPlan(receta: PlanReceta) {
 		this.itemEditar = receta;
-		this.mostrarDialogEditar();
+		this.showDialogEditar();
 	}
 
 	editarProductoPlan(producto: PlanProducto) {
 		this.itemEditar = producto;
-		this.mostrarDialogEditar();
+		this.showDialogEditar();
 	}
 
 	async editarItemPlan(item: any) {
-		this.dialogChild.visible = false;
+		this.dialogChildEditar.visible = false;
 		if (item.id_plan_preparacion) {
 			this.editarPlanPreparacion(item);
 		} else if (item.id_plan_producto) {
@@ -618,25 +627,29 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 		this.router.navigateByUrl('info/receta/' + receta.id_preparacion);
 	}
 
+	showDialogConfirmarRecomendacion() {
+		this.dialogConfirmarRecomendacion = true;
+	}
+
+	hideDialogConfirmarRecomendacion() {
+		this.dialogConfirmarRecomendacion = false;
+	}
+
+	async showDialogRecomendacion() {
+		this.hideDialogConfirmarRecomendacion();
+		if (this.dialogChildRecomendar) {
+			this.dialogRecomendacion = false;
+			setTimeout(() => {
+				this.dialogRecomendacion = true;
+			}, 100);
+		} else {
+			this.dialogRecomendacion = true;
+		}
+	}
+
 	ngOnDestroy() {
 		this.productoSubscription.unsubscribe();
 		this.recetaSubscription.unsubscribe();
 	}
-
-	obtenerRecomendacion() {
-		console.log('recomendacion');
-
-		this.servicio
-			.obtenerRecomendacion(this.obtenerFecha(this.dia))
-			.subscribe(
-				(data) => {
-					console.log(data);
-				},
-				(err) => {
-					console.log(err);
-				}
-			);
-	}
-
 	/*target - total - total-checked*/
 }

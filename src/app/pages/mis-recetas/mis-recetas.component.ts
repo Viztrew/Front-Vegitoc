@@ -23,6 +23,10 @@ export class MisRecetasComponent {
 
 	misRecetasTemplate: boolean = true;
 
+	dialogEliminarReceta: boolean = false;
+
+	recetaEliminar!: Receta;
+
 	imgRecetaUrl = environment.baseUrl;
 
 	async ngOnInit() {
@@ -80,9 +84,22 @@ export class MisRecetasComponent {
 		);
 	}
 
+	showDialogEliminarReceta(receta: Receta) {
+		this.recetaEliminar = receta;
+		this.dialogEliminarReceta = true;
+	}
+
+	hideDialogEliminarReceta() {
+		this.recetaEliminar = {} as Receta;
+		this.dialogEliminarReceta = false;
+	}
+
 	eliminarReceta(receta: Receta) {
+		this.spinner.show();
+
 		this.servicio.eliminarReceta(receta.id_preparacion).subscribe(
 			(data) => {
+				this.hideDialogEliminarReceta();
 				this.eliminarPasoArray(receta);
 				this.messageService.clear();
 				this.messageService.add({
@@ -94,8 +111,10 @@ export class MisRecetasComponent {
 						' ha sido eliminada exitosamente',
 					life: 3000,
 				});
+				this.spinner.hide();
 			},
 			(err) => {
+				this.spinner.hide();
 				if (err.status == 401) {
 					this.router.navigateByUrl('login');
 					this.messageService.clear();

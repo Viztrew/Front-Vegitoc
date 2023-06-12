@@ -1,0 +1,18 @@
+// estilos toggle
+:host ::ng-deep .p-fieldset .p-fieldset-content {
+	padding: 0;
+}
+:host ::ng-deep .p-fieldset.p-fieldset-toggleable .p-fieldset-legend {
+	width: 100%;
+	background-color: var(--surface-ground);
+}
+
+.recomendaciones {
+	padding: 0.5rem 0rem 0rem 0rem !important;
+}
+
+@media (min-width: 767px) {
+	.recomendaciones {
+		padding: 0.5rem !important;
+	}
+}

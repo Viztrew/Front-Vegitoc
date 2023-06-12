@@ -7,8 +7,20 @@
 }
 
 .delete-button:hover {
+	cursor: pointer;
 	background-color: red;
 	i {
 		color: white;
 	}
+}
+
+:host ::ng-deep .p-dialog .p-dialog-footer {
+	text-align: center;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header {
+	justify-content: center;
+}
+:host ::ng-deep .p-dialog .p-dialog-content {
+	text-align: center;
 }

@@ -25,8 +25,6 @@ export class SidebarComponent implements OnInit {
 	rutaActual!: any;
 
 	ngOnInit() {
-		this.rutaActual = this.route.snapshot.url.join('/');
-
 		let theme = sessionStorage.getItem('theme');
 		if (theme) {
 			if (theme == 'arya-orange') {
@@ -71,10 +69,6 @@ export class SidebarComponent implements OnInit {
 				],
 			},
 		];
-	}
-
-	mostrarRuta() {
-		console.log(this.route.snapshot.url);
 	}
 
 	async logout() {

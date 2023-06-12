@@ -4,7 +4,9 @@
 <div>
 	<div *ngFor="let momento of momentosDia">
 		<div>
-			<div class="day-moment-title flex text-center border-round">
+			<div
+				class="day-moment-title flex text-center border-round font-medium"
+			>
 				{{ momento }}
 				<p-button
 					pTooltip="Agregar alimento"
@@ -129,16 +131,82 @@
 	<p-button
 		[disabled]="dia != 'Ayer' ? false : true"
 		label="Recomendación"
-		(click)="obtenerRecomendacion()"
+		(click)="showDialogConfirmarRecomendacion()"
 	></p-button>
 </div>
 
 <app-dialog-agregar
-	*ngIf="mostrarDialog"
+	*ngIf="dialogEditarItemPlan"
 	[titulo]="dia"
 	[item]="itemEditar"
 	[editar]="true"
 	[crearReceta]="false"
-	[visible]="mostrarDialog"
+	[visible]="dialogEditarItemPlan"
 	(agregarItemPlanEvent)="editarItemPlan($event)"
 ></app-dialog-agregar>
+
+<p-dialog
+	header="Header"
+	[(visible)]="dialogConfirmarRecomendacion"
+	[breakpoints]="{ '1200px': '50vw', '576px': '80vw' }"
+	[modal]="true"
+	[style]="{ width: 'auto', height: 'auto' }"
+	[draggable]="false"
+	[resizable]="false"
+	[closable]="false"
+>
+	<ng-template pTemplate="header">
+		<span class="text-xl font-bold text-center"
+			>¿Obtener recomendaciones para {{ dia }}?</span
+		>
+	</ng-template>
+
+	<ng-template pTemplate="content">
+		<p-messages severity="warn" class="p-0">
+			<ng-template pTemplate>
+				<div class="flex justify-content-center flex-wrap">
+					<div class="col-12 p-0">
+						<i
+							class="pi pi-info-circle"
+							style="font-size: 3rem"
+						></i>
+					</div>
+					<div class="col-12 p-0">
+						<p class="text-center">
+							Esta acción
+							<span class="font-bold">ELIMINARÁ</span> de la
+							planificación todos los alimentos de
+							<span class="font-bold">{{ dia }}</span> no marcados
+							con
+							<p-checkbox
+								class="inline-flex checkbox-true"
+								[(ngModel)]="checkedTrue"
+								[readonly]="true"
+								[binary]="true"
+								inputId="binary"
+							></p-checkbox>
+						</p>
+					</div>
+				</div>
+			</ng-template>
+		</p-messages>
+	</ng-template>
+	<ng-template pTemplate="footer">
+		<p-button
+			styleClass="p-button-text"
+			label="Cancelar"
+			(click)="hideDialogConfirmarRecomendacion()"
+		></p-button>
+		<p-button
+			label="Confirmar"
+			(click)="showDialogRecomendacion()"
+		></p-button>
+	</ng-template>
+</p-dialog>
+
+<app-dialog-recomendacion
+	*ngIf="dialogRecomendacion"
+	[visible]="dialogRecomendacion"
+	[dia]="dia"
+	[fecha]="obtenerFecha(dia)"
+></app-dialog-recomendacion>

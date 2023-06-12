@@ -40,7 +40,7 @@ export class VegiService {
 		}),
 	};
 
-	private msTimeout = 20000;
+	private msTimeout = 30000;
 
 	async setHttpOptions() {
 		this.HttpOptions = {

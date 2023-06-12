@@ -71,6 +71,7 @@
 }
 
 .delete-button:hover {
+	cursor: pointer;
 	background-color: red;
 	i {
 		color: white;
@@ -85,6 +86,7 @@
 }
 
 .edit-button:hover {
+	cursor: pointer;
 	background-color: var(--primary-color);
 	i {
 		color: white;

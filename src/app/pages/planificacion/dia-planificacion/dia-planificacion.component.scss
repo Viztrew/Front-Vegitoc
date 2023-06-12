@@ -52,8 +52,17 @@
 }
 
 .delete-button:hover {
+	cursor: pointer;
 	background-color: red;
 	i {
 		color: white;
 	}
+}
+
+:host ::ng-deep .p-dialog .p-dialog-footer {
+	text-align: center;
+}
+
+.checkbox-true {
+	border: 1px solid black;
 }

@@ -169,6 +169,21 @@ export interface RecetaAgregarPlan {
 	checked: boolean;
 }
 
+export interface ProductoRecomendado {
+	cantidad: number;
+	id_producto: string;
+	kcal: number;
+	nombre: string;
+	nombre_unidad: string;
+}
+
+export interface RecetaRecomendada {
+	cantidad: number;
+	id_preparacion: number;
+	kcal: number;
+	nombre: string;
+	nombre_unidad: string;
+}
 //interfaz para marcar el checked de una receta
 export interface CheckedReceta {
 	id_plan_preparacion: number;

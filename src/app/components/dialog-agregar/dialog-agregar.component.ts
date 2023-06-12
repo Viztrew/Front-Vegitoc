@@ -43,6 +43,8 @@ export class DialogAgregarComponent {
 
 	@Output() agregarItemRecetaEvent = new EventEmitter<any>();
 
+	mostrarSpinnerBuscar: boolean = true;
+
 	labelButton!: string;
 
 	tituloDialog!: string;
@@ -73,6 +75,7 @@ export class DialogAgregarComponent {
 			await this.obtenerInformacionProducto();
 			await this.obtenerUnidadesMedida();
 		} else if (this.item.id_preparacion) {
+			this.mostrarSpinnerBuscar = false;
 			this.unidadesMedida = [
 				{
 					id_unidad_medida: 1,
@@ -123,6 +126,7 @@ export class DialogAgregarComponent {
 			.subscribe(
 				(data) => {
 					this.unidadesMedida = data;
+					this.mostrarSpinnerBuscar = false;
 					this.setUnidadPorDefecto();
 				},
 				(err) => {
@@ -283,11 +287,11 @@ export class DialogAgregarComponent {
 				if (cantidad >= 0) {
 					if (this.itemKcal?.unidad == 'porcion') {
 						this.calorias = Math.round(
-							this.itemKcal.kcal * cantidad
+							this.itemKcal?.kcal * cantidad
 						);
 					} else {
 						this.calorias = Math.round(
-							(this.itemKcal.kcal / 100) * cantidad
+							(this.itemKcal?.kcal / 100) * cantidad
 						);
 					}
 				}
@@ -306,7 +310,7 @@ export class DialogAgregarComponent {
 						};
 					} else if (this.item.id_producto) {
 						this.itemKcal = {
-							kcal: parseFloat(this.infoProducto.kcal_prcn),
+							kcal: parseFloat(this.infoProducto?.kcal_prcn),
 							unidad: 'porcion',
 						};
 					}
@@ -322,7 +326,7 @@ export class DialogAgregarComponent {
 				);
 			} else {
 				this.itemKcal = {
-					kcal: parseFloat(this.infoProducto.kcal_100),
+					kcal: parseFloat(this.infoProducto?.kcal_100),
 					unidad: unidad?.unidad_base,
 				};
 				this.calorias = Math.round(

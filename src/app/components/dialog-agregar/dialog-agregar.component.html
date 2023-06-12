@@ -1,7 +1,7 @@
 <p-dialog
 	header="Header"
 	[(visible)]="visible"
-	[breakpoints]="{ '1200px': '75vw' }"
+	[breakpoints]="{ '1200px': '40vw' }"
 	[modal]="true"
 	[style]="{ width: '30vw', height: 'auto' }"
 	[draggable]="false"
@@ -35,6 +35,18 @@
 						unidad.nombre
 					}}</label>
 				</div>
+			</div>
+
+			<div
+				class="flex justify-content-center"
+				*ngIf="mostrarSpinnerBuscar"
+			>
+				<p-progressSpinner
+					styleClass="w-2rem h-2rem"
+					strokeWidth="8"
+					fill="var(--surface-ground)"
+					animationDuration=".5s"
+				></p-progressSpinner>
 			</div>
 
 			<div class="flex align-items-center justify-content-center mb-1">
@@ -79,7 +91,7 @@
 			</div>
 
 			<div class="flex align-items-center justify-content-center mt-3">
-				Calorías: {{ calorias }} kcal
+				Calorías: {{ calorias || 0 }} kcal
 			</div>
 		</form>
 	</ng-template>
