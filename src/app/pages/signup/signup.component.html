@@ -182,42 +182,69 @@
 			<div class="field">
 				<label for="usuario" class="block">Peso (Kg)</label>
 				<input
-					type="text"
+					type="number"
 					pInputText
 					placeholder="Peso"
 					formControlName="peso"
 				/>
-				<small
-					class="p-error block"
+
+				<div
 					*ngIf="
 						userForm2.controls['peso'].invalid &&
 						(userForm2.controls['peso'].dirty ||
 							userForm2.controls['peso'].touched)
 					"
-					>El peso es obligatorio
-				</small>
-				<small
-					class="p-error block"
-					*ngIf="userForm2.controls['peso'].errors?.['min']"
-					>Tiene que pesar minimo 30kg
-				</small>
+				>
+					<small
+						*ngIf="userForm2.controls['peso'].errors?.['required']"
+						class="p-error block"
+						>El peso es obligatorio
+					</small>
+					<small
+						class="p-error block"
+						*ngIf="userForm2.controls['peso'].errors?.['min']"
+						>El peso mínimo es de 30Kg
+					</small>
+
+					<small
+						class="p-error block"
+						*ngIf="userForm2.controls['peso'].errors?.['max']"
+						>El peso máximo es de 300Kg
+					</small>
+				</div>
 			</div>
 			<div class="field">
-				<label for="usuario" class="block">Altura (Mts)</label>
+				<label for="usuario" class="block">Altura (Cms)</label>
 				<input
-					type="text"
+					type="number"
 					pInputText
 					placeholder="Altura"
 					formControlName="altura"
 				/>
-				<small
-					class="p-error block"
+				<div
 					*ngIf="
 						userForm2.controls['altura'].invalid &&
-						userForm2.controls['altura'].touched
+						(userForm2.controls['altura'].dirty ||
+							userForm2.controls['altura'].touched)
 					"
-					>La altura es obligatoria</small
 				>
+					<small
+						*ngIf="userForm2.controls['altura'].errors?.['required']"
+						class="p-error block"
+						>La altura es obligatoria
+					</small>
+					<small
+						class="p-error block"
+						*ngIf="userForm2.controls['altura'].errors?.['min']"
+						>La altura mínima es 100Cms
+					</small>
+
+					<small
+						class="p-error block"
+						*ngIf="userForm2.controls['altura'].errors?.['max']"
+						>La altura máxima es 300Cms
+					</small>
+				</div>
 			</div>
 		</form>
 		<p-button
@@ -365,6 +392,7 @@
 			*ngIf="step == 5"
 			icon="pi pi-iconName"
 			label="Finalizar"
+			[disabled]="objetivo ? false : true"
 		></p-button>
 	</div>
 </div>
