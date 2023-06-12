@@ -100,7 +100,12 @@ export class DialogAgregarComponent {
 			this.tituloDialog = 'Editar alimento';
 			this.setCantidad();
 		} else {
-			this.tituloDialog = 'Agregar para ' + this.titulo;
+			if (this.crearReceta) {
+				this.tituloDialog = 'Agregar';
+			} else {
+				this.tituloDialog = 'Agregar para ' + this.titulo;
+			}
+
 			this.labelButton = 'Agregar';
 		}
 	}
