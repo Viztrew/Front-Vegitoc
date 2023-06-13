@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription, TimeoutError } from 'rxjs';
 import {
+	ProductoAgregarPlan,
 	ProductoRecomendado,
 	RecetaRecomendada,
 } from 'src/app/interfaces/data-types';
@@ -31,6 +32,8 @@ export class DialogRecomendacionComponent {
 
 	@Output() cancelarRecomendacionEvent = new EventEmitter<any>();
 
+	@Output() recomendacionConfirmadaEvent = new EventEmitter<any>();
+
 	private suscripcionRecomendacion!: Subscription;
 
 	imgRecetaUrl = environment.baseUrl;
@@ -43,7 +46,11 @@ export class DialogRecomendacionComponent {
 
 	recetasRecomendadas!: Array<RecetaRecomendada>;
 
+	estadoProductosRecomendados!: Array<ProductoAgregarPlan>;
+
 	ngOnInit() {
+		console.log(this.estadoProductosRecomendados);
+
 		this.titulo = 'Recomendación para ' + this.dia;
 
 		this.mostrarSpinnerBuscar = true;
@@ -113,8 +120,49 @@ export class DialogRecomendacionComponent {
 			);
 	}
 
+	guardarEstadosProductos(producto: any) {
+		let estadoProducto: ProductoAgregarPlan = {
+			fecha: this.fecha,
+			dia: this.dia,
+			momento_dia: producto.momento_dia.nombre,
+			id_producto: producto.producto.id_producto,
+			nombre: producto.producto.nombre,
+			unidad_medida: 1,
+			nombre_unidad: producto.producto.nombre_unidad,
+			cantidad: producto.producto.cantidad,
+			kcal: producto.producto.kcal,
+			checked: false,
+		};
+		if (this.estadoProductosRecomendados == undefined) {
+			this.estadoProductosRecomendados = [estadoProducto];
+		} else {
+			let repetido = false;
+			for (let i = 0; i < this.estadoProductosRecomendados.length; i++) {
+				if (
+					producto.producto.id_producto ==
+					this.estadoProductosRecomendados[i].id_producto
+				) {
+					this.estadoProductosRecomendados.splice(i, 1);
+					repetido = true;
+					break;
+				}
+			}
+			if (!repetido) {
+				this.estadoProductosRecomendados.push(estadoProducto);
+			}
+		}
+	}
+
 	cancelarRecomendacion() {
 		this.suscripcionRecomendacion.unsubscribe();
+		this.visible = false;
+	}
+
+	confirmarRecomendacion() {
+		console.log(this.estadoProductosRecomendados);
+		this.recomendacionConfirmadaEvent.emit(
+			this.estadoProductosRecomendados
+		);
 		this.visible = false;
 	}
 

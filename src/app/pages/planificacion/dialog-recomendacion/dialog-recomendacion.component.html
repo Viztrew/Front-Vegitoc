@@ -1,7 +1,7 @@
 <p-dialog
 	header="Header"
 	[(visible)]="visible"
-	[breakpoints]="{ '1200px': '80vw' ,'576px': '95vw'}"
+	[breakpoints]="{ '1200px': '80vw', '576px': '95vw' }"
 	[modal]="true"
 	[style]="{ width: '60vw', height: 'auto' }"
 	[draggable]="false"
@@ -52,7 +52,10 @@
 					class="recomendaciones col-12 sm:col-12 md:col-6 lg:col-4"
 					*ngFor="let producto of productosRecomendados"
 				>
-					<app-producto-recomendacion [producto]="producto">
+					<app-producto-recomendacion
+						[producto]="producto"
+						(estadoProductoEvent)="guardarEstadosProductos($event)"
+					>
 					</app-producto-recomendacion>
 				</div>
 			</div>
@@ -153,6 +156,7 @@
 			*ngIf="!mostrarSpinnerBuscar"
 			pButton
 			label="Confirmar"
+			(click)="confirmarRecomendacion()"
 		></button>
 	</ng-template>
 </p-dialog>

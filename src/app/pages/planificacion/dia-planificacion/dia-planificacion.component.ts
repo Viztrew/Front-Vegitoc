@@ -71,7 +71,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					let producto = data;
 					producto.fecha = this.obtenerFecha(producto.dia);
 					producto.checked = false;
-					this.agregarProductoPlanificacion(producto);
+					this.agregarProductoPlanificacion(producto, false);
 				}
 			});
 
@@ -194,7 +194,10 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 		return fecha;
 	}
 
-	async agregarProductoPlanificacion(producto: ProductoAgregarPlan) {
+	async agregarProductoPlanificacion(
+		producto: ProductoAgregarPlan,
+		recomendacion: boolean
+	) {
 		this.servicioComponentes.addProducto({} as ProductoAgregarPlan);
 		this.servicio.agregarProductoPlanificacion(producto).subscribe(
 			(data) => {
@@ -206,20 +209,22 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					} else {
 						articulo = 'el';
 					}
-					this.messageService.add({
-						severity: 'success',
-						summary:
-							'¡' +
-							producto.nombre +
-							' ha sido agregado para ' +
-							articulo +
-							' ' +
-							producto.momento_dia +
-							' de ' +
-							producto.dia.toUpperCase() +
-							'!',
-						life: 2500,
-					});
+					if (!recomendacion) {
+						this.messageService.add({
+							severity: 'success',
+							summary:
+								'¡' +
+								producto.nombre +
+								' ha sido agregado para ' +
+								articulo +
+								' ' +
+								producto.momento_dia +
+								' de ' +
+								producto.dia.toUpperCase() +
+								'!',
+							life: 2500,
+						});
+					}
 				}
 			},
 			(err) => {
@@ -644,6 +649,27 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 			}, 100);
 		} else {
 			this.dialogRecomendacion = true;
+		}
+	}
+
+	agregarProductosRecomendadosPlan(
+		productosRecomendados: Array<ProductoAgregarPlan>
+	) {
+		if (productosRecomendados.length != 0) {
+			for (let i = 0; i < productosRecomendados.length; i++) {
+				this.agregarProductoPlanificacion(
+					productosRecomendados[i],
+					true
+				);
+			}
+			this.messageService.add({
+				severity: 'success',
+				summary: 'Productos agregados',
+				detail:
+					'Se han agregado los productos recomendados para ' +
+					this.dia.toUpperCase(),
+				life: 2500,
+			});
 		}
 	}
 

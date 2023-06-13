@@ -35,20 +35,18 @@
 				{{ producto.kcal }} Kcal
 			</p>
 		</div>
-
-		<div class="col-12">
-			<form [formGroup]="formProductoRecomendado">
-				<p-dropdown
-					appendTo="body"
-					pTooltip="Elegir momento del dia"
-					tooltipPosition="bottom"
-					formControlName="momento_dia"
-					[options]="momentos_dia"
-					optionLabel="nombre"
-					placeholder="Momento"
-				></p-dropdown>
-			</form>
-		</div>
+	</div>
+	<div class="col-12">
+		<form [formGroup]="formProductoRecomendado">
+			<p-dropdown
+				appendTo="body"
+				pTooltip="Elegir momento del dia"
+				tooltipPosition="bottom"
+				formControlName="momento_dia"
+				[options]="momentos_dia"
+				optionLabel="nombre"
+			></p-dropdown>
+		</form>
 	</div>
 </div>
 
