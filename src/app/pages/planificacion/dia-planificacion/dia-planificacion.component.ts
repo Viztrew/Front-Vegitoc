@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
-import { Subscription } from 'rxjs';
+import { Subscription, TimeoutError } from 'rxjs';
 import { DialogAgregarComponent } from 'src/app/components/dialog-agregar/dialog-agregar.component';
 import {
 	ProductoAgregarPlan,
@@ -60,10 +60,12 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 
 	caloriasDiarias: number = 0;
 
-	imagesUrl = environment.imagesUrl;
+	imagesProductoUrl = environment.imagesUrl;
+
+	imagesRecetaUrl = environment.baseUrl;
 
 	async ngOnInit() {
-		this.obtenerPlanificacion();
+		await this.obtenerPlanificacion();
 		this.obtenerInformacionUsuario();
 		this.productoSubscription =
 			this.servicioComponentes.productos$.subscribe((data) => {
@@ -81,7 +83,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					let receta = data;
 					receta.fecha = this.obtenerFecha(receta.dia);
 					receta.checked = false;
-					this.agregarRecetaPlanificacion(receta);
+					this.agregarRecetaPlanificacion(receta, false);
 				}
 			}
 		);
@@ -125,15 +127,29 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 							detail: 'Inicia sesión nuevamente',
 							life: 3000,
 						});
-					} else {
+					} else if (err.status == 0) {
 						this.messageService.clear();
 						this.messageService.add({
 							severity: 'error',
 							summary: 'Sin conexión',
-							detail:
-								'No se pudo recuperar los productos del día ' +
-								this.dia,
-							life: 3000,
+							detail: 'No se pudo conectar con el servidor',
+							sticky: true,
+						});
+					} else if (err instanceof TimeoutError) {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Timeout',
+							detail: 'Se excedió el tiempo de espera máximo de respuesta',
+							sticky: true,
+						});
+					} else {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Error desconocido',
+							detail: 'Se produjo un error desconocido, intente nuevamente.',
+							sticky: true,
 						});
 					}
 				}
@@ -237,47 +253,66 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						detail: 'Inicia sesión nuevamente',
 						life: 3000,
 					});
+				} else if (err.status == 0) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sin conexión',
+						detail: 'No se pudo conectar con el servidor',
+						sticky: true,
+					});
+				} else if (err instanceof TimeoutError) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Timeout',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						sticky: true,
+					});
 				} else {
 					this.messageService.clear();
-					if (err.status == 0) {
-						this.messageService.add({
-							severity: 'error',
-							summary: 'Sin conexión',
-							detail: 'No se pudo conectar con el servidor',
-							life: 3000,
-						});
-					}
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Error desconocido',
+						detail: 'Se produjo un error desconocido, intente nuevamente.',
+						sticky: true,
+					});
 				}
 			}
 		);
 	}
 
-	async agregarRecetaPlanificacion(receta: RecetaAgregarPlan) {
+	async agregarRecetaPlanificacion(
+		receta: RecetaAgregarPlan,
+		recomendacion: boolean
+	) {
 		this.servicioComponentes.addReceta({} as RecetaAgregarPlan);
 		this.servicio.agregarRecetaPlanificacion(receta).subscribe(
 			(data) => {
 				if (data) {
+					this.obtenerPlanificacion();
 					let articulo: string;
 					if (receta.momento_dia.toLowerCase() == 'cena') {
 						articulo = 'la';
 					} else {
 						articulo = 'el';
 					}
-					this.obtenerPlanificacion();
-					this.messageService.add({
-						severity: 'success',
-						summary:
-							'¡' +
-							receta.nombre +
-							' ha sido agregado para ' +
-							articulo +
-							' ' +
-							receta.momento_dia +
-							' de ' +
-							receta.dia.toUpperCase() +
-							'!',
-						life: 2500,
-					});
+					if (!recomendacion) {
+						this.messageService.add({
+							severity: 'success',
+							summary:
+								'¡' +
+								receta.nombre +
+								' ha sido agregado para ' +
+								articulo +
+								' ' +
+								receta.momento_dia +
+								' de ' +
+								receta.dia.toUpperCase() +
+								'!',
+							life: 2500,
+						});
+					}
 				}
 			},
 			(err) => {
@@ -290,16 +325,30 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						detail: 'Inicia sesión nuevamente',
 						life: 3000,
 					});
+				} else if (err.status == 0) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sin conexión',
+						detail: 'No se pudo conectar con el servidor',
+						sticky: true,
+					});
+				} else if (err instanceof TimeoutError) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Timeout',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						sticky: true,
+					});
 				} else {
-					if (err.status == 0) {
-						this.messageService.clear();
-						this.messageService.add({
-							severity: 'error',
-							summary: 'Sin conexión',
-							detail: 'No se pudo conectar con el servidor',
-							life: 3000,
-						});
-					}
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Error desconocido',
+						detail: 'Se produjo un error desconocido, intente nuevamente.',
+						sticky: true,
+					});
 				}
 			}
 		);
@@ -322,16 +371,30 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						detail: 'Inicia sesión nuevamente',
 						life: 3000,
 					});
+				} else if (err.status == 0) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sin conexión',
+						detail: 'No se pudo conectar con el servidor',
+						sticky: true,
+					});
+				} else if (err instanceof TimeoutError) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Timeout',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						sticky: true,
+					});
 				} else {
-					if (err.status == 0) {
-						this.messageService.clear();
-						this.messageService.add({
-							severity: 'error',
-							summary: 'Sin conexión',
-							detail: 'No se pudo conectar con el servidor',
-							life: 3000,
-						});
-					}
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Error desconocido',
+						detail: 'Se produjo un error desconocido, intente nuevamente.',
+						sticky: true,
+					});
 				}
 			}
 		);
@@ -354,16 +417,30 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						detail: 'Inicia sesión nuevamente',
 						life: 3000,
 					});
+				} else if (err.status == 0) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sin conexión',
+						detail: 'No se pudo conectar con el servidor',
+						sticky: true,
+					});
+				} else if (err instanceof TimeoutError) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Timeout',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						sticky: true,
+					});
 				} else {
-					if (err.status == 0) {
-						this.messageService.clear();
-						this.messageService.add({
-							severity: 'error',
-							summary: 'Sin conexión',
-							detail: 'No se pudo conectar con el servidor',
-							life: 3000,
-						});
-					}
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Error desconocido',
+						detail: 'Se produjo un error desconocido, intente nuevamente.',
+						sticky: true,
+					});
 				}
 			}
 		);
@@ -397,16 +474,30 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						detail: 'Inicia sesión nuevamente',
 						life: 3000,
 					});
+				} else if (err.status == 0) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sin conexión',
+						detail: 'No se pudo conectar con el servidor',
+						sticky: true,
+					});
+				} else if (err instanceof TimeoutError) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Timeout',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						sticky: true,
+					});
 				} else {
-					if (err.status == 0) {
-						this.messageService.clear();
-						this.messageService.add({
-							severity: 'error',
-							summary: 'Sin conexión',
-							detail: 'No se pudo conectar con el servidor',
-							life: 3000,
-						});
-					}
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Error desconocido',
+						detail: 'Se produjo un error desconocido, intente nuevamente.',
+						sticky: true,
+					});
 				}
 			}
 		);
@@ -440,16 +531,30 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						detail: 'Inicia sesión nuevamente',
 						life: 3000,
 					});
+				} else if (err.status == 0) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sin conexión',
+						detail: 'No se pudo conectar con el servidor',
+						sticky: true,
+					});
+				} else if (err instanceof TimeoutError) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Timeout',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						sticky: true,
+					});
 				} else {
-					if (err.status == 0) {
-						this.messageService.clear();
-						this.messageService.add({
-							severity: 'error',
-							summary: 'Sin conexión',
-							detail: 'No se pudo conectar con el servidor',
-							life: 3000,
-						});
-					}
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Error desconocido',
+						detail: 'Se produjo un error desconocido, intente nuevamente.',
+						sticky: true,
+					});
 				}
 			}
 		);
@@ -483,16 +588,30 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						detail: 'Inicia sesión nuevamente',
 						life: 3000,
 					});
+				} else if (err.status == 0) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sin conexión',
+						detail: 'No se pudo conectar con el servidor',
+						sticky: true,
+					});
+				} else if (err instanceof TimeoutError) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Timeout',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						sticky: true,
+					});
 				} else {
-					if (err.status == 0) {
-						this.messageService.clear();
-						this.messageService.add({
-							severity: 'error',
-							summary: 'Sin conexión',
-							detail: 'No se pudo conectar con el servidor',
-							life: 3000,
-						});
-					}
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Error desconocido',
+						detail: 'Se produjo un error desconocido, intente nuevamente.',
+						sticky: true,
+					});
 				}
 			}
 		);
@@ -526,16 +645,30 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						detail: 'Inicia sesión nuevamente',
 						life: 3000,
 					});
+				} else if (err.status == 0) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sin conexión',
+						detail: 'No se pudo conectar con el servidor',
+						sticky: true,
+					});
+				} else if (err instanceof TimeoutError) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Timeout',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						sticky: true,
+					});
 				} else {
-					if (err.status == 0) {
-						this.messageService.clear();
-						this.messageService.add({
-							severity: 'error',
-							summary: 'Sin conexión',
-							detail: 'No se pudo conectar con el servidor',
-							life: 3000,
-						});
-					}
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Error desconocido',
+						detail: 'Se produjo un error desconocido, intente nuevamente.',
+						sticky: true,
+					});
 				}
 			}
 		);
@@ -652,24 +785,84 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	agregarProductosRecomendadosPlan(
+	async eliminarProductosNoChecked() {
+		if (this.Planificacion.productos != undefined) {
+			if (this.Planificacion.productos.length > 0) {
+				for (let i = 0; i < this.Planificacion.productos.length; i++) {
+					if (!this.Planificacion.productos[i].checked) {
+						this.eliminarPlanProducto(
+							this.Planificacion.productos[i]
+						);
+					}
+				}
+			}
+		}
+	}
+
+	async eliminarRecetasNoChecked() {
+		if (this.Planificacion.preparaciones != undefined) {
+			if (this.Planificacion.preparaciones.length > 0) {
+				for (
+					let i = 0;
+					i < this.Planificacion.preparaciones.length;
+					i++
+				) {
+					if (!this.Planificacion.preparaciones[i].checked) {
+						this.eliminarPlanReceta(
+							this.Planificacion.preparaciones[i]
+						);
+					}
+				}
+			}
+		}
+	}
+
+	async agregarProductosRecomendadosPlan(
 		productosRecomendados: Array<ProductoAgregarPlan>
 	) {
-		if (productosRecomendados.length != 0) {
-			for (let i = 0; i < productosRecomendados.length; i++) {
-				this.agregarProductoPlanificacion(
-					productosRecomendados[i],
-					true
-				);
+		if (productosRecomendados != undefined) {
+			if (productosRecomendados.length != 0) {
+				await this.eliminarProductosNoChecked();
+
+				for (let i = 0; i < productosRecomendados.length; i++) {
+					this.agregarProductoPlanificacion(
+						productosRecomendados[i],
+						true
+					);
+				}
+				this.messageService.add({
+					severity: 'success',
+					summary: 'Productos agregados',
+					detail:
+						'Se han agregado los productos recomendados para ' +
+						this.dia.toUpperCase(),
+					life: 2500,
+				});
 			}
-			this.messageService.add({
-				severity: 'success',
-				summary: 'Productos agregados',
-				detail:
-					'Se han agregado los productos recomendados para ' +
-					this.dia.toUpperCase(),
-				life: 2500,
-			});
+		}
+	}
+
+	async agregarRecetassRecomendadasPlan(
+		recetasRecomendadas: Array<RecetaAgregarPlan>
+	) {
+		if (recetasRecomendadas != undefined) {
+			if (recetasRecomendadas.length != 0) {
+				await this.eliminarRecetasNoChecked();
+				for (let i = 0; i < recetasRecomendadas.length; i++) {
+					this.agregarRecetaPlanificacion(
+						recetasRecomendadas[i],
+						true
+					);
+				}
+				this.messageService.add({
+					severity: 'success',
+					summary: 'Recetas agregados',
+					detail:
+						'Se han agregado las recetas recomendadas para ' +
+						this.dia.toUpperCase(),
+					life: 2500,
+				});
+			}
 		}
 	}
 

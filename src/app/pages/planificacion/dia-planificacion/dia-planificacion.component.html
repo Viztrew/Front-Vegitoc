@@ -34,8 +34,27 @@
 					>
 						<i class="pi pi-times"></i>
 					</div>
-					<div class="flex flex-wrap col-10">
-						<div class="col-10">
+					<div
+						class="col-2 flex align-items-center pb-0 pt-0 pr-0 pl-1"
+					>
+						<div
+							class="container-img"
+							(click)="verProducto(producto)"
+						>
+							<img
+								[src]="
+									imagesProductoUrl +
+									'/' +
+									producto.id_producto +
+									'.jpg'
+								"
+								alt="{{ producto.nombre }}"
+								class="shadow-2"
+							/>
+						</div>
+					</div>
+					<div class="flex flex-wrap col-7 pl-1">
+						<div class="col-12 pl-0">
 							<div>
 								{{ producto.cantidad }}
 								{{ producto.nombre_unidad }} de
@@ -48,18 +67,18 @@
 								>
 							</div>
 						</div>
-						<div class="col-2">
-							<p-button
-								styleClass="p-button-rounded p-button-text p-button-raised"
-								icon="pi pi-pencil"
-								pTooltip="Editar"
-								tooltipPosition="bottom"
-								(click)="editarProductoPlan(producto)"
-							></p-button>
-						</div>
-						<div class="col-12">
+
+						<div class="col-12 pl-0">
 							Calorías: {{ producto.kcal }} kcal
 						</div>
+					</div>
+					<div
+						class="col-1 edit-button"
+						(click)="editarProductoPlan(producto)"
+						pTooltip="Editar"
+						tooltipPosition="bottom"
+					>
+						<i class="pi pi-pencil"> </i>
 					</div>
 					<div class="col-1 checked-button">
 						<p-checkbox
@@ -67,6 +86,8 @@
 							[(ngModel)]="producto.checked"
 							[binary]="true"
 							inputId="binary"
+							pTooltip="Marcar"
+							tooltipPosition="bottom"
 							(click)="marcarCheckedPlanProducto(producto)"
 						></p-checkbox>
 					</div>
@@ -88,8 +109,24 @@
 					>
 						<i class="pi pi-times"></i>
 					</div>
-					<div class="col-10 flex flex-wrap no-padding">
-						<div class="col-10">
+					<div
+						class="col-2 flex align-items-center pb-0 pt-0 pr-0 pl-1"
+					>
+						<div class="container-img" (click)="verReceta(receta)">
+							<img
+								[src]="
+									imagesRecetaUrl +
+									'/' +
+									receta.id_preparacion +
+									'.jpg'
+								"
+								alt="{{ receta.nombre }}"
+								class="shadow-2 receta-img"
+							/>
+						</div>
+					</div>
+					<div class="col-7 flex flex-wrap pl-1">
+						<div class="col-12 pl-0">
 							<div>
 								{{ receta.cantidad }}
 								porción de
@@ -102,18 +139,18 @@
 								>
 							</div>
 						</div>
-						<div class="col-2">
-							<p-button
-								styleClass="p-button-rounded p-button-text p-button-raised"
-								icon="pi pi-pencil"
-								pTooltip="Editar"
-								tooltipPosition="bottom"
-								(click)="editarRecetaPlan(receta)"
-							></p-button>
-						</div>
-						<div class="col-12">
+
+						<div class="col-12 pl-0">
 							Calorías: {{ receta.kcal }} kcal
 						</div>
+					</div>
+					<div
+						class="col-1 edit-button"
+						(click)="editarRecetaPlan(receta)"
+						pTooltip="Editar"
+						tooltipPosition="bottom"
+					>
+						<i class="pi pi-pencil"> </i>
 					</div>
 					<div class="col-1 checked-button">
 						<p-checkbox
@@ -209,5 +246,10 @@
 	[visible]="dialogRecomendacion"
 	[dia]="dia"
 	[fecha]="obtenerFecha(dia)"
-	(recomendacionConfirmadaEvent)="agregarProductosRecomendadosPlan($event)"
+	(recomendacionProductosConfirmadaEvent)="
+		agregarProductosRecomendadosPlan($event)
+	"
+	(recomendacionRecetasConfirmadaEvent)="
+		agregarRecetassRecomendadasPlan($event)
+	"
 ></app-dialog-recomendacion>

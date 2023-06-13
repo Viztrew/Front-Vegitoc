@@ -1,11 +1,21 @@
-<div class="card">
-	<div class="text-center section-title align-items-center">Receta</div>
+<div [ngClass]="dialog ? '' : 'card'">
+	<div class="text-center section-title align-items-center" *ngIf="!dialog">
+		Receta
+	</div>
 	<div class="grid">
-		<div class="col-12 sm:col-5 md:col-5 lg:col-5">
+		<div
+			[ngClass]="dialog ? 'col-12 ' : 'col-12 sm:col-5 md:col-5 lg:col-5'"
+		>
 			<h2 class="text-center">
 				{{ infoReceta.info_receta.nombre }}
 			</h2>
-			<div class="flex justify-content-center img-container">
+			<div
+				[ngClass]="
+					dialog
+						? 'container-img'
+						: 'flex justify-content-center img-container'
+				"
+			>
 				<img
 					[src]="imagesRecetaUrl"
 					(error)="updateUrl($event)"
@@ -14,12 +24,58 @@
 				/>
 			</div>
 		</div>
-		<div class="card info-nutricional col-12 sm:col-7 md:col-7 lg:col-7">
+		<div
+			class="card info-nutricional col-12 sm:col-7 md:col-7 lg:col-7"
+			*ngIf="!dialog"
+		>
 			<div class="text-center text-bold">
 				<h2>Información Nutricional</h2>
 			</div>
 			<p-divider></p-divider>
 			<table class="info-table">
+				<tbody>
+					<tr>
+						<td></td>
+						<td class="text-bold">Por porción</td>
+					</tr>
+					<tr>
+						<td class="text-bold">Energía (kcal)</td>
+						<td>
+							{{ infoReceta.info_receta.kcal_prcn || '-' }}
+						</td>
+					</tr>
+					<tr></tr>
+					<tr>
+						<td class="text-bold">Proteínas (g)</td>
+						<td>
+							{{ infoReceta.info_receta.prot_prcn || '-' }}
+						</td>
+					</tr>
+					<tr>
+						<td class="text-bold">Grasas Totales(g)</td>
+						<td>
+							{{ infoReceta.info_receta.gr_totales_prcn || '-' }}
+						</td>
+					</tr>
+					<tr>
+						<td class="text-bold">Hidratos (g)</td>
+						<td>
+							{{ infoReceta.info_receta.hidratos_prcn || '-' }}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div
+			class="card-2 info-nutricional col-12 sm:col-12 md:col-12 lg:col-12"
+			*ngIf="dialog"
+		>
+			<div class="text-center text-bold">
+				<h2>Información Nutricional</h2>
+			</div>
+			<p-divider></p-divider>
+			<table class="info-table text-left">
 				<tbody>
 					<tr>
 						<td></td>
@@ -62,7 +118,9 @@
 			</p-divider>
 			<div class="flex flex-wrap">
 				<div
-					class="col-12 sm:col-12 md:col-6 lg:col-4"
+					[ngClass]="
+						dialog ? 'col-12' : 'col-12 sm:col-12 md:col-6 lg:col-4'
+					"
 					*ngFor="let producto of infoReceta?.lista_productos"
 				>
 					<div class="flex flex-wrap card item-producto">
@@ -70,6 +128,7 @@
 							class="col-12 sm:col-12 md:col-12 lg:col-12 pb-0 text-center"
 						>
 							<h2
+								*ngIf="!dialog"
 								class="item-title"
 								pTooltip="Ver producto"
 								tooltipPosition="top"
@@ -77,9 +136,16 @@
 							>
 								{{ producto.nombre_producto }}
 							</h2>
+							<span *ngIf="dialog" class="text-xl font-medium">
+								{{ producto.nombre_producto }}
+							</span>
 						</div>
 						<div
-							class="img-container align-items-center col-5 sm:col-5 md:col-5 lg:col-5 pt-0"
+							[ngClass]="
+								dialog
+									? 'container-img col-12 sm:col-5 md:col-5 lg:col-5 pt-0'
+									: 'img-container align-items-center col-5 sm:col-5 md:col-5 lg:col-5 pt-0'
+							"
 						>
 							<img
 								[src]="
@@ -93,7 +159,13 @@
 								class="info-image shadow-2"
 							/>
 						</div>
-						<div class="col-7 sm:col-7 md:col-7 lg:col-7 pt-0">
+						<div
+							[ngClass]="
+								dialog
+									? 'col-12 sm:col-7 md:col-7 lg:col-7 pt-0'
+									: 'col-7 sm:col-7 md:col-7 lg:col-7 pt-0'
+							"
+						>
 							<p>
 								<span class="text-bold"> Cantidad: </span>
 								{{ producto.cantidad }}
@@ -127,7 +199,7 @@
 			</p-divider>
 			<div
 				class="col-12 sm:col-12 md:col-12 lg:col-12 p-0"
-				*ngFor="let paso of infoReceta.pasos"
+				*ngFor="let paso of infoReceta?.pasos"
 			>
 				<app-paso-receta [paso]="paso"></app-paso-receta>
 			</div>

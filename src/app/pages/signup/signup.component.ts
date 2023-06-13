@@ -11,6 +11,7 @@ import { VegiService } from 'src/app/services/vegi.service';
 import { AbstractControl } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
+import { TimeoutError } from 'rxjs';
 
 @Component({
 	selector: 'app-signup',
@@ -74,7 +75,7 @@ export class SignupComponent {
 		private formBuilder: FormBuilder,
 		private servicio: VegiService,
 		private router: Router,
-		private mensaje: MessageService
+		private messageService: MessageService
 	) {}
 
 	ngOnInit() {
@@ -167,8 +168,8 @@ export class SignupComponent {
 		this.servicio.crearUsuario(usuario).subscribe(
 			async (data) => {
 				if (data) {
-					this.mensaje.clear();
-					this.mensaje.add({
+					this.messageService.clear();
+					this.messageService.add({
 						severity: 'success',
 						summary: '¡Cuenta registrada!',
 						detail: 'Inicie sesión con su cuenta',
@@ -180,7 +181,31 @@ export class SignupComponent {
 				}
 			},
 			(err) => {
-				console.log(err);
+				if (err.status == 0) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sin conexión',
+						detail: 'No se pudo conectar con el servidor',
+						sticky: true,
+					});
+				} else if (err instanceof TimeoutError) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Timeout',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						sticky: true,
+					});
+				} else {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Error desconocido',
+						detail: 'Se produjo un error desconocido, intente nuevamente.',
+						sticky: true,
+					});
+				}
 			}
 		);
 	}

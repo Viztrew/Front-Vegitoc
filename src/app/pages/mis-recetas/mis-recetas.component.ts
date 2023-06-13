@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
+import { TimeoutError } from 'rxjs';
 import { Receta } from 'src/app/interfaces/data-types';
 import { VegiService } from 'src/app/services/vegi.service';
 import { environment } from 'src/environments/environment';
@@ -69,16 +70,30 @@ export class MisRecetasComponent {
 						detail: 'Inicia sesión nuevamente',
 						life: 3000,
 					});
+				} else if (err.status == 0) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sin conexión',
+						detail: 'No se pudo conectar con el servidor',
+						sticky: true,
+					});
+				} else if (err instanceof TimeoutError) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Timeout',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						sticky: true,
+					});
 				} else {
-					if (err.status == 0) {
-						this.messageService.clear();
-						this.messageService.add({
-							severity: 'error',
-							summary: 'Sin conexión',
-							detail: 'No se pudo conectar con el servidor',
-							life: 3000,
-						});
-					}
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Error desconocido',
+						detail: 'Se produjo un error desconocido, intente nuevamente.',
+						sticky: true,
+					});
 				}
 			}
 		);
@@ -124,16 +139,30 @@ export class MisRecetasComponent {
 						detail: 'Inicia sesión nuevamente',
 						life: 3000,
 					});
+				} else if (err.status == 0) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sin conexión',
+						detail: 'No se pudo conectar con el servidor',
+						sticky: true,
+					});
+				} else if (err instanceof TimeoutError) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Timeout',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						sticky: true,
+					});
 				} else {
-					if (err.status == 0) {
-						this.messageService.clear();
-						this.messageService.add({
-							severity: 'error',
-							summary: 'Sin conexión',
-							detail: 'No se pudo conectar con el servidor',
-							life: 3000,
-						});
-					}
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Error desconocido',
+						detail: 'Se produjo un error desconocido, intente nuevamente.',
+						sticky: true,
+					});
 				}
 			}
 		);

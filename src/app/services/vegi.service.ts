@@ -1,12 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {
-	BehaviorSubject,
-	Observable,
-	TimeoutError,
-	of,
-	throwError,
-} from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {
 	CheckedProducto,
@@ -17,19 +11,13 @@ import {
 	ProductoAgregarPlan,
 	RecetaAgregarPlan,
 } from '../interfaces/data-types';
-import { timeout, delay, catchError } from 'rxjs/operators';
+import { timeout, delay } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Router } from '@angular/router';
-import { Location } from '@angular/common';
 @Injectable({
 	providedIn: 'root',
 })
 export class VegiService {
-	constructor(
-		private http: HttpClient,
-		private router: Router,
-		private location: Location
-	) {}
+	constructor(private http: HttpClient) {}
 
 	helper = new JwtHelperService();
 
@@ -131,7 +119,7 @@ export class VegiService {
 			.pipe(timeout(this.msTimeout));
 	}
 
-	obtenerInformacionReceta(id_receta: number): Observable<any> {
+	obtenerInformacionReceta(id_receta: string): Observable<any> {
 		return this.http
 			.get(
 				`${environment.baseUrl}/recetas/detalleReceta/${id_receta}`,

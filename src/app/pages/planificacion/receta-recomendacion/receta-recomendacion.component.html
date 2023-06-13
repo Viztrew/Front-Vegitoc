@@ -1,21 +1,21 @@
-<div class="item flex flex-wrap" id="{{ producto.id_producto }}">
+<div class="item flex flex-wrap" id="{{ receta.id_preparacion }}">
 	<div class="flex justify-content-center col-12 p-0">
 		<p
 			class="text-bold item-title"
-			pTooltip="Ver {{ producto.nombre }}"
+			pTooltip="Ver {{ receta.nombre }}"
 			tooltipPosition="top"
-			(click)="verProducto()"
+			(click)="verReceta()"
 		>
-			{{ producto.nombre }}
+			{{ receta.nombre }}
 		</p>
 	</div>
 	<div
-		class="img-container img-producto align-items-center col-6 sm:col-5 md:col-5 lg:col-5"
-		(click)="verProducto()"
+		class="img-container .img-receta align-items-center col-6 sm:col-5 md:col-5 lg:col-5"
+		(click)="verReceta()"
 	>
 		<img
-			[src]="imgProductoUrl + '/' + this.producto.id_producto + '.jpg'"
-			alt="{{ producto.nombre }}"
+			[src]="imgRecetaUrl + '/' + this.receta.id_preparacion + '.jpg'"
+			alt="{{ receta.nombre }}"
 			class="info-image shadow-2"
 		/>
 	</div>
@@ -25,19 +25,20 @@
 		<div class="col-12 p-0">
 			<p>
 				<span class="font-medium">Cantidad: </span>
-				{{ producto.cantidad }}
-				{{ producto.nombre_unidad }}
+				{{ receta.cantidad }}
+				{{ receta.nombre_unidad }}
 			</p>
 		</div>
 		<div class="col-12 p-0">
 			<p>
 				<span class="font-medium">Calorías: </span>
-				{{ producto.kcal }} Kcal
+				{{ receta.kcal }} Kcal
 			</p>
 		</div>
 	</div>
+
 	<div class="col-12">
-		<form [formGroup]="formProductoRecomendado">
+		<form [formGroup]="formRecetaRecomendado">
 			<p-dropdown
 				appendTo="body"
 				pTooltip="Elegir momento del dia"
@@ -50,9 +51,9 @@
 	</div>
 </div>
 
-<app-dialog-ver-producto
-	*ngIf="dialogVerProducto"
-	[visible]="dialogVerProducto"
-	[id_producto]="idProductoVer"
+<app-dialog-ver-receta
+	*ngIf="dialogVerReceta"
+	[visible]="dialogVerReceta"
+	[id_preparacion]="idRecetaVer"
 >
-</app-dialog-ver-producto>
+</app-dialog-ver-receta>

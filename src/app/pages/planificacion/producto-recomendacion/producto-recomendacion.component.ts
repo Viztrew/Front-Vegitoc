@@ -5,18 +5,10 @@ import {
 	Output,
 	ViewChild,
 } from '@angular/core';
-import {
-	FormBuilder,
-	FormControl,
-	FormGroup,
-	Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { DialogVerProductoComponent } from 'src/app/components/dialog-ver-producto/dialog-ver-producto.component';
-import {
-	ProductoAgregarPlan,
-	ProductoRecomendado,
-} from 'src/app/interfaces/data-types';
+import { ProductoRecomendado } from 'src/app/interfaces/data-types';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -48,18 +40,16 @@ export class ProductoRecomendacionComponent {
 		{ nombre: 'CENA' },
 	];
 
-	subscription!: Subscription;
+	private subscriptionMomento!: Subscription;
 
 	async ngOnInit() {
 		await this.initProductoRecomendado();
 
 		await this.suscriptionMomentoDia();
-
-		this.formProductoRecomendado.controls['momento_dia'].setValue('caca');
 	}
 
 	async suscriptionMomentoDia() {
-		this.subscription = this.formProductoRecomendado.controls[
+		this.subscriptionMomento = this.formProductoRecomendado.controls[
 			'momento_dia'
 		].valueChanges.subscribe((momento_dia) => {
 			if (momento_dia) {
@@ -88,5 +78,9 @@ export class ProductoRecomendacionComponent {
 	verProducto() {
 		this.idProductoVer = this.producto.id_producto;
 		this.mostrarDialogVerProducto();
+	}
+
+	ngOnDestroy() {
+		this.subscriptionMomento.unsubscribe();
 	}
 }

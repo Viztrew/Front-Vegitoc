@@ -1,0 +1,12 @@
+<p-dialog
+	header="Receta"
+	[(visible)]="visible"
+	[breakpoints]="{ '1200px': '55vw', '767px': '80vw', '576px': '90vw' }"
+	[modal]="true"
+	[style]="{ width: '40vw', height: 'auto' }"
+	[draggable]="false"
+	[resizable]="false"
+>
+	<app-info-receta [id_preparacion]="id_preparacion" [dialog]="true">
+	</app-info-receta>
+</p-dialog>

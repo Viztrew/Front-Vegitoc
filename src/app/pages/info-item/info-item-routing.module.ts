@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { InfoProductoComponent } from 'src/app/pages/info-item/info-producto/info-producto.component';
-import { InfoRecetaComponent } from 'src/app/components/info-receta/info-receta.component';
+import { InfoRecetaComponent } from 'src/app/pages/info-item/info-receta/info-receta.component';
 
 const routes: Routes = [
 	{ path: 'producto/:id', component: InfoProductoComponent },

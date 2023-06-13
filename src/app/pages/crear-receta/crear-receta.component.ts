@@ -8,7 +8,7 @@ import {
 	FormGroup,
 	Validators,
 } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription, TimeoutError } from 'rxjs';
 import { ComponentsService } from 'src/app/services/components.service';
 import { environment } from 'src/environments/environment';
 import { VegiService } from 'src/app/services/vegi.service';
@@ -420,16 +420,30 @@ export class CrearRecetaComponent {
 						detail: 'Inicia sesión nuevamente',
 						life: 3000,
 					});
+				} else if (err.status == 0) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sin conexión',
+						detail: 'No se pudo conectar con el servidor',
+						sticky: true,
+					});
+				} else if (err instanceof TimeoutError) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Timeout',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						sticky: true,
+					});
 				} else {
-					if (err.status == 0) {
-						this.messageService.clear();
-						this.messageService.add({
-							severity: 'error',
-							summary: 'Sin conexión',
-							detail: 'No se pudo conectar con el servidor',
-							life: 3000,
-						});
-					}
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Error desconocido',
+						detail: 'Se produjo un error desconocido, intente nuevamente.',
+						sticky: true,
+					});
 				}
 			}
 		);

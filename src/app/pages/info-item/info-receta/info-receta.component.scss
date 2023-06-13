@@ -1,3 +1,16 @@
+.item-producto {
+	padding: 0 !important;
+	height: 100%;
+	max-height: max-content;
+}
+
+.item-producto-title {
+	padding-left: 2vw;
+	padding-right: 2vw;
+	justify-content: space-between;
+	align-items: center;
+}
+
 .container-img {
 	display: flex;
 	justify-content: center;

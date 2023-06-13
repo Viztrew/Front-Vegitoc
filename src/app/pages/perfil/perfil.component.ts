@@ -4,6 +4,7 @@ import { VegiService } from 'src/app/services/vegi.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { TimeoutError } from 'rxjs';
 
 @Component({
 	selector: 'app-perfil',
@@ -26,6 +27,7 @@ export class PerfilComponent {
 	) {}
 
 	guardarInformacion() {
+		this.spinner.show();
 		let nombre = this.formulario.get('nombreUsuario')?.value;
 		let fecha_nacimiento = this.datosUsuario[0].fecha_nacimiento;
 		let peso = this.formulario.get('peso')?.value;
@@ -64,14 +66,16 @@ export class PerfilComponent {
 			nivel_actividad: nivel_act,
 		};
 
-		this.servicio
-			.editarInformacionUsuario(infoUsuario)
-			.subscribe((data) => {
+		this.servicio.editarInformacionUsuario(infoUsuario).subscribe(
+			(data) => {
 				if (data) {
+					this.spinner.hide();
 					this.messageService.clear();
 					this.messageService.add({
 						severity: 'success',
-						summary: '¡La información se guardó correctamente!',
+						summary: 'Información guardada',
+						detail: '¡La información se guardó correctamente!',
+
 						life: 3000,
 					});
 				} else {
@@ -82,7 +86,45 @@ export class PerfilComponent {
 						life: 3000,
 					});
 				}
-			});
+			},
+			(err) => {
+				this.spinner.hide();
+				if (err.status == 401) {
+					this.router.navigateByUrl('login');
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sesión caducada',
+						detail: 'Inicia sesión nuevamente',
+						life: 3000,
+					});
+				} else if (err.status == 0) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sin conexión',
+						detail: 'No se pudo conectar con el servidor',
+						sticky: true,
+					});
+				} else if (err instanceof TimeoutError) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Timeout',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						sticky: true,
+					});
+				} else {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Error desconocido',
+						detail: 'Se produjo un error desconocido, intente nuevamente.',
+						sticky: true,
+					});
+				}
+			}
+		);
 	}
 
 	cambiarValor(flag: any) {
@@ -293,6 +335,40 @@ export class PerfilComponent {
 			},
 			(err) => {
 				this.spinner.hide();
+				if (err.status == 401) {
+					this.router.navigateByUrl('login');
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sesión caducada',
+						detail: 'Inicia sesión nuevamente',
+						life: 3000,
+					});
+				} else if (err.status == 0) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sin conexión',
+						detail: 'No se pudo conectar con el servidor',
+						sticky: true,
+					});
+				} else if (err instanceof TimeoutError) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Timeout',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						sticky: true,
+					});
+				} else {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Error desconocido',
+						detail: 'Se produjo un error desconocido, intente nuevamente.',
+						sticky: true,
+					});
+				}
 			}
 		);
 	}

@@ -1,5 +1,7 @@
-<div class="card">
-	<div class="text-center section-title align-items-center" *ngIf="!dialog">Producto</div>
+<div [ngClass]="dialog ? '' : 'card'">
+	<div class="text-center section-title align-items-center" *ngIf="!dialog">
+		Producto
+	</div>
 	<div class="flex flex-wrap">
 		<div class="col-12 sm:col-5 md:col-5 lg:col-5" *ngIf="!dialog">
 			<h2 class="text-center">{{ infoProducto.nombre }}</h2>
@@ -12,8 +14,11 @@
 				/>
 			</div>
 		</div>
-		<div class="col-12 sm:col-12 md:col-12 lg:col-12 pt-0 text-center" *ngIf="dialog">
-			<span class="text-xl font-bold ">{{ infoProducto.nombre }}</span>
+		<div
+			class="col-12 sm:col-12 md:col-12 lg:col-12 pt-0 text-center"
+			*ngIf="dialog"
+		>
+			<span class="text-xl font-bold">{{ infoProducto.nombre }}</span>
 			<div class="container-img mt-2">
 				<img
 					[src]="imageSrc"
@@ -23,7 +28,10 @@
 				/>
 			</div>
 		</div>
-		<div class="card info-nutricional col-12 sm:col-7 md:col-7 lg:col-7 " *ngIf="!dialog">
+		<div
+			class="card info-nutricional col-12 sm:col-7 md:col-7 lg:col-7"
+			*ngIf="!dialog"
+		>
 			<div class="text-center text-bold">
 				<h2>Información Nutricional</h2>
 			</div>
@@ -105,20 +113,23 @@
 			</table>
 		</div>
 
-		<div class="card info-nutricional col-12 sm:col-12 md:col-12 lg:col-12"  *ngIf="dialog">
+		<div
+			class="card-2 info-nutricional col-12 sm:col-12 md:col-12 lg:col-12"
+			*ngIf="dialog"
+		>
 			<div class="text-center text-bold">
 				<h2>Información Nutricional</h2>
 			</div>
 			<p-divider></p-divider>
-			<p>
+			<p class="text-left">
 				<span class="text-bold">Tamaño de porción: </span>
 				<span>{{ infoProducto.porcion }}</span>
 			</p>
-			<p>
+			<p class="text-left">
 				<span class="text-bold">Porciones por envase: </span>
 				<span>{{ infoProducto.cantidad_embase }}</span>
 			</p>
-			<table class="info-table">
+			<table class="info-table text-left">
 				<tbody>
 					<tr>
 						<td></td>

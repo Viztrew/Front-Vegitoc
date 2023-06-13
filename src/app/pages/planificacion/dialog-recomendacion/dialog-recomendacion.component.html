@@ -78,57 +78,10 @@
 						class="recomendaciones col-12 sm:col-12 md:col-6 lg:col-4"
 						*ngFor="let receta of recetasRecomendadas"
 					>
-						<div
-							class="item flex flex-wrap"
-							id="{{ receta.id_preparacion }}"
-						>
-							<div class="flex justify-content-center col-12 p-0">
-								<p
-									class="text-bold item-title"
-									pTooltip="Ver {{ receta.nombre }}"
-									tooltipPosition="top"
-								>
-									{{ receta.nombre }}
-								</p>
-							</div>
-							<div
-								class="img-container align-items-center col-5 sm:col-5 md:col-5 lg:col-5"
-							>
-								<a cursor-pointer>
-									<img
-										[src]="
-											imgRecetaUrl +
-											'/' +
-											this.receta.id_preparacion +
-											'.jpg'
-										"
-										alt="{{ receta.nombre }}"
-										class="info-image shadow-2"
-									/>
-								</a>
-							</div>
-							<div
-								class="flex align-content-between flex-wrap col-7 sm:col-7 md:col-7 lg:col-7"
-							>
-								<div class="col-12 p-0">
-									<p>
-										<span class="font-medium"
-											>Cantidad:
-										</span>
-										{{ receta.cantidad }}
-										{{ receta.nombre_unidad }}
-									</p>
-								</div>
-								<div class="col-12 p-0">
-									<p>
-										<span class="font-medium"
-											>Calorías:
-										</span>
-										{{ receta.kcal }} Kcal
-									</p>
-								</div>
-							</div>
-						</div>
+						<app-receta-recomendacion
+							[receta]="receta"
+							(estadoRecetaEvent)="guardarEstadosRecetas($event)"
+						></app-receta-recomendacion>
 					</div>
 				</div>
 				<div *ngIf="recetasRecomendadas.length == 0">

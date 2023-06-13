@@ -1,59 +1,68 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VegiService } from 'src/app/services/vegi.service';
-import { InfoProducto } from 'src/app/interfaces/data-types';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from 'src/environments/environment';
+import { InfoReceta } from 'src/app/interfaces/data-types';
 import { MessageService } from 'primeng/api';
 import { TimeoutError } from 'rxjs';
 @Component({
-	selector: 'app-info-producto',
-	templateUrl: './info-producto.component.html',
-	styleUrls: ['./info-producto.component.scss'],
+	selector: 'app-info-receta',
+	templateUrl: './info-receta.component.html',
+	styleUrls: ['./info-receta.component.scss'],
 })
-export class InfoProductoComponent implements OnInit {
+export class InfoRecetaComponent implements OnInit {
 	constructor(
 		private route: ActivatedRoute,
 		private servicio: VegiService,
 		private spinner: NgxSpinnerService,
-		private messageService: MessageService,
-		private router: Router
+		private router: Router,
+		private messageService: MessageService
 	) {}
-
-	@Input() id_producto!: string;
+	@Input() id_preparacion!: string;
 
 	@Input() dialog!: boolean;
 
-	infoProducto = {} as InfoProducto;
+	infoReceta!: InfoReceta;
 
 	imageSrc: string = '';
 
-	ngOnInit(): void {
-		if (this.id_producto) {
-			this.imageSrc =
-				environment.imagesUrl + '/' + this.id_producto + '.jpg';
+	imagesUrl: string = '';
+
+	imagesRecetaUrl!: string;
+
+	noImageUrl = '../../../assets/img/nophoto.png';
+
+	async ngOnInit() {
+		this.imagesUrl = environment.imagesUrl;
+		if (this.dialog) {
+			this.imagesRecetaUrl =
+				environment.baseUrl + '/' + this.id_preparacion + '.jpg';
 		} else {
-			this.imageSrc =
-				environment.imagesUrl +
+			this.id_preparacion = this.route.snapshot.params['id'];
+			this.imagesRecetaUrl =
+				environment.baseUrl +
 				'/' +
 				this.route.snapshot.params['id'] +
 				'.jpg';
-
-			this.id_producto = this.route.snapshot.params['id'];
 		}
-		this.obtenerInformacionProducto();
+		await this.obtenerInformacionReceta();
 	}
 
 	updateUrl(event: Event) {
-		this.imageSrc = '../../../assets/img/nophoto.png';
+		this.imageSrc = this.noImageUrl;
 	}
 
-	async obtenerInformacionProducto() {
+	async obtenerInformacionReceta() {
 		this.spinner.show();
-		this.servicio.obtenerInformacionProducto(this.id_producto).subscribe(
+		this.servicio.obtenerInformacionReceta(this.id_preparacion).subscribe(
 			(data) => {
-				this.infoProducto = data[0];
 				this.spinner.hide();
+				if (data.info_receta) {
+					this.infoReceta = data;
+				} else {
+					this.router.navigateByUrl('/404');
+				}
 			},
 			(err) => {
 				this.spinner.hide();
@@ -93,5 +102,9 @@ export class InfoProductoComponent implements OnInit {
 				}
 			}
 		);
+	}
+
+	async verProducto(id_producto: string) {
+		this.router.navigateByUrl('info/producto/' + id_producto);
 	}
 }

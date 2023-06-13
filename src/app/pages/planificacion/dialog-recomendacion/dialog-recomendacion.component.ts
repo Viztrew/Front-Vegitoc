@@ -4,6 +4,7 @@ import { Subscription, TimeoutError } from 'rxjs';
 import {
 	ProductoAgregarPlan,
 	ProductoRecomendado,
+	RecetaAgregarPlan,
 	RecetaRecomendada,
 } from 'src/app/interfaces/data-types';
 import { VegiService } from 'src/app/services/vegi.service';
@@ -32,11 +33,11 @@ export class DialogRecomendacionComponent {
 
 	@Output() cancelarRecomendacionEvent = new EventEmitter<any>();
 
-	@Output() recomendacionConfirmadaEvent = new EventEmitter<any>();
+	@Output() recomendacionProductosConfirmadaEvent = new EventEmitter<any>();
+
+	@Output() recomendacionRecetasConfirmadaEvent = new EventEmitter<any>();
 
 	private suscripcionRecomendacion!: Subscription;
-
-	imgRecetaUrl = environment.baseUrl;
 
 	titulo!: string;
 
@@ -48,9 +49,9 @@ export class DialogRecomendacionComponent {
 
 	estadoProductosRecomendados!: Array<ProductoAgregarPlan>;
 
-	ngOnInit() {
-		console.log(this.estadoProductosRecomendados);
+	estadoRecetasRecomendadas!: Array<RecetaAgregarPlan>;
 
+	ngOnInit() {
 		this.titulo = 'Recomendación para ' + this.dia;
 
 		this.mostrarSpinnerBuscar = true;
@@ -59,7 +60,6 @@ export class DialogRecomendacionComponent {
 	}
 
 	obtenerRecomendacion() {
-		console.log('recomendacion');
 		this.suscripcionRecomendacion = this.servicio
 			.obtenerRecomendacion(this.fecha)
 			.subscribe(
@@ -97,7 +97,7 @@ export class DialogRecomendacionComponent {
 							severity: 'error',
 							summary: 'Sin conexión',
 							detail: 'No se pudo conectar con el servidor',
-							life: 3000,
+							sticky: true,
 						});
 					} else if (err instanceof TimeoutError) {
 						this.messageService.clear();
@@ -105,7 +105,7 @@ export class DialogRecomendacionComponent {
 							severity: 'error',
 							summary: 'Timeout',
 							detail: 'Se excedió el tiempo de espera máximo de respuesta',
-							life: 3000,
+							sticky: true,
 						});
 					} else {
 						this.messageService.clear();
@@ -113,7 +113,7 @@ export class DialogRecomendacionComponent {
 							severity: 'error',
 							summary: 'Error desconocido',
 							detail: 'Se produjo un error desconocido, intente nuevamente.',
-							life: 3000,
+							sticky: true,
 						});
 					}
 				}
@@ -153,15 +153,49 @@ export class DialogRecomendacionComponent {
 		}
 	}
 
+	guardarEstadosRecetas(receta: any) {
+		let estadoReceta: RecetaAgregarPlan = {
+			fecha: this.fecha,
+			dia: this.dia,
+			momento_dia: receta.momento_dia.nombre,
+			id_preparacion: receta.receta.id_preparacion,
+			nombre: receta.receta.nombre,
+			cantidad: receta.receta.cantidad,
+			kcal: receta.receta.kcal,
+			checked: false,
+		};
+		if (this.estadoRecetasRecomendadas == undefined) {
+			this.estadoRecetasRecomendadas = [estadoReceta];
+		} else {
+			let repetido = false;
+			for (let i = 0; i < this.estadoRecetasRecomendadas.length; i++) {
+				if (
+					receta.receta.id_preparacion ==
+					this.estadoRecetasRecomendadas[i].id_preparacion
+				) {
+					this.estadoRecetasRecomendadas.splice(i, 1);
+					repetido = true;
+					break;
+				}
+			}
+			if (!repetido) {
+				this.estadoRecetasRecomendadas.push(estadoReceta);
+			}
+		}
+	}
+
 	cancelarRecomendacion() {
 		this.suscripcionRecomendacion.unsubscribe();
 		this.visible = false;
 	}
 
 	confirmarRecomendacion() {
-		console.log(this.estadoProductosRecomendados);
-		this.recomendacionConfirmadaEvent.emit(
+		this.recomendacionProductosConfirmadaEvent.emit(
 			this.estadoProductosRecomendados
+		);
+
+		this.recomendacionRecetasConfirmadaEvent.emit(
+			this.estadoRecetasRecomendadas
 		);
 		this.visible = false;
 	}

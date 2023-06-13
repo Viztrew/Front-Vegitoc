@@ -31,10 +31,22 @@
 	color: var(--highlight-text-color);
 }
 
-.editar-button {
+.edit-button {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	border-right: 1px solid var(--surface-border);
+	border-left: 1px solid var(--surface-border);
+	transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.edit-button:hover {
+	cursor: pointer;
+	background-color: var(--primary-color);
+
+	i {
+		color: white;
+	}
 }
 
 .checked-button {
@@ -65,4 +77,17 @@
 
 .checkbox-true {
 	border: 1px solid black;
+}
+
+.container-img {
+	display: flex;
+	justify-content: center;
+	height: 45px;
+	width: 100%;
+	cursor: pointer;
+
+	img {
+		max-width: 100%;
+		height: auto;
+	}
 }

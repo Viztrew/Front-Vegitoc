@@ -10,6 +10,7 @@ import { PlanificacionComponent } from './planificacion.component';
 import { DiaPlanificacionComponent } from './dia-planificacion/dia-planificacion.component';
 import { DialogRecomendacionComponent } from './dialog-recomendacion/dialog-recomendacion.component';
 import { ProductoRecomendacionComponent } from './producto-recomendacion/producto-recomendacion.component';
+import { RecetaRecomendacionComponent } from './receta-recomendacion/receta-recomendacion.component';
 
 @NgModule({
 	declarations: [
@@ -17,6 +18,7 @@ import { ProductoRecomendacionComponent } from './producto-recomendacion/product
 		DiaPlanificacionComponent,
 		DialogRecomendacionComponent,
   ProductoRecomendacionComponent,
+  RecetaRecomendacionComponent,
 	],
 	imports: [
 		CommonModule,
