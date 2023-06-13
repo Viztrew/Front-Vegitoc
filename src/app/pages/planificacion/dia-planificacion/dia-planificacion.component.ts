@@ -446,22 +446,25 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 		);
 	}
 
-	eliminarPlanProducto(producto: any) {
+	eliminarPlanProducto(producto: any, recomendacion: boolean) {
 		this.servicio.eliminarPlanProducto(producto.id_plan_producto).subscribe(
 			(data) => {
 				if (data) {
 					this.eliminarProductoArrayPlan(producto);
-					this.messageService.clear();
-					this.messageService.add({
-						severity: 'success',
-						summary:
-							producto.nombre +
-							' ha sido eliminado de ' +
-							producto.momento_dia +
-							' de ' +
-							this.dia.toUpperCase(),
-						life: 2500,
-					});
+
+					if (!recomendacion) {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'success',
+							summary:
+								producto.nombre +
+								' ha sido eliminado de ' +
+								producto.momento_dia +
+								' de ' +
+								this.dia.toUpperCase(),
+							life: 2500,
+						});
+					}
 				}
 			},
 			(err) => {
@@ -503,22 +506,24 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 		);
 	}
 
-	eliminarPlanReceta(receta: any) {
+	eliminarPlanReceta(receta: any, recomendacion: boolean) {
 		this.servicio.eliminarPlanReceta(receta.id_plan_preparacion).subscribe(
 			(data) => {
 				if (data) {
 					this.eliminarRecetaArrayPlan(receta);
-					this.messageService.clear();
-					this.messageService.add({
-						severity: 'success',
-						summary:
-							receta.nombre +
-							' ha sido eliminado de ' +
-							receta.momento_dia +
-							' de ' +
-							this.dia.toUpperCase(),
-						life: 2500,
-					});
+					if (!recomendacion) {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'success',
+							summary:
+								receta.nombre +
+								' ha sido eliminado de ' +
+								receta.momento_dia +
+								' de ' +
+								this.dia.toUpperCase(),
+							life: 2500,
+						});
+					}
 				}
 			},
 			(err) => {
@@ -791,7 +796,8 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 				for (let i = 0; i < this.Planificacion.productos.length; i++) {
 					if (!this.Planificacion.productos[i].checked) {
 						this.eliminarPlanProducto(
-							this.Planificacion.productos[i]
+							this.Planificacion.productos[i],
+							true
 						);
 					}
 				}
@@ -809,7 +815,8 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 				) {
 					if (!this.Planificacion.preparaciones[i].checked) {
 						this.eliminarPlanReceta(
-							this.Planificacion.preparaciones[i]
+							this.Planificacion.preparaciones[i],
+							true
 						);
 					}
 				}
@@ -836,7 +843,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					detail:
 						'Se han agregado los productos recomendados para ' +
 						this.dia.toUpperCase(),
-					life: 2500,
+					life: 3000,
 				});
 			}
 		}
@@ -860,7 +867,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					detail:
 						'Se han agregado las recetas recomendadas para ' +
 						this.dia.toUpperCase(),
-					life: 2500,
+					life: 3000,
 				});
 			}
 		}
