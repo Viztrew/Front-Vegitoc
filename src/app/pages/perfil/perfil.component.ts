@@ -63,12 +63,10 @@ export class PerfilComponent {
 			es_vegano: false,
 			nivel_actividad: nivel_act,
 		};
-		console.log(infoUsuario);
 
 		this.servicio
 			.editarInformacionUsuario(infoUsuario)
 			.subscribe((data) => {
-				console.log(data);
 				if (data) {
 					this.messageService.clear();
 					this.messageService.add({
@@ -243,8 +241,6 @@ export class PerfilComponent {
 		this.spinner.show();
 		this.servicio.obtenerInformacionUsuario().subscribe(
 			(datos) => {
-				console.log(datos);
-
 				this.datosUsuario = datos;
 				this.formulario = this.formBuilder.group({
 					nombreUsuario: this.datosUsuario[0].nombre,

@@ -7,6 +7,9 @@
 	background-color: var(--surface-ground);
 }
 
+:host ::ng-deep .p-dialog .p-dialog-content {
+	padding: 0;
+}
 .recomendaciones {
 	padding: 0.5rem 0rem 0rem 0rem !important;
 }

@@ -1,0 +1,55 @@
+<div class="item flex flex-wrap" id="{{ producto.id_producto }}">
+	<div class="flex justify-content-center col-12 p-0">
+		<p
+			class="text-bold item-title"
+			pTooltip="Ver {{ producto.nombre }}"
+			tooltipPosition="top"
+		>
+			{{ producto.nombre }}
+		</p>
+	</div>
+	<div
+		class="img-container align-items-center col-6 sm:col-5 md:col-5 lg:col-5"
+	>
+		<a cursor-pointer>
+			<img
+				[src]="
+					imgProductoUrl + '/' + this.producto.id_producto + '.jpg'
+				"
+				alt="{{ producto.nombre }}"
+				class="info-image shadow-2"
+			/>
+		</a>
+	</div>
+	<div
+		class="flex align-content-between flex-wrap col-6 sm:col-6 md:col-6 lg:col-6"
+	>
+		<div class="col-12 p-0">
+			<p>
+				<span class="font-medium">Cantidad: </span>
+				{{ producto.cantidad }}
+				{{ producto.nombre_unidad }}
+			</p>
+		</div>
+		<div class="col-12 p-0">
+			<p>
+				<span class="font-medium">Calorías: </span>
+				{{ producto.kcal }} Kcal
+			</p>
+		</div>
+
+		<div class="col-12">
+			<form [formGroup]="formProductoRecomendado">
+				<p-dropdown
+					appendTo="body"
+					pTooltip="Elegir momento del dia"
+					tooltipPosition="bottom"
+					formControlName="momento_dia"
+					[options]="momentos_dia"
+					optionLabel="nombre"
+					placeholder="Momento"
+				></p-dropdown>
+			</form>
+		</div>
+	</div>
+</div>

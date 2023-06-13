@@ -79,13 +79,30 @@
 			</div>
 			<div *ngIf="cantidadIngredientes == 0">
 				<div class="flex justify-content-center">
-					<i class="pi pi-info-circle" style="font-size: 2.5rem"></i>
-				</div>
-				<div class="flex justify-content-center">
-					<p>
-						Puedes agregar un máximo de
-						<span class="text-bold">10 Ingredientes</span>
-					</p>
+					<p-messages severity="info" class="p-0">
+						<ng-template pTemplate>
+							<div class="flex justify-content-center flex-wrap">
+								<div
+									class="col-12 p-0 flex justify-content-center"
+								>
+									<i
+										class="pi pi-info-circle"
+										style="font-size: 2.5rem"
+									></i>
+								</div>
+								<div
+									class="col-12 p-0 flex justify-content-center"
+								>
+									<p class="text-center text-xl p-0 m-0">
+										Puedes agregar un máximo de
+										<span class="font-bold"
+											>10 Ingredientes</span
+										>
+									</p>
+								</div>
+							</div>
+						</ng-template>
+					</p-messages>
 				</div>
 			</div>
 			<div class="flex flex-wrap no-padding">
@@ -109,9 +126,9 @@
 							<div
 								class="col-12 sm:col-12 md:col-12 lg:col-12 text-center pb-0 pt-0"
 							>
-								<h3 class="text-bold p-0">
+								<span class="text-xl font-bold p-0">
 									{{ ingrediente.nombre_producto }}
-								</h3>
+								</span>
 							</div>
 							<div
 								class="img-container align-items-center justify-content-center col-5 sm:col-5 md:col-5 lg:col-5 pt-0"
@@ -165,13 +182,28 @@
 			</div>
 			<div *ngIf="cantidadPasos == 0">
 				<div class="flex justify-content-center">
-					<i class="pi pi-info-circle" style="font-size: 2.5rem"></i>
-				</div>
-				<div class="flex justify-content-center">
-					<p>
-						Puedes agregar un máximo de
-						<span class="text-bold">15 Pasos</span>
-					</p>
+					<p-messages severity="info" class="p-0">
+						<ng-template pTemplate>
+							<div class="flex justify-content-center flex-wrap">
+								<div
+									class="col-12 p-0 flex justify-content-center"
+								>
+									<i
+										class="pi pi-info-circle"
+										style="font-size: 2.5rem"
+									></i>
+								</div>
+								<div
+									class="col-12 p-0 flex justify-content-center"
+								>
+									<p class="text-center text-xl p-0 m-0">
+										Puedes agregar un máximo de
+										<span class="font-bold">15 Pasos</span>
+									</p>
+								</div>
+							</div>
+						</ng-template>
+					</p-messages>
 				</div>
 			</div>
 			<div class="flex flex-wrap">

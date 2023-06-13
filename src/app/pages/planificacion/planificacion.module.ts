@@ -9,12 +9,14 @@ import { PlanificacionRoutingModule } from './planificacion-routing.module';
 import { PlanificacionComponent } from './planificacion.component';
 import { DiaPlanificacionComponent } from './dia-planificacion/dia-planificacion.component';
 import { DialogRecomendacionComponent } from './dialog-recomendacion/dialog-recomendacion.component';
+import { ProductoRecomendacionComponent } from './producto-recomendacion/producto-recomendacion.component';
 
 @NgModule({
 	declarations: [
 		PlanificacionComponent,
 		DiaPlanificacionComponent,
 		DialogRecomendacionComponent,
+  ProductoRecomendacionComponent,
 	],
 	imports: [
 		CommonModule,

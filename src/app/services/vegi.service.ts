@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import {
+	BehaviorSubject,
+	Observable,
+	TimeoutError,
+	of,
+	throwError,
+} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {
 	CheckedProducto,
@@ -11,7 +17,7 @@ import {
 	ProductoAgregarPlan,
 	RecetaAgregarPlan,
 } from '../interfaces/data-types';
-import { timeout, delay } from 'rxjs/operators';
+import { timeout, delay, catchError } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -164,7 +170,7 @@ export class VegiService {
 				`${environment.recomendacionUrl}/recomendacion/:${fecha}`,
 				this.HttpOptions
 			)
-			.pipe(timeout(60000));
+			.pipe(timeout(this.msTimeout * 2));
 	}
 
 	// POST

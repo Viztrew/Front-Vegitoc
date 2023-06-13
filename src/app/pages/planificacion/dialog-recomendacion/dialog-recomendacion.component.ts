@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, TimeoutError } from 'rxjs';
 import {
 	ProductoRecomendado,
 	RecetaRecomendada,
 } from 'src/app/interfaces/data-types';
 import { VegiService } from 'src/app/services/vegi.service';
 import { environment } from 'src/environments/environment';
-import { Message, MessageService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 
 @Component({
 	selector: 'app-dialog-recomendacion',
@@ -18,8 +18,7 @@ export class DialogRecomendacionComponent {
 	constructor(
 		private servicio: VegiService,
 		private router: Router,
-		private messageService: MessageService,
-		private infoMessageService: MessageService
+		private messageService: MessageService
 	) {}
 
 	@Input() momento_dia!: string;
@@ -33,8 +32,6 @@ export class DialogRecomendacionComponent {
 	@Output() cancelarRecomendacionEvent = new EventEmitter<any>();
 
 	private suscripcionRecomendacion!: Subscription;
-
-	imgProductoUrl = environment.imagesUrl;
 
 	imgRecetaUrl = environment.baseUrl;
 
@@ -60,6 +57,7 @@ export class DialogRecomendacionComponent {
 			.obtenerRecomendacion(this.fecha)
 			.subscribe(
 				(data) => {
+					console.log(data);
 					this.mostrarSpinnerBuscar = false;
 					if (data.is_valid) {
 						if (data.productos) {
@@ -74,9 +72,9 @@ export class DialogRecomendacionComponent {
 							this.recetasRecomendadas = [];
 						}
 					}
-					console.log(data);
 				},
 				(err) => {
+					this.visible = false;
 					if (err.status == 401) {
 						this.router.navigateByUrl('login');
 						this.messageService.clear();
@@ -86,16 +84,30 @@ export class DialogRecomendacionComponent {
 							detail: 'Inicia sesión nuevamente',
 							life: 3000,
 						});
+					} else if (err.status == 0) {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sin conexión',
+							detail: 'No se pudo conectar con el servidor',
+							life: 3000,
+						});
+					} else if (err instanceof TimeoutError) {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Timeout',
+							detail: 'Se excedió el tiempo de espera máximo de respuesta',
+							life: 3000,
+						});
 					} else {
-						if (err.status == 0) {
-							this.messageService.clear();
-							this.messageService.add({
-								severity: 'error',
-								summary: 'Sin conexión',
-								detail: 'No se pudo conectar con el servidor',
-								life: 3000,
-							});
-						}
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Error desconocido',
+							detail: 'Se produjo un error desconocido, intente nuevamente.',
+							life: 3000,
+						});
 					}
 				}
 			);

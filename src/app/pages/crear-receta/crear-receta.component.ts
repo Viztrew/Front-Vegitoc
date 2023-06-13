@@ -238,18 +238,24 @@ export class CrearRecetaComponent {
 		if (elemento) {
 			elemento.classList.add('zoom');
 		}
-		setTimeout(() => {
-			for (let i = 0; i < this.Receta.lista_productos?.length; i++) {
-				if (
-					ingrediente.id_producto ==
-					this.Receta.lista_productos[i].id_producto
-				) {
-					this.Receta.lista_productos.splice(i, 1);
-					this.cantidadIngredientes = this.cantidadIngredientes - 1;
-					break;
+		if (this.Receta.lista_productos.length == 1) {
+			this.Receta.lista_productos.splice(0, 1);
+			this.cantidadIngredientes = this.cantidadIngredientes - 1;
+		} else {
+			setTimeout(() => {
+				for (let i = 0; i < this.Receta.lista_productos?.length; i++) {
+					if (
+						ingrediente.id_producto ==
+						this.Receta.lista_productos[i].id_producto
+					) {
+						this.Receta.lista_productos.splice(i, 1);
+						this.cantidadIngredientes =
+							this.cantidadIngredientes - 1;
+						break;
+					}
 				}
-			}
-		}, 100);
+			}, 100);
+		}
 	}
 
 	eliminarPasoArray(paso: Paso) {
@@ -257,19 +263,25 @@ export class CrearRecetaComponent {
 		if (elemento) {
 			elemento.classList.add('zoom');
 		}
-		setTimeout(() => {
-			for (let i = 0; i < this.Receta.pasos?.length; i++) {
-				if (paso.n_paso == this.Receta.pasos[i].n_paso) {
-					this.Receta.pasos.splice(i, 1);
-					this.cantidadPasos = this.cantidadPasos - 1;
-					this.setNumeroPasosArray(i);
-					break;
+		if (this.Receta.pasos?.length == 1) {
+			this.Receta.pasos.splice(0, 1);
+			this.cantidadPasos = this.cantidadPasos - 1;
+			this.setNumeroPasosArray();
+		} else {
+			setTimeout(() => {
+				for (let i = 0; i < this.Receta.pasos?.length; i++) {
+					if (paso.n_paso == this.Receta.pasos[i].n_paso) {
+						this.Receta.pasos.splice(i, 1);
+						this.cantidadPasos = this.cantidadPasos - 1;
+						this.setNumeroPasosArray();
+						break;
+					}
 				}
-			}
-		}, 100);
+			}, 100);
+		}
 	}
 
-	setNumeroPasosArray(indice: number) {
+	setNumeroPasosArray() {
 		let n_paso = 1;
 		for (let i = 0; i < this.Receta.pasos?.length; i++) {
 			this.Receta.pasos[i].n_paso = n_paso;
