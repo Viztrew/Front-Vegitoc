@@ -46,7 +46,7 @@ export class VegiService {
 		}),
 	};
 
-	private msTimeout = 30000;
+	private msTimeout = 60000;
 
 	async setHttpOptions() {
 		this.HttpOptions = {
@@ -122,7 +122,7 @@ export class VegiService {
 			.pipe(timeout(this.msTimeout));
 	}
 
-	obtenerInformacionProducto(id_producto: number): Observable<any> {
+	obtenerInformacionProducto(id_producto: string): Observable<any> {
 		return this.http
 			.get(
 				`${environment.baseUrl}/producto/informacionNutricionalProductoSimple/${id_producto}`,

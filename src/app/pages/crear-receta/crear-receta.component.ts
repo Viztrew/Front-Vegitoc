@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CrearReceta, Ingrediente, Paso } from 'src/app/interfaces/data-types';
 
 import { MenuItem, MessageService } from 'primeng/api';
@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 import { VegiService } from 'src/app/services/vegi.service';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { DialogVerProductoComponent } from 'src/app/components/dialog-ver-producto/dialog-ver-producto.component';
 @Component({
 	selector: 'app-crear-receta',
 	templateUrl: './crear-receta.component.html',
@@ -41,6 +42,8 @@ export class CrearRecetaComponent {
 		]),
 	});
 
+	@ViewChild(DialogVerProductoComponent) dialogVerProductoChild: any;
+
 	pasosForm!: FormGroup;
 
 	TipoItems: Array<string> = ['producto', 'favorito'];
@@ -56,6 +59,10 @@ export class CrearRecetaComponent {
 	dialogPasos: boolean = false;
 
 	dialogConfirmar: boolean = false;
+
+	dialogVerProducto: boolean = false;
+
+	idProductoVer!: string;
 
 	Receta: CrearReceta = {} as CrearReceta;
 
@@ -426,6 +433,19 @@ export class CrearRecetaComponent {
 				}
 			}
 		);
+	}
+
+	mostrarDialogVerProducto() {
+		if (this.dialogVerProductoChild) {
+			this.dialogVerProductoChild.visible = true;
+		} else {
+			this.dialogVerProducto = true;
+		}
+	}
+
+	verProducto(producto: Ingrediente) {
+		this.idProductoVer = producto.id_producto;
+		this.mostrarDialogVerProducto();
 	}
 
 	ngOnDestroy() {

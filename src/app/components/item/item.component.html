@@ -14,13 +14,15 @@
 				class="info-image shadow-2"
 			/>
 		</a>
-		<img
-			*ngIf="this.crearReceta"
-			[src]="imageSrc"
-			(error)="updateUrl($event)"
-			alt="{{ item.nombre }}"
-			class="info-image shadow-2"
-		/>
+
+		<a *ngIf="this.crearReceta" (click)="verItem()"
+			><img
+				[src]="imageSrc"
+				(error)="updateUrl($event)"
+				alt="{{ item.nombre }}"
+				class="info-image shadow-2"
+			/>
+		</a>
 	</div>
 	<div
 		class="flex align-content-between flex-wrap col-7 sm:col-7 md:col-7 lg:col-7"
@@ -46,7 +48,12 @@
 		</a>
 		<div *ngIf="this.crearReceta">
 			<div class="col-12 no-padding">
-				<p class="text-bold">
+				<p
+					class="text-bold item-title"
+					pTooltip="Ver {{ item.nombre }}"
+					tooltipPosition="top"
+					(click)="verItem()"
+				>
 					{{ item.nombre }} -
 					{{ item.cantidad_embase || '1 porción' }}
 				</p>
@@ -88,3 +95,10 @@
 	(agregarItemPlanEvent)="agregarItemPlan($event)"
 	(agregarItemRecetaEvent)="agregarItemReceta($event)"
 ></app-dialog-agregar>
+
+<app-dialog-ver-producto
+	*ngIf="dialogVerProducto"
+	[visible]="dialogVerProducto"
+	[id_producto]="idProductoVer"
+>
+</app-dialog-ver-producto>

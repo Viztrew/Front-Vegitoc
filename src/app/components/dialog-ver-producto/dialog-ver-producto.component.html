@@ -1,0 +1,12 @@
+<p-dialog
+	header="Producto"
+	[(visible)]="visible"
+	[breakpoints]="{ '1200px': '55vw', '767px': '80vw', '576px': '90vw' }"
+	[modal]="true"
+	[style]="{ width: '40vw', height: 'auto' }"
+	[draggable]="false"
+	[resizable]="false"
+>
+	<app-info-producto [id_producto]="id_producto" [dialog]="true">
+	</app-info-producto>
+</p-dialog>

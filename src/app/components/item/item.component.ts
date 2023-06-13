@@ -13,6 +13,7 @@ import { MessageService } from 'primeng/api';
 import { DialogAgregarComponent } from '../dialog-agregar/dialog-agregar.component';
 import { FormGroup } from '@angular/forms';
 import { Ingrediente } from 'src/app/interfaces/data-types';
+import { DialogVerProductoComponent } from '../dialog-ver-producto/dialog-ver-producto.component';
 
 @Component({
 	selector: 'app-item',
@@ -45,11 +46,17 @@ export class ItemComponent {
 
 	@ViewChild(DialogAgregarComponent) dialogChild: any;
 
+	@ViewChild(DialogVerProductoComponent) dialogVerProductoChild: any;
+
 	imageSrc: string = '';
 
 	itemRoute: string = '';
 
 	mostrarDialog: boolean = false;
+
+	idProductoVer !: string;
+
+	dialogVerProducto : boolean = false;
 
 	// variable para saber a que dia  de la planificacion se agregara el item
 	dia!: string;
@@ -81,6 +88,15 @@ export class ItemComponent {
 		}
 	}
 
+	mostrarDialogVerProducto() {
+		if (this.dialogVerProductoChild) {
+			this.dialogVerProductoChild.visible = true;
+		} else {
+			this.dialogVerProducto = true;
+		}
+	}
+
+
 	// se recibe el formulario del dialogAgregar y segun el tipo (producto/receta) se emite el evento
 	agregarItemPlan(item: FormGroup) {
 		if (item.get('tipo')?.value == 'producto') {
@@ -105,6 +121,12 @@ export class ItemComponent {
 	}
 
 	verItem() {
-		this.router.navigateByUrl(this.itemRoute);
+		if (this.crearReceta){
+			this.idProductoVer = this.item.id_producto
+			this.mostrarDialogVerProducto()
+		}else{
+			this.router.navigateByUrl(this.itemRoute);
+		}
+		
 	}
 }

@@ -1,7 +1,7 @@
 <div class="card card-steps">
 	<p-steps
 		[model]="items"
-		[readonly]="true"
+		[readonly]="false"
 		[activeIndex]="activeIndex"
 		(activeIndexChange)="onActiveIndexChange($event)"
 	></p-steps>
@@ -126,12 +126,20 @@
 							<div
 								class="col-12 sm:col-12 md:col-12 lg:col-12 text-center pb-0 pt-0"
 							>
-								<span class="text-xl font-bold p-0">
+								<span
+									class="text-xl font-bold item-title p-0"
+									pTooltip="Ver {{
+										ingrediente.nombre_producto
+									}}"
+									tooltipPosition="top"
+									(click)="verProducto(ingrediente)"
+								>
 									{{ ingrediente.nombre_producto }}
 								</span>
 							</div>
 							<div
-								class="img-container align-items-center justify-content-center col-5 sm:col-5 md:col-5 lg:col-5 pt-0"
+								class="img-container img-ingrediente align-items-center justify-content-center col-5 sm:col-5 md:col-5 lg:col-5 pt-0"
+								(click)="verProducto(ingrediente)"
 							>
 								<img
 									[src]="
@@ -244,75 +252,74 @@
 	</div>
 
 	<div class="flex flex-wrap justify-content-center" *ngIf="activeIndex == 3">
-		<div class="flex flex-wrap">
-			<div class="col-12 sm:col-12 md:col-12 lg:col-12">
-				<h2 class="text-center">
-					{{ Receta.nombre }}
-				</h2>
-				<div
-					class="flex justify-content-center col-12 mt-2 image-container"
-				>
-					<img src="{{ imagen }}" class="shadow-2 img" />
+		<div
+			class="flex justify-content-center col-12 sm:col-12 md:col-12 lg:col-12"
+		>
+			<h2>
+				{{ Receta.nombre }}
+			</h2>
+		</div>
+		<div class="flex justify-content-center col-12 mt-2 image-container">
+			<img src="{{ imagen }}" class="shadow-2 img" />
+		</div>
+
+		<div class="col-12 sm:col-12 md:col-12 lg:col-12">
+			<p-divider align="center">
+				<div class="inline-flex align-items-center">
+					<h2>Ingredientes</h2>
 				</div>
-			</div>
-			<div class="col-12 sm:col-12 md:col-12 lg:col-12">
-				<p-divider align="center">
-					<div class="inline-flex align-items-center">
-						<h2>Ingredientes</h2>
-					</div>
-				</p-divider>
-				<div class="flex flex-wrap">
-					<div
-						class="col-12 sm:col-6 md:col-4 lg:col-4"
-						*ngFor="let producto of Receta?.lista_productos"
-					>
-						<div class="flex flex-wrap card item-producto">
-							<div
-								class="col-12 sm:col-12 md:col-12 lg:col-12 pb-0 text-center"
-							>
-								<h3 class="text-bold p-0">
-									{{ producto.nombre_producto }}
-								</h3>
-							</div>
-							<div
-								class="img-container align-items-center col-5 sm:col-5 md:col-5 lg:col-5 pt-0"
-							>
-								<img
-									[src]="
-										imagesUrl +
-										'/' +
-										this.producto.id_producto +
-										'.jpg'
-									"
-									alt="{{ producto.nombre_producto }}"
-									class="info-image shadow-2"
-								/>
-							</div>
-							<div class="col-7 sm:col-7 md:col-7 lg:col-7 pt-0">
-								<p>
-									<span class="text-bold"> Cantidad: </span>
-									{{ producto.cantidad }}
-									{{ producto.nombre_unidad }}
-								</p>
-								<p>
-									<span class="text-bold"> Calorías: </span>
-									{{ producto.kcal }} kcal
-								</p>
-							</div>
+			</p-divider>
+			<div class="flex flex-wrap">
+				<div
+					class="col-12 sm:col-6 md:col-4 lg:col-4"
+					*ngFor="let producto of Receta?.lista_productos"
+				>
+					<div class="flex flex-wrap card item-producto">
+						<div
+							class="col-12 sm:col-12 md:col-12 lg:col-12 pb-0 text-center"
+						>
+							<h3 class="text-bold p-0">
+								{{ producto.nombre_producto }}
+							</h3>
+						</div>
+						<div
+							class="img-container align-items-center col-5 sm:col-5 md:col-5 lg:col-5 pt-0"
+						>
+							<img
+								[src]="
+									imagesUrl +
+									'/' +
+									this.producto.id_producto +
+									'.jpg'
+								"
+								alt="{{ producto.nombre_producto }}"
+								class="info-image shadow-2"
+							/>
+						</div>
+						<div class="col-7 sm:col-7 md:col-7 lg:col-7 pt-0">
+							<p>
+								<span class="text-bold"> Cantidad: </span>
+								{{ producto.cantidad }}
+								{{ producto.nombre_unidad }}
+							</p>
+							<p>
+								<span class="text-bold"> Calorías: </span>
+								{{ producto.kcal }} kcal
+							</p>
 						</div>
 					</div>
 				</div>
-				<p-divider align="center">
-					<div class="inline-flex align-items-center">
-						<h2>Preparación</h2>
-					</div>
-				</p-divider>
-				<div
-					class="col-12 sm:col-12 md:col-12 lg:col-12 p-0"
-					*ngFor="let paso of Receta.pasos"
-				>
-					<app-paso-receta [paso]="paso"></app-paso-receta>
+			</div>
+			<p-divider align="center">
+				<div class="inline-flex align-items-center">
+					<h2>Preparación</h2>
 				</div>
+			</p-divider>
+			<div
+				class="col-12 sm:col-12 md:col-12 lg:col-12 p-0"
+				*ngFor="let paso of Receta.pasos"
+			>
+				<app-paso-receta [paso]="paso"></app-paso-receta>
 			</div>
 		</div>
 	</div>
@@ -462,3 +469,10 @@
 		<p-button label="Confirmar" (click)="crearReceta()"></p-button>
 	</ng-template>
 </p-dialog>
+
+<app-dialog-ver-producto
+	*ngIf="dialogVerProducto"
+	[visible]="dialogVerProducto"
+	[id_producto]="idProductoVer"
+>
+</app-dialog-ver-producto>

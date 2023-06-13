@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VegiService } from 'src/app/services/vegi.service';
 import { InfoProducto } from 'src/app/interfaces/data-types';
@@ -19,16 +19,32 @@ export class InfoProductoComponent implements OnInit {
 		private router: Router
 	) {}
 
+	@Input() id_producto !: string;
+
+	@Input() dialog !: boolean;
+
 	infoProducto = {} as InfoProducto;
 
 	imageSrc: string = '';
 
 	ngOnInit(): void {
-		this.imageSrc =
+
+		if (this.id_producto){
+			this.imageSrc =
+			environment.imagesUrl +
+			'/' +
+			this.id_producto +
+			'.jpg';
+		}else{
+			this.imageSrc =
 			environment.imagesUrl +
 			'/' +
 			this.route.snapshot.params['id'] +
 			'.jpg';
+
+			this.id_producto = this.route.snapshot.params['id']
+		
+		}
 		this.obtenerInformacionProducto();
 	}
 
@@ -39,7 +55,7 @@ export class InfoProductoComponent implements OnInit {
 	async obtenerInformacionProducto() {
 		this.spinner.show();
 		this.servicio
-			.obtenerInformacionProducto(this.route.snapshot.params['id'])
+			.obtenerInformacionProducto(this.id_producto)
 			.subscribe(
 				(data) => {
 					this.infoProducto = data[0];

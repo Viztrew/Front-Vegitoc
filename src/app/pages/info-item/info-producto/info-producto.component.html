@@ -1,0 +1,190 @@
+<div class="card">
+	<div class="text-center section-title align-items-center" *ngIf="!dialog">Producto</div>
+	<div class="flex flex-wrap">
+		<div class="col-12 sm:col-5 md:col-5 lg:col-5" *ngIf="!dialog">
+			<h2 class="text-center">{{ infoProducto.nombre }}</h2>
+			<div class="img-container">
+				<img
+					[src]="imageSrc"
+					(error)="updateUrl($event)"
+					alt="{{ infoProducto.nombre }}"
+					class="info-image shadow-2"
+				/>
+			</div>
+		</div>
+		<div class="col-12 sm:col-12 md:col-12 lg:col-12 pt-0 text-center" *ngIf="dialog">
+			<span class="text-xl font-bold ">{{ infoProducto.nombre }}</span>
+			<div class="container-img mt-2">
+				<img
+					[src]="imageSrc"
+					(error)="updateUrl($event)"
+					alt="{{ infoProducto.nombre }}"
+					class="info-image shadow-2"
+				/>
+			</div>
+		</div>
+		<div class="card info-nutricional col-12 sm:col-7 md:col-7 lg:col-7 " *ngIf="!dialog">
+			<div class="text-center text-bold">
+				<h2>Información Nutricional</h2>
+			</div>
+			<p-divider></p-divider>
+			<p>
+				<span class="text-bold">Tamaño de porción: </span>
+				<span>{{ infoProducto.porcion }}</span>
+			</p>
+			<p>
+				<span class="text-bold">Porciones por envase: </span>
+				<span>{{ infoProducto.cantidad_embase }}</span>
+			</p>
+			<table class="info-table">
+				<tbody>
+					<tr>
+						<td></td>
+						<td class="text-bold">Por 100g/ml</td>
+						<td class="text-bold">Por porción</td>
+					</tr>
+					<tr>
+						<td class="text-bold">Energía (kcal)</td>
+						<td>{{ infoProducto.kcal_100 || '-' }}</td>
+						<td>{{ infoProducto.kcal_prcn || '-' }}</td>
+					</tr>
+					<tr></tr>
+					<tr>
+						<td class="text-bold">Proteínas (g)</td>
+						<td>{{ infoProducto.prot_100 || '-' }}</td>
+						<td>{{ infoProducto.prot_prcn || '-' }}</td>
+					</tr>
+					<tr>
+						<td class="text-bold">Grasas Totales(g)</td>
+						<td>{{ infoProducto.gr_totales_100 || '-' }}</td>
+						<td>{{ infoProducto.gr_totales_prcn || '-' }}</td>
+					</tr>
+					<tr>
+						<td>&nbsp;&nbsp;&nbsp;Grasas Saturadas (g)</td>
+						<td>{{ infoProducto.gr_satu_100 || '-' }}</td>
+						<td>{{ infoProducto.gr_satu_prcn || '-' }}</td>
+					</tr>
+					<tr>
+						<td>&nbsp;&nbsp;&nbsp;Grasas Monoinsaturadas (g)</td>
+						<td>{{ infoProducto.gr_mono_100 || '-' }}</td>
+						<td>{{ infoProducto.gr_mono_prcn || '-' }}</td>
+					</tr>
+					<tr>
+						<td>&nbsp;&nbsp;&nbsp;Grasas Poliinsaturadas (g)</td>
+						<td>{{ infoProducto.gr_poli_100 || '-' }}</td>
+						<td>{{ infoProducto.gr_poli_prcn || '-' }}</td>
+					</tr>
+					<tr>
+						<td>&nbsp;&nbsp;&nbsp;Grasas Trans (g)</td>
+						<td>{{ infoProducto.gr_trans_100 || '-' }}</td>
+						<td>{{ infoProducto.gr_trans_prcn || '-' }}</td>
+					</tr>
+					<tr>
+						<td class="text-bold">Colesterol (mg)</td>
+						<td>{{ infoProducto.colesterol_100 || '-' }}</td>
+						<td>{{ infoProducto.colesterol_prcn || '-' }}</td>
+					</tr>
+					<tr>
+						<td class="text-bold">
+							Hidratos de Carbono disponibles (g)
+						</td>
+						<td>{{ infoProducto.hidratos_100 || '-' }}</td>
+						<td>{{ infoProducto.hidratos_prcn || '-' }}</td>
+					</tr>
+					<tr>
+						<td class="text-bold">Azúcares totales (g)</td>
+						<td>{{ infoProducto.azucares_100 || '-' }}</td>
+						<td>{{ infoProducto.azucares_prcn || '-' }}</td>
+					</tr>
+					<tr>
+						<td class="text-bold">Sodio (mg)</td>
+						<td>{{ infoProducto.sodio_100 || '-' }}</td>
+						<td>{{ infoProducto.sodio_prcn || '-' }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="card info-nutricional col-12 sm:col-12 md:col-12 lg:col-12"  *ngIf="dialog">
+			<div class="text-center text-bold">
+				<h2>Información Nutricional</h2>
+			</div>
+			<p-divider></p-divider>
+			<p>
+				<span class="text-bold">Tamaño de porción: </span>
+				<span>{{ infoProducto.porcion }}</span>
+			</p>
+			<p>
+				<span class="text-bold">Porciones por envase: </span>
+				<span>{{ infoProducto.cantidad_embase }}</span>
+			</p>
+			<table class="info-table">
+				<tbody>
+					<tr>
+						<td></td>
+						<td class="text-bold">Por 100g/ml</td>
+						<td class="text-bold">Por porción</td>
+					</tr>
+					<tr>
+						<td class="text-bold">Energía (kcal)</td>
+						<td>{{ infoProducto.kcal_100 || '-' }}</td>
+						<td>{{ infoProducto.kcal_prcn || '-' }}</td>
+					</tr>
+					<tr></tr>
+					<tr>
+						<td class="text-bold">Proteínas (g)</td>
+						<td>{{ infoProducto.prot_100 || '-' }}</td>
+						<td>{{ infoProducto.prot_prcn || '-' }}</td>
+					</tr>
+					<tr>
+						<td class="text-bold">Grasas Totales(g)</td>
+						<td>{{ infoProducto.gr_totales_100 || '-' }}</td>
+						<td>{{ infoProducto.gr_totales_prcn || '-' }}</td>
+					</tr>
+					<tr>
+						<td>&nbsp;&nbsp;&nbsp;Grasas Saturadas (g)</td>
+						<td>{{ infoProducto.gr_satu_100 || '-' }}</td>
+						<td>{{ infoProducto.gr_satu_prcn || '-' }}</td>
+					</tr>
+					<tr>
+						<td>&nbsp;&nbsp;&nbsp;Grasas Monoinsaturadas (g)</td>
+						<td>{{ infoProducto.gr_mono_100 || '-' }}</td>
+						<td>{{ infoProducto.gr_mono_prcn || '-' }}</td>
+					</tr>
+					<tr>
+						<td>&nbsp;&nbsp;&nbsp;Grasas Poliinsaturadas (g)</td>
+						<td>{{ infoProducto.gr_poli_100 || '-' }}</td>
+						<td>{{ infoProducto.gr_poli_prcn || '-' }}</td>
+					</tr>
+					<tr>
+						<td>&nbsp;&nbsp;&nbsp;Grasas Trans (g)</td>
+						<td>{{ infoProducto.gr_trans_100 || '-' }}</td>
+						<td>{{ infoProducto.gr_trans_prcn || '-' }}</td>
+					</tr>
+					<tr>
+						<td class="text-bold">Colesterol (mg)</td>
+						<td>{{ infoProducto.colesterol_100 || '-' }}</td>
+						<td>{{ infoProducto.colesterol_prcn || '-' }}</td>
+					</tr>
+					<tr>
+						<td class="text-bold">
+							Hidratos de Carbono disponibles (g)
+						</td>
+						<td>{{ infoProducto.hidratos_100 || '-' }}</td>
+						<td>{{ infoProducto.hidratos_prcn || '-' }}</td>
+					</tr>
+					<tr>
+						<td class="text-bold">Azúcares totales (g)</td>
+						<td>{{ infoProducto.azucares_100 || '-' }}</td>
+						<td>{{ infoProducto.azucares_prcn || '-' }}</td>
+					</tr>
+					<tr>
+						<td class="text-bold">Sodio (mg)</td>
+						<td>{{ infoProducto.sodio_100 || '-' }}</td>
+						<td>{{ infoProducto.sodio_prcn || '-' }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
