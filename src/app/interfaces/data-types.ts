@@ -169,6 +169,11 @@ export interface RecetaAgregarPlan {
 	checked: boolean;
 }
 
+export interface Recomendacion {
+	productos: Array<ProductoAgregarPlan>;
+	recetas: Array<RecetaAgregarPlan>;
+}
+
 export interface ProductoRecomendado {
 	cantidad: number;
 	id_producto: string;

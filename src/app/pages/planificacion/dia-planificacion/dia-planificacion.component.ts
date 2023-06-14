@@ -12,6 +12,7 @@ import {
 	CheckedReceta,
 	PlanProducto,
 	PlanReceta,
+	Recomendacion,
 } from 'src/app/interfaces/data-types';
 import { ComponentsService } from 'src/app/services/components.service';
 import { VegiService } from 'src/app/services/vegi.service';
@@ -824,53 +825,106 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	async agregarItemsRecomendadosPlan(recomendacion: Recomendacion) {
+		if (
+			recomendacion.productos.length > 0 ||
+			recomendacion.recetas.length > 0
+		) {
+			await this.eliminarRecetasNoChecked();
+			await this.eliminarProductosNoChecked();
+			if (recomendacion.productos.length > 0) {
+				if (
+					await this.agregarProductosRecomendadosPlan(
+						recomendacion.productos
+					)
+				) {
+					this.messageService.add({
+						severity: 'success',
+						summary: 'Productos agregados',
+						detail:
+							'Se han agregado los productos recomendados seleccionados para ' +
+							this.dia.toUpperCase(),
+						life: 3000,
+					});
+				} else {
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Error al agregar recomendación',
+						detail:
+							'Hubo un error al agregar los productos recomendados seleccionados para ' +
+							this.dia.toUpperCase(),
+						life: 3000,
+					});
+				}
+			}
+
+			if (recomendacion.recetas.length > 0) {
+				if (
+					await this.agregarRecetasRecomendadasPlan(
+						recomendacion.recetas
+					)
+				) {
+					this.messageService.add({
+						severity: 'success',
+						summary: 'Recetas agregados',
+						detail:
+							'Se han agregado las recetas recomendadas seleccionadas para ' +
+							this.dia.toUpperCase(),
+						life: 3000,
+					});
+				} else {
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Error al agregar recomendación',
+						detail:
+							'Hubo un error al agregar las recetas recomendadas seleccionadas para ' +
+							this.dia.toUpperCase(),
+						life: 3000,
+					});
+				}
+			}
+		} else {
+			this.messageService.add({
+				severity: 'info',
+				summary: 'Sin cambios',
+				detail: 'No se realizaron cambios en tu planificación',
+				life: 3000,
+			});
+		}
+	}
+
 	async agregarProductosRecomendadosPlan(
 		productosRecomendados: Array<ProductoAgregarPlan>
-	) {
+	): Promise<boolean> {
 		if (productosRecomendados != undefined) {
 			if (productosRecomendados.length != 0) {
-				await this.eliminarProductosNoChecked();
-
 				for (let i = 0; i < productosRecomendados.length; i++) {
 					this.agregarProductoPlanificacion(
 						productosRecomendados[i],
 						true
 					);
 				}
-				this.messageService.add({
-					severity: 'success',
-					summary: 'Productos agregados',
-					detail:
-						'Se han agregado los productos recomendados para ' +
-						this.dia.toUpperCase(),
-					life: 3000,
-				});
+				return true;
 			}
 		}
+		return false;
 	}
 
-	async agregarRecetassRecomendadasPlan(
+	async agregarRecetasRecomendadasPlan(
 		recetasRecomendadas: Array<RecetaAgregarPlan>
-	) {
+	): Promise<boolean> {
 		if (recetasRecomendadas != undefined) {
 			if (recetasRecomendadas.length != 0) {
-				await this.eliminarRecetasNoChecked();
 				for (let i = 0; i < recetasRecomendadas.length; i++) {
 					this.agregarRecetaPlanificacion(
 						recetasRecomendadas[i],
 						true
 					);
 				}
-				this.messageService.add({
-					severity: 'success',
-					summary: 'Recetas agregados',
-					detail:
-						'Se han agregado las recetas recomendadas para ' +
-						this.dia.toUpperCase(),
-					life: 3000,
-				});
+				return true;
 			}
 		}
+		return false;
 	}
 
 	ngOnDestroy() {

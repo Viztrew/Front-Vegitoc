@@ -6,6 +6,7 @@ import {
 	ProductoRecomendado,
 	RecetaAgregarPlan,
 	RecetaRecomendada,
+	Recomendacion,
 } from 'src/app/interfaces/data-types';
 import { VegiService } from 'src/app/services/vegi.service';
 import { environment } from 'src/environments/environment';
@@ -33,9 +34,7 @@ export class DialogRecomendacionComponent {
 
 	@Output() cancelarRecomendacionEvent = new EventEmitter<any>();
 
-	@Output() recomendacionProductosConfirmadaEvent = new EventEmitter<any>();
-
-	@Output() recomendacionRecetasConfirmadaEvent = new EventEmitter<any>();
+	@Output() confirmarRecomendacionEvent = new EventEmitter<any>();
 
 	private suscripcionRecomendacion!: Subscription;
 
@@ -190,13 +189,18 @@ export class DialogRecomendacionComponent {
 	}
 
 	confirmarRecomendacion() {
-		this.recomendacionProductosConfirmadaEvent.emit(
-			this.estadoProductosRecomendados
-		);
+		if (!this.estadoProductosRecomendados) {
+			this.estadoProductosRecomendados = [];
+		}
+		if (!this.estadoRecetasRecomendadas) {
+			this.estadoRecetasRecomendadas = [];
+		}
 
-		this.recomendacionRecetasConfirmadaEvent.emit(
-			this.estadoRecetasRecomendadas
-		);
+		let recomendacion: Recomendacion = {
+			productos: this.estadoProductosRecomendados,
+			recetas: this.estadoRecetasRecomendadas,
+		};
+		this.confirmarRecomendacionEvent.emit(recomendacion);
 		this.visible = false;
 	}
 

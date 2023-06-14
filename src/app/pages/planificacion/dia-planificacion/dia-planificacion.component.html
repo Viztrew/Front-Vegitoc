@@ -248,10 +248,5 @@
 	[visible]="dialogRecomendacion"
 	[dia]="dia"
 	[fecha]="obtenerFecha(dia)"
-	(recomendacionProductosConfirmadaEvent)="
-		agregarProductosRecomendadosPlan($event)
-	"
-	(recomendacionRecetasConfirmadaEvent)="
-		agregarRecetassRecomendadasPlan($event)
-	"
+	(confirmarRecomendacionEvent)="agregarItemsRecomendadosPlan($event)"
 ></app-dialog-recomendacion>
