@@ -11,7 +11,7 @@ import { TimeoutError } from 'rxjs';
 	templateUrl: './info-receta.component.html',
 	styleUrls: ['./info-receta.component.scss'],
 })
-export class InfoRecetaComponent implements OnInit {
+export class InfoRecetaComponent {
 	constructor(
 		private route: ActivatedRoute,
 		private servicio: VegiService,
@@ -23,18 +23,23 @@ export class InfoRecetaComponent implements OnInit {
 
 	@Input() dialog!: boolean;
 
-	infoReceta!: InfoReceta;
+	infoReceta = {} as InfoReceta;
 
 	imageSrc: string = '';
 
-	imagesUrl: string = '';
+	imagesUrl = environment.imagesUrl;
 
 	imagesRecetaUrl!: string;
 
 	noImageUrl = '../../../assets/img/nophoto.png';
 
 	async ngOnInit() {
-		this.imagesUrl = environment.imagesUrl;
+		await this.iniciarComponente();
+
+		await this.obtenerInformacionReceta();
+	}
+
+	async iniciarComponente() {
 		if (this.dialog) {
 			this.imagesRecetaUrl =
 				environment.baseUrl + '/' + this.id_preparacion + '.jpg';
@@ -46,11 +51,6 @@ export class InfoRecetaComponent implements OnInit {
 				this.route.snapshot.params['id'] +
 				'.jpg';
 		}
-		await this.obtenerInformacionReceta();
-	}
-
-	updateUrl(event: Event) {
-		this.imageSrc = this.noImageUrl;
 	}
 
 	async obtenerInformacionReceta() {

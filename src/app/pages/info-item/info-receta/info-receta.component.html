@@ -4,22 +4,30 @@
 	</div>
 	<div class="grid">
 		<div
-			[ngClass]="dialog ? 'col-12 ' : 'col-12 sm:col-5 md:col-5 lg:col-5'"
+			[ngClass]="
+				dialog ? 'col-12 pt-0' : 'col-12 sm:col-5 md:col-5 lg:col-5'
+			"
 		>
-			<h2 class="text-center">
+			<h2 class="text-center" *ngIf="!dialog">
 				{{ infoReceta.info_receta.nombre }}
 			</h2>
+			<span class="text-xl font-bold" *ngIf="dialog">{{
+				infoReceta.info_receta.nombre
+			}}</span>
 			<div
 				[ngClass]="
 					dialog
-						? 'container-img'
+						? 'container-img mt-2'
 						: 'flex justify-content-center img-container'
 				"
 			>
 				<img
 					[src]="imagesRecetaUrl"
-					(error)="updateUrl($event)"
-					alt="{{ infoReceta.info_receta.nombre }}"
+					[alt]="
+						infoReceta
+							? infoReceta.info_receta.nombre
+							: 'imagen de la receta'
+					"
 					class="info-image shadow-2"
 				/>
 			</div>
@@ -154,7 +162,6 @@
 									this.producto.id_producto +
 									'.jpg'
 								"
-								(error)="updateUrl($event)"
 								alt="{{ producto.nombre_producto }}"
 								class="info-image shadow-2"
 							/>

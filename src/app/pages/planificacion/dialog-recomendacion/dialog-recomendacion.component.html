@@ -42,6 +42,30 @@
 				</ng-template>
 			</p-messages>
 		</div>
+		<div class="flex justify-content-center" *ngIf="!mostrarSpinnerBuscar">
+			<p-messages severity="info" class="p-0">
+				<ng-template pTemplate>
+					<div class="flex justify-content-center flex-wrap">
+						<div class="col-12 p-0">
+							<i
+								class="pi pi-info-circle"
+								style="font-size: 3rem"
+							></i>
+						</div>
+						<div class="col-12 p-0">
+							<p class="text-center text-xl">
+								Puedes seleccionar
+								<span class="font-bold">Momento del Día</span>
+								deseado para cada
+								<span class="font-bold">Producto/Receta</span>
+								haciendo click en su respectivo
+								<span class="font-bold">DESPLEGABLE</span>
+							</p>
+						</div>
+					</div>
+				</ng-template>
+			</p-messages>
+		</div>
 		<p-fieldset
 			legend="Productos"
 			[toggleable]="true"

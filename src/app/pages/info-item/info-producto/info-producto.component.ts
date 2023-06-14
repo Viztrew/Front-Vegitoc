@@ -11,7 +11,7 @@ import { TimeoutError } from 'rxjs';
 	templateUrl: './info-producto.component.html',
 	styleUrls: ['./info-producto.component.scss'],
 })
-export class InfoProductoComponent implements OnInit {
+export class InfoProductoComponent {
 	constructor(
 		private route: ActivatedRoute,
 		private servicio: VegiService,
