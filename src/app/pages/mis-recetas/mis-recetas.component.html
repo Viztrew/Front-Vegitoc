@@ -74,9 +74,14 @@
 <p-dialog
 	header="Header"
 	[(visible)]="dialogEliminarReceta"
-	[breakpoints]="{ '876px': '50vw', '576px': '80vw' }"
+	[breakpoints]="{
+		'1324px': '25vw',
+		'1059px': '30vw',
+		'883px': '40vw',
+		'575px': '80vw'
+	}"
 	[modal]="true"
-	[style]="{ width: '30vw', height: 'auto' }"
+	[style]="{ width: '20vw', height: 'auto' }"
 	[draggable]="false"
 	[resizable]="false"
 	[closable]="false"
@@ -88,9 +93,24 @@
 	</ng-template>
 
 	<ng-template pTemplate="content">
-		<span class="text-center"
-			>Esta acción es <span class="font-bold">IRREVERSIBLE</span></span
-		>
+		<p-messages severity="warn" class="p-0">
+			<ng-template pTemplate>
+				<div class="flex justify-content-center flex-wrap">
+					<div class="col-12 p-0 text-center">
+						<i
+							class="pi pi-info-circle"
+							style="font-size: 3rem"
+						></i>
+					</div>
+					<div class="col-12 p-0 text-center">
+						<span class="text-center"
+							>Esta acción es
+							<span class="font-bold">IRREVERSIBLE</span></span
+						>
+					</div>
+				</div>
+			</ng-template>
+		</p-messages>
 	</ng-template>
 	<ng-template pTemplate="footer">
 		<p-button

@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+	FormBuilder,
+	FormControl,
+	FormGroup,
+	Validators,
+} from '@angular/forms';
 import { VegiService } from 'src/app/services/vegi.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -286,30 +291,32 @@ export class PerfilComponent {
 				this.datosUsuario = datos;
 				this.formulario = this.formBuilder.group({
 					nombreUsuario: this.datosUsuario[0].nombre,
-					sexo: this.datosUsuario[0].sexo.toLowerCase(),
+					sexo: this.datosUsuario[0].sexo,
 					fechaNac:
 						this.datosUsuario[0].fecha_nacimiento.split('T')[0],
-					peso: [
-						this.datosUsuario[0].peso,
-						Validators.compose([
-							Validators.pattern('^[0-9,$]*$'),
+					peso: new FormControl(
+						{ value: this.datosUsuario[0].peso, disabled: false },
+						[
 							Validators.required,
-						]),
-					],
-					altura: [
-						this.datosUsuario[0].altura,
-						Validators.compose([
-							Validators.pattern('^[0-9,$]*$'),
+							Validators.max(300),
+							Validators.min(30),
+						]
+					),
+					altura: new FormControl(
+						{ value: this.datosUsuario[0].altura, disabled: false },
+						[
 							Validators.required,
-						]),
-					],
-					calorias: [
-						this.datosUsuario[0].tarjet_calorias,
-						Validators.compose([
-							Validators.pattern('^[0-9,$]*$'),
-							Validators.required,
-						]),
-					],
+							Validators.min(100),
+							Validators.max(300),
+						]
+					),
+					calorias: new FormControl(
+						{
+							value: this.datosUsuario[0].tarjet_calorias,
+							disabled: false,
+						},
+						[Validators.required, Validators.min(1)]
+					),
 				});
 				if (this.datosUsuario[0].objetivo == 'BAJAR') {
 					this.activeButton = 1;

@@ -23,6 +23,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FileUploadModule } from 'primeng/fileupload';
 import { PasswordModule } from 'primeng/password';
 import { DropdownModule } from 'primeng/dropdown';
+import { KeyFilterModule } from 'primeng/keyfilter';
 // SPINNER
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
@@ -52,6 +53,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 		FileUploadModule,
 		PasswordModule,
 		DropdownModule,
+		KeyFilterModule,
 	],
 	exports: [
 		ButtonModule,
@@ -76,6 +78,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 		FileUploadModule,
 		PasswordModule,
 		DropdownModule,
+		KeyFilterModule,
 	],
 })
 export class PrimengModule {}

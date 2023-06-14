@@ -49,43 +49,75 @@
 			<div class="field">
 				<label for="peso" class="block">Peso (Kg)</label>
 				<input
-					type="text"
+					type="number"
+					pKeyFilter="int"
 					pInputText
-					placeholder=""
+					placeholder="Peso"
 					formControlName="peso"
 					(ngModelChange)="cambiarValor(0)"
 				/>
-				<small
-					class="p-error block"
+				<div
 					*ngIf="
-						formulario.get('peso')?.invalid &&
-						formulario.get('peso')?.dirty
+						formulario.controls['peso'].invalid &&
+						(formulario.controls['peso'].dirty ||
+							formulario.controls['peso'].touched)
 					"
-					>Este campo es obligatorio <br />y solo debe contener
-					numeros</small
 				>
+					<small
+						*ngIf="formulario.controls['peso'].errors?.['required']"
+						class="p-error block"
+						>El campo peso es obligatorio
+					</small>
+					<small
+						class="p-error block"
+						*ngIf="formulario.controls['peso'].errors?.['min']"
+						>El peso mínimo es de 30Kg
+					</small>
+
+					<small
+						class="p-error block"
+						*ngIf="formulario.controls['peso'].errors?.['max']"
+						>El peso máximo es de 300Kg
+					</small>
+				</div>
 			</div>
 		</div>
 
 		<div class="flex justify-content-center">
 			<div class="field">
-				<label for="altura" class="block">Altura (cm)</label>
+				<label for="altura" class="block">Altura (Cm)</label>
 				<input
-					type="text"
+					type="number"
+					pKeyFilter="int"
 					pInputText
-					placeholder=""
+					placeholder="Altura"
 					formControlName="altura"
 					(ngModelChange)="cambiarValor(0)"
 				/>
-				<small
-					class="p-error block"
+				<div
 					*ngIf="
-						formulario.get('altura')?.invalid &&
-						formulario.get('altura')?.dirty
+						formulario.controls['altura'].invalid &&
+						(formulario.controls['altura'].dirty ||
+							formulario.controls['altura'].touched)
 					"
-					>Este campo es obligatorio <br />
-					y solo debe contener numeros</small
 				>
+					<small
+						*ngIf="formulario.controls['altura'].errors?.['required']"
+						class="p-error block"
+						>El campo altura es obligatorio
+					</small>
+					<small
+						class="p-error block"
+						*ngIf="formulario.controls['altura'].errors?.['min']"
+						>La altura mínima es 100 Cms
+					</small>
+
+					<small
+						class="p-error block"
+						*ngIf="formulario.controls['altura'].errors?.['max']"
+						>La altura máxima es 300 Cms
+					</small>
+				</div>
 			</div>
 		</div>
 
@@ -96,21 +128,31 @@
 		<div class="flex justify-content-center">
 			<div class="field">
 				<input
-					type="text"
+					type="number"
+					pKeyFilter="int"
 					pInputText
-					placeholder=""
+					placeholder="Calorías"
 					formControlName="calorias"
 					(input)="cambiarValor2()"
 				/>
-				<small
-					class="p-error block"
+				<div
 					*ngIf="
-						formulario.get('calorias')?.invalid &&
-						formulario.get('calorias')?.dirty
+						formulario.controls['calorias'].invalid &&
+						(formulario.controls['calorias'].dirty ||
+							formulario.controls['calorias'].touched)
 					"
-					>Este campo es obligatorio <br />
-					y solo debe contener numeros</small
 				>
+					<small
+						*ngIf="formulario.controls['calorias'].errors?.['required']"
+						class="p-error block"
+						>El campo calorías es obligatorio
+					</small>
+					<small
+						*ngIf="formulario.controls['calorias'].errors?.['min']"
+						class="p-error block"
+						>Las calorías deben ser mayor a 0
+					</small>
+				</div>
 			</div>
 		</div>
 
