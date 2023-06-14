@@ -189,21 +189,27 @@ export class CrearRecetaComponent {
 	onSelect(event: any) {
 		let maxSizeInBytes = 1024 * 1024;
 		const file = event.target.files[0];
-		if (file.size <= maxSizeInBytes) {
-			var reader = new FileReader();
-			reader.readAsDataURL(file);
-			reader.onload = (events: any) => {
-				this.imagen = events.target.result;
-				this.infoForm.controls['imagen'].setValue(this.imagen);
-			};
-			this.cambiarFoto(event);
+		if (file) {
+			if (file.size <= maxSizeInBytes) {
+				var reader = new FileReader();
+				reader.readAsDataURL(file);
+				reader.onload = (events: any) => {
+					this.imagen = events.target.result;
+					this.infoForm.controls['imagen'].setValue(this.imagen);
+				};
+				this.cambiarFoto(event);
+			} else {
+				this.messageService.add({
+					severity: 'info',
+					summary: 'Imagen muy pesada',
+					detail: 'El tamaño de la imagen no debe superar 1MB',
+					life: 3000,
+				});
+				this.infoForm.controls['imagen'].setValue('');
+				this.imagen = './assets/img/placeholder-image.jpg';
+				event.target.value = '';
+			}
 		} else {
-			this.messageService.add({
-				severity: 'info',
-				summary: 'Imagen muy pesada',
-				detail: 'El tamaño de la imagen no debe superar 1MB',
-				life: 3000,
-			});
 			this.infoForm.controls['imagen'].setValue('');
 			this.imagen = './assets/img/placeholder-image.jpg';
 			event.target.value = '';
