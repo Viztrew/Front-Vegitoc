@@ -78,6 +78,23 @@ export class SignupComponent {
 		private messageService: MessageService
 	) {}
 
+	revisarCorreo(){
+		const correo = this.userForm1.get('correo')?.value;
+		this.servicio.correoExiste(correo).subscribe((data) =>{
+			console.log(data);
+			if(data == true){
+				this.messageService.clear();
+				this.messageService.add({
+					severity: 'error',
+					summary: 'El correo ingresado ya existe!',
+					sticky: true,
+				});
+			}else{
+				this.siguiente();
+			}
+		})
+	}
+
 	ngOnInit() {
 		this.iniciarFormulario();
 		this.userForm1.controls['contrasena'].valueChanges.subscribe(

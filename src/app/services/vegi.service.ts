@@ -331,4 +331,13 @@ export class VegiService {
 			)
 			.pipe(timeout(this.msTimeout));
 	}
+
+	correoExiste(correo:any): Observable<any>{
+		return this.http
+		.get(
+			`${environment.baseUrl}/usuario/existeCorreo/${correo}`,
+			this.HttpOptions
+		)
+		.pipe(timeout(this.msTimeout));
+	}
 }
