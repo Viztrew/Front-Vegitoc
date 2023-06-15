@@ -267,7 +267,7 @@ export class PerfilComponent {
 	getButtonStyle(buttonNumber: number) {
 		return buttonNumber === this.activeButton
 			? 'p-button-primary my-1'
-			: 'p-button-outlined p-button-primary my-1';
+			: 'p-button-secondary my-1';
 	}
 
 	toggleButtonState(buttonNumber: number) {
@@ -277,7 +277,7 @@ export class PerfilComponent {
 	getButtonStyle2(buttonNumber2: number) {
 		return buttonNumber2 === this.activeButton2
 			? 'p-button-primary my-1'
-			: 'p-button-outlined p-button-primary my-1';
+			: 'p-button-secondary my-1';
 	}
 
 	toggleButtonState2(buttonNumber2: number) {

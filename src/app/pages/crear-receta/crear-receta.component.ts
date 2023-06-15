@@ -403,7 +403,7 @@ export class CrearRecetaComponent {
 			(data) => {
 				this.enviarFoto();
 				this.spinner.hide();
-				this.router.navigateByUrl('info/receta/' + data.id_preparacion);
+				this.router.navigateByUrl('mis-recetas');
 				this.messageService.clear();
 				this.messageService.add({
 					severity: 'success',
