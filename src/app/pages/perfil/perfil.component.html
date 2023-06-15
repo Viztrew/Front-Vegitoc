@@ -122,7 +122,7 @@
 		</div>
 
 		<div class="flex justify-content-center">
-			<h5 class="tamanoLetra2 my-3">Target de calorias</h5>
+			<h5 class="tamanoLetra2 my-3">Target de calorías</h5>
 		</div>
 
 		<div class="flex justify-content-center">
@@ -210,8 +210,9 @@
 
 		<div class="flex justify-content-center">
 			<p-button
+				icon="pi pi-save"
 				type="Submit"
-				label="Guardar Informacion"
+				label="Guardar Información"
 				styleClass="p-button-primary my-3"
 				[disabled]="formulario.invalid"
 			></p-button>
@@ -220,6 +221,7 @@
 
 	<div class="flex justify-content-center">
 		<p-button
+			icon="pi pi-sign-out"
 			label="Cerrar Sesión"
 			styleClass="p-button-danger"
 			(click)="cerrarSesion()"
