@@ -19,53 +19,15 @@ import { TimeoutError } from 'rxjs';
 	styleUrls: ['./signup.component.scss'],
 })
 export class SignupComponent {
-	//VALORES ANTIGUOS
-
-	/*
-  step1_correct:boolean = true
-
-  //Formulario creado con variables por separado
- 
-  value_correo: string = ''
-  error_correo: boolean = false
-  
-  value_contrasena: string = ''
-  error_contrasena: boolean = false
-  controlContrasena = new FormControl('', [
-    Validators.required,
-    Validators.maxLength(25),
-    Validators.minLength(5)
-  ])
-
-  value_contrasenaConfir: string = ''
-  error_contrasenaConfir: boolean = false
-  controlContrasenaRep = new FormControl('', [
-    Validators.required, 
-    Validators.minLength(5), 
-    Validators.maxLength(25)
-  ])
-
-  value_nombreUsuario: string = ''
-  error_nombreUsuario: boolean = false
-
-  value_fechaNacimiento: string = ''
-  error_fechaNacimiento: boolean = false
-
-  value_peso: string = ''
-  error_peso: boolean = false
-
-  value_altura: string = ''
-  error_altura: boolean = false
-  
-*/
-
 	step = 1;
 	sexo: string | null = null;
 	objetivo: string | null = null;
-	target: number | null = 0;
+	target: number = 0;
 	ree: number | null = 0;
 	factorActividad: number = 1.2;
 	actividad: string | null = null;
+
+	mostrarMensaje: boolean = false;
 
 	//Formulario hecho con formbuilder de angular
 	userForm1!: FormGroup;
@@ -78,21 +40,21 @@ export class SignupComponent {
 		private messageService: MessageService
 	) {}
 
-	revisarCorreo(){
+	revisarCorreo() {
 		const correo = this.userForm1.get('correo')?.value;
-		this.servicio.correoExiste(correo).subscribe((data) =>{
+		this.servicio.correoExiste(correo).subscribe((data) => {
 			console.log(data);
-			if(data == true){
+			if (data == true) {
 				this.messageService.clear();
 				this.messageService.add({
 					severity: 'error',
 					summary: 'El correo ingresado ya existe!',
 					sticky: true,
 				});
-			}else{
+			} else {
 				this.siguiente();
 			}
-		})
+		});
 	}
 
 	ngOnInit() {
@@ -257,6 +219,7 @@ export class SignupComponent {
 
 	//Nivel de ejercicio POCO O NADA, MODERADO Y ALTO
 	switchObjetivo(objetivo_: string) {
+		this.mostrarMensaje = true;
 		this.objetivo = objetivo_;
 
 		if (!this.userForm2.value.peso || !this.userForm2.value.altura) {
@@ -281,6 +244,7 @@ export class SignupComponent {
 	}
 
 	reasignarObjetivo(target_: any) {
+		this.mostrarMensaje = true;
 		let caloriasMantener = this.getCaloriasMantener();
 		if (caloriasMantener > target_) {
 			this.objetivo = 'BAJAR';
