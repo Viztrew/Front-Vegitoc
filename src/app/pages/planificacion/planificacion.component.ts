@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { TimeoutError } from 'rxjs';
 import { Producto } from 'src/app/interfaces/data-types';
 import { VegiService } from 'src/app/services/vegi.service';
 
@@ -27,6 +28,7 @@ export class PlanificacionComponent {
 		if (!this.servicio.isLoggedIn) {
 			this.router.navigate(['/login']);
 		}
+
 		this.mover = document.getElementById('plan-scroll');
 		this.scrollRightDPlan();
 	}

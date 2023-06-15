@@ -2,213 +2,236 @@
 	<div class="text-center section-title align-items-center" *ngIf="!dialog">
 		Receta
 	</div>
-	<div class="grid">
-		<div
-			[ngClass]="
-				dialog ? 'col-12 pt-0' : 'col-12 sm:col-5 md:col-5 lg:col-5'
-			"
-		>
-			<h2 class="text-center" *ngIf="!dialog">
-				{{ infoReceta.info_receta.nombre }}
-			</h2>
-			<span class="text-xl font-bold" *ngIf="dialog">{{
-				infoReceta.info_receta.nombre
-			}}</span>
+	<div *ngIf="infoReceta.info_receta != undefined">
+		<div class="grid">
 			<div
 				[ngClass]="
-					dialog
-						? 'container-img mt-2'
-						: 'flex justify-content-center img-container'
+					dialog ? 'col-12 pt-0' : 'col-12 sm:col-5 md:col-5 lg:col-5'
 				"
 			>
-				<img
-					[src]="imagesRecetaUrl"
-					[alt]="
-						infoReceta
-							? infoReceta.info_receta.nombre
-							: 'imagen de la receta'
-					"
-					class="info-image shadow-2"
-				/>
-			</div>
-		</div>
-		<div
-			class="card info-nutricional col-12 sm:col-7 md:col-7 lg:col-7"
-			*ngIf="!dialog"
-		>
-			<div class="text-center text-bold">
-				<h2>Información Nutricional</h2>
-			</div>
-			<p-divider></p-divider>
-			<table class="info-table">
-				<tbody>
-					<tr>
-						<td></td>
-						<td class="text-bold">Por porción</td>
-					</tr>
-					<tr>
-						<td class="text-bold">Energía (kcal)</td>
-						<td>
-							{{ infoReceta.info_receta.kcal_prcn || '-' }}
-						</td>
-					</tr>
-					<tr></tr>
-					<tr>
-						<td class="text-bold">Proteínas (g)</td>
-						<td>
-							{{ infoReceta.info_receta.prot_prcn || '-' }}
-						</td>
-					</tr>
-					<tr>
-						<td class="text-bold">Grasas Totales(g)</td>
-						<td>
-							{{ infoReceta.info_receta.gr_totales_prcn || '-' }}
-						</td>
-					</tr>
-					<tr>
-						<td class="text-bold">Hidratos (g)</td>
-						<td>
-							{{ infoReceta.info_receta.hidratos_prcn || '-' }}
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-
-		<div
-			class="card-2 info-nutricional col-12 sm:col-12 md:col-12 lg:col-12"
-			*ngIf="dialog"
-		>
-			<div class="text-center text-bold">
-				<h2>Información Nutricional</h2>
-			</div>
-			<p-divider></p-divider>
-			<table class="info-table text-left">
-				<tbody>
-					<tr>
-						<td></td>
-						<td class="text-bold">Por porción</td>
-					</tr>
-					<tr>
-						<td class="text-bold">Energía (kcal)</td>
-						<td>
-							{{ infoReceta.info_receta.kcal_prcn || '-' }}
-						</td>
-					</tr>
-					<tr></tr>
-					<tr>
-						<td class="text-bold">Proteínas (g)</td>
-						<td>
-							{{ infoReceta.info_receta.prot_prcn || '-' }}
-						</td>
-					</tr>
-					<tr>
-						<td class="text-bold">Grasas Totales(g)</td>
-						<td>
-							{{ infoReceta.info_receta.gr_totales_prcn || '-' }}
-						</td>
-					</tr>
-					<tr>
-						<td class="text-bold">Hidratos (g)</td>
-						<td>
-							{{ infoReceta.info_receta.hidratos_prcn || '-' }}
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-
-		<div class="col-12 sm:col-12 md:col-12 lg:col-12">
-			<p-divider align="center">
-				<div class="inline-flex align-items-center">
-					<h2>Ingredientes</h2>
-				</div>
-			</p-divider>
-			<div class="flex flex-wrap">
+				<h2 class="text-center" *ngIf="!dialog">
+					{{ infoReceta.info_receta.nombre }}
+				</h2>
+				<span class="text-xl font-bold" *ngIf="dialog">{{
+					infoReceta.info_receta.nombre
+				}}</span>
 				<div
 					[ngClass]="
-						dialog ? 'col-12' : 'col-12 sm:col-12 md:col-6 lg:col-4'
+						dialog
+							? 'container-img mt-2'
+							: 'flex justify-content-center img-container'
 					"
-					*ngFor="let producto of infoReceta?.lista_productos"
 				>
-					<div class="flex flex-wrap card item-producto">
-						<div
-							class="col-12 sm:col-12 md:col-12 lg:col-12 pb-0 text-center"
-						>
-							<h2
-								*ngIf="!dialog"
-								class="item-title"
-								pTooltip="Ver producto"
-								tooltipPosition="top"
-								(click)="verProducto(producto.id_producto)"
+					<img
+						[src]="imagesRecetaUrl"
+						[alt]="
+							infoReceta
+								? infoReceta.info_receta.nombre
+								: 'imagen de la receta'
+						"
+						class="info-image shadow-2"
+					/>
+				</div>
+			</div>
+			<div
+				class="card info-nutricional col-12 sm:col-7 md:col-7 lg:col-7"
+				*ngIf="!dialog"
+			>
+				<div class="text-center text-bold">
+					<h2>Información Nutricional</h2>
+				</div>
+				<p-divider></p-divider>
+				<table class="info-table">
+					<tbody>
+						<tr>
+							<td></td>
+							<td class="text-bold">Por porción</td>
+						</tr>
+						<tr>
+							<td class="text-bold">Energía (kcal)</td>
+							<td>
+								{{ infoReceta.info_receta.kcal_prcn || '-' }}
+							</td>
+						</tr>
+						<tr></tr>
+						<tr>
+							<td class="text-bold">Proteínas (g)</td>
+							<td>
+								{{ infoReceta.info_receta.prot_prcn || '-' }}
+							</td>
+						</tr>
+						<tr>
+							<td class="text-bold">Grasas Totales(g)</td>
+							<td>
+								{{
+									infoReceta.info_receta.gr_totales_prcn ||
+										'-'
+								}}
+							</td>
+						</tr>
+						<tr>
+							<td class="text-bold">Hidratos (g)</td>
+							<td>
+								{{
+									infoReceta.info_receta.hidratos_prcn || '-'
+								}}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div
+				class="card-2 info-nutricional col-12 sm:col-12 md:col-12 lg:col-12"
+				*ngIf="dialog"
+			>
+				<div class="text-center text-bold">
+					<h2>Información Nutricional</h2>
+				</div>
+				<p-divider></p-divider>
+				<table class="info-table text-left">
+					<tbody>
+						<tr>
+							<td></td>
+							<td class="text-bold">Por porción</td>
+						</tr>
+						<tr>
+							<td class="text-bold">Energía (kcal)</td>
+							<td>
+								{{ infoReceta.info_receta.kcal_prcn || '-' }}
+							</td>
+						</tr>
+						<tr></tr>
+						<tr>
+							<td class="text-bold">Proteínas (g)</td>
+							<td>
+								{{ infoReceta.info_receta.prot_prcn || '-' }}
+							</td>
+						</tr>
+						<tr>
+							<td class="text-bold">Grasas Totales(g)</td>
+							<td>
+								{{
+									infoReceta.info_receta.gr_totales_prcn ||
+										'-'
+								}}
+							</td>
+						</tr>
+						<tr>
+							<td class="text-bold">Hidratos (g)</td>
+							<td>
+								{{
+									infoReceta.info_receta.hidratos_prcn || '-'
+								}}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="col-12 sm:col-12 md:col-12 lg:col-12">
+				<p-divider align="center">
+					<div class="inline-flex align-items-center">
+						<h2>Ingredientes</h2>
+					</div>
+				</p-divider>
+				<div class="flex flex-wrap">
+					<div
+						[ngClass]="
+							dialog
+								? 'col-12'
+								: 'col-12 sm:col-12 md:col-6 lg:col-4'
+						"
+						*ngFor="let producto of infoReceta?.lista_productos"
+					>
+						<div class="flex flex-wrap card item-producto">
+							<div
+								class="col-12 sm:col-12 md:col-12 lg:col-12 pb-0 text-center"
 							>
-								{{ producto.nombre_producto }}
-							</h2>
-							<span *ngIf="dialog" class="text-xl font-medium">
-								{{ producto.nombre_producto }}
-							</span>
-						</div>
-						<div
-							[ngClass]="
-								dialog
-									? 'container-img col-12 sm:col-5 md:col-5 lg:col-5 pt-0'
-									: 'img-container align-items-center col-5 sm:col-5 md:col-5 lg:col-5 pt-0'
-							"
-						>
-							<img
-								[src]="
-									imagesUrl +
-									'/' +
-									this.producto.id_producto +
-									'.jpg'
+								<h2
+									*ngIf="!dialog"
+									class="item-title"
+									pTooltip="Ver producto"
+									tooltipPosition="top"
+									(click)="verProducto(producto.id_producto)"
+								>
+									{{ producto.nombre_producto }}
+								</h2>
+								<span
+									*ngIf="dialog"
+									class="text-xl font-medium"
+								>
+									{{ producto.nombre_producto }}
+								</span>
+							</div>
+							<div
+								[ngClass]="
+									dialog
+										? 'container-img col-12 sm:col-5 md:col-5 lg:col-5 pt-0'
+										: 'img-container align-items-center col-5 sm:col-5 md:col-5 lg:col-5 pt-0'
 								"
-								alt="{{ producto.nombre_producto }}"
-								class="info-image shadow-2"
-							/>
-						</div>
-						<div
-							[ngClass]="
-								dialog
-									? 'col-12 sm:col-7 md:col-7 lg:col-7 pt-0'
-									: 'col-7 sm:col-7 md:col-7 lg:col-7 pt-0'
-							"
-						>
-							<p>
-								<span class="text-bold"> Cantidad: </span>
-								{{ producto.cantidad }}
-								{{ producto.nombre_unidad }}
-							</p>
-							<p>
-								<span class="text-bold"> Energía (kcal): </span>
-								{{ producto.kcal }}
-							</p>
-							<p>
-								<span class="text-bold">Proteinas (g): </span>
-								{{ producto.prot }}
-							</p>
-							<p>
-								<span class="text-bold"
-									>Grasas Totales (g): </span
-								>{{ producto.gr_totales }}
-							</p>
-							<p>
-								<span class="text-bold"> Hidratos (g): </span>
-								{{ producto.hidratos }}
-							</p>
+							>
+								<img
+									[src]="
+										imagesUrl +
+										'/' +
+										this.producto.id_producto +
+										'.jpg'
+									"
+									alt="{{ producto.nombre_producto }}"
+									class="info-image shadow-2"
+								/>
+							</div>
+							<div
+								[ngClass]="
+									dialog
+										? 'col-12 sm:col-7 md:col-7 lg:col-7 pt-0'
+										: 'col-7 sm:col-7 md:col-7 lg:col-7 pt-0'
+								"
+							>
+								<p>
+									<span class="text-bold"> Cantidad: </span>
+									{{ producto.cantidad }}
+									{{ producto.nombre_unidad }}
+								</p>
+								<p>
+									<span class="text-bold">
+										Energía (kcal):
+									</span>
+									{{ producto.kcal }}
+								</p>
+								<p>
+									<span class="text-bold"
+										>Proteinas (g):
+									</span>
+									{{ producto.prot }}
+								</p>
+								<p>
+									<span class="text-bold"
+										>Grasas Totales (g): </span
+									>{{ producto.gr_totales }}
+								</p>
+								<p>
+									<span class="text-bold">
+										Hidratos (g):
+									</span>
+									{{ producto.hidratos }}
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<p-divider align="center">
-				<div class="inline-flex align-items-center">
-					<h2>Preparación</h2>
+				<p-divider align="center">
+					<div class="inline-flex align-items-center">
+						<h2>Preparación</h2>
+					</div>
+				</p-divider>
+				<div
+					class="col-12 sm:col-12 md:col-12 lg:col-12 p-0"
+					*ngFor="let paso of infoReceta?.pasos"
+				>
+					<app-paso-receta [paso]="paso"></app-paso-receta>
 				</div>
-			</p-divider>
-			<div
-				class="col-12 sm:col-12 md:col-12 lg:col-12 p-0"
-				*ngFor="let paso of infoReceta?.pasos"
-			>
-				<app-paso-receta [paso]="paso"></app-paso-receta>
 			</div>
 		</div>
 	</div>

@@ -11,7 +11,7 @@ import { TimeoutError } from 'rxjs';
 	templateUrl: './info-receta.component.html',
 	styleUrls: ['./info-receta.component.scss'],
 })
-export class InfoRecetaComponent {
+export class InfoRecetaComponent implements OnInit {
 	constructor(
 		private route: ActivatedRoute,
 		private servicio: VegiService,
@@ -34,15 +34,10 @@ export class InfoRecetaComponent {
 	noImageUrl = '../../../assets/img/nophoto.png';
 
 	async ngOnInit() {
-		await this.iniciarComponente();
-
-		await this.obtenerInformacionReceta();
-	}
-
-	async iniciarComponente() {
 		if (this.dialog) {
 			this.imagesRecetaUrl =
 				environment.baseUrl + '/' + this.id_preparacion + '.jpg';
+			await this.obtenerInformacionReceta(this.id_preparacion);
 		} else {
 			this.id_preparacion = this.route.snapshot.params['id'];
 			this.imagesRecetaUrl =
@@ -50,12 +45,15 @@ export class InfoRecetaComponent {
 				'/' +
 				this.route.snapshot.params['id'] +
 				'.jpg';
+			await this.obtenerInformacionReceta(
+				this.route.snapshot.params['id']
+			);
 		}
 	}
 
-	async obtenerInformacionReceta() {
+	async obtenerInformacionReceta(id_preparacion: any) {
 		this.spinner.show();
-		this.servicio.obtenerInformacionReceta(this.id_preparacion).subscribe(
+		this.servicio.obtenerInformacionReceta(id_preparacion).subscribe(
 			(data) => {
 				this.spinner.hide();
 				if (data.info_receta) {

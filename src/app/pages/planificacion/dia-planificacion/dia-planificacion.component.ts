@@ -49,6 +49,8 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 
 	Planificacion!: Planificacion;
 
+	InformacionUsuario!: any;
+
 	momentosDia = ['DESAYUNO', 'ALMUERZO', 'CENA'];
 
 	checked: boolean = false;
@@ -66,8 +68,8 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 	imagesRecetaUrl = environment.baseUrl;
 
 	async ngOnInit() {
+		await this.obtenerInformacionUsuario();
 		await this.obtenerPlanificacion();
-		this.obtenerInformacionUsuario();
 		this.productoSubscription =
 			this.servicioComponentes.productos$.subscribe((data) => {
 				if (data.dia?.toLowerCase() == this.dia.toLowerCase()) {
@@ -153,12 +155,58 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 							sticky: true,
 						});
 					}
+				},
+				() => {
+					this.calcularTotalCaloriasDiarias();
 				}
 			);
 	}
 
-	obtenerInformacionUsuario() {
-		this.servicio.obtenerInformacionUsuario().subscribe((data) => {});
+	async obtenerInformacionUsuario() {
+		this.servicio.obtenerInformacionUsuario().subscribe(
+			(data) => {
+				this.InformacionUsuario = data;
+			},
+			(err) => {
+				if (err.status == 401) {
+					this.router.navigateByUrl('login');
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sesión caducada',
+						detail: 'Inicia sesión nuevamente',
+						life: 3000,
+					});
+				} else if (err.status == 0) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Sin conexión',
+						detail: 'No se pudo conectar con el servidor',
+						sticky: true,
+					});
+				} else if (err instanceof TimeoutError) {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Timeout',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						sticky: true,
+					});
+				} else {
+					this.messageService.clear();
+					this.messageService.add({
+						severity: 'error',
+						summary: 'Error desconocido',
+						detail: 'Se produjo un error desconocido, intente nuevamente.',
+						sticky: true,
+					});
+				}
+			},
+			() => {
+				console.log(this.InformacionUsuario);
+			}
+		);
 	}
 
 	calcularTotalCaloriasDiarias() {
@@ -279,6 +327,9 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						sticky: true,
 					});
 				}
+			},
+			() => {
+				this.calcularTotalCaloriasDiarias();
 			}
 		);
 	}
@@ -351,6 +402,9 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						sticky: true,
 					});
 				}
+			},
+			() => {
+				this.calcularTotalCaloriasDiarias();
 			}
 		);
 	}
@@ -397,6 +451,9 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						sticky: true,
 					});
 				}
+			},
+			() => {
+				this.calcularTotalCaloriasDiarias();
 			}
 		);
 	}
@@ -443,15 +500,18 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						sticky: true,
 					});
 				}
+			},
+			() => {
+				this.calcularTotalCaloriasDiarias();
 			}
 		);
 	}
 
-	eliminarPlanProducto(producto: any, recomendacion: boolean) {
+	async eliminarPlanProducto(producto: any, recomendacion: boolean) {
 		this.servicio.eliminarPlanProducto(producto.id_plan_producto).subscribe(
-			(data) => {
+			async (data) => {
 				if (data) {
-					this.eliminarProductoArrayPlan(producto);
+					await this.eliminarProductoArrayPlan(producto);
 
 					if (!recomendacion) {
 						this.messageService.clear();
@@ -503,15 +563,18 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						sticky: true,
 					});
 				}
+			},
+			() => {
+				this.calcularTotalCaloriasDiarias();
 			}
 		);
 	}
 
-	eliminarPlanReceta(receta: any, recomendacion: boolean) {
+	async eliminarPlanReceta(receta: any, recomendacion: boolean) {
 		this.servicio.eliminarPlanReceta(receta.id_plan_preparacion).subscribe(
-			(data) => {
+			async (data) => {
 				if (data) {
-					this.eliminarRecetaArrayPlan(receta);
+					await this.eliminarRecetaArrayPlan(receta);
 					if (!recomendacion) {
 						this.messageService.clear();
 						this.messageService.add({
@@ -562,6 +625,9 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						sticky: true,
 					});
 				}
+			},
+			() => {
+				this.calcularTotalCaloriasDiarias();
 			}
 		);
 	}
@@ -619,15 +685,18 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						sticky: true,
 					});
 				}
+			},
+			() => {
+				this.calcularTotalCaloriasDiarias();
 			}
 		);
 	}
 
 	editarPlanPreparacion(planReceta: PlanReceta) {
 		this.servicio.editarPlanPreparacion(planReceta).subscribe(
-			(data) => {
+			async (data) => {
 				if (data) {
-					this.editarRecetaArrayPlan(planReceta);
+					await this.editarRecetaArrayPlan(planReceta);
 					this.messageService.clear();
 					this.messageService.add({
 						severity: 'success',
@@ -676,11 +745,14 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						sticky: true,
 					});
 				}
+			},
+			() => {
+				this.calcularTotalCaloriasDiarias();
 			}
 		);
 	}
 
-	eliminarProductoArrayPlan(producto: any) {
+	async eliminarProductoArrayPlan(producto: any) {
 		let elemento = document.getElementById(
 			producto.id_producto + '-' + producto.id_plan_producto
 		);
@@ -698,9 +770,10 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 				}
 			}
 		}, 100);
+		this.calcularTotalCaloriasDiarias();
 	}
 
-	eliminarRecetaArrayPlan(receta: any) {
+	async eliminarRecetaArrayPlan(receta: any) {
 		let elemento = document.getElementById(
 			receta.id_preparacion + '-' + receta.id_plan_preparacion
 		);
@@ -718,6 +791,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 				}
 			}
 		}, 100);
+		this.calcularTotalCaloriasDiarias();
 	}
 
 	editarProductoArrayPlan(planProducto: PlanProducto) {
@@ -925,6 +999,15 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 			}
 		}
 		return false;
+	}
+
+	cancelarRecomendacion(event: any) {
+		this.messageService.add({
+			severity: 'info',
+			summary: 'Recomendación cancelada',
+			detail: 'No se realizaron cambios en tu planificación',
+			life: 3000,
+		});
 	}
 
 	ngOnDestroy() {

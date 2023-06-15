@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { TimeoutError } from 'rxjs';
 import {
 	InfoProducto,
 	Ingrediente,
@@ -73,7 +74,6 @@ export class DialogAgregarComponent {
 
 		if (this.item.id_producto) {
 			await this.obtenerInformacionProducto();
-			await this.obtenerUnidadesMedida();
 		} else if (this.item.id_preparacion) {
 			this.mostrarSpinnerBuscar = false;
 			this.unidadesMedida = [
@@ -144,17 +144,36 @@ export class DialogAgregarComponent {
 							detail: 'Inicia sesión nuevamente',
 							life: 3000,
 						});
+					} else if (err.status == 0) {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sin conexión',
+							detail: 'No se pudo conectar con el servidor',
+							sticky: true,
+						});
+					} else if (err instanceof TimeoutError) {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Timeout',
+							detail: 'Se excedió el tiempo de espera máximo de respuesta',
+							sticky: true,
+						});
 					} else {
-						if (err.status == 0) {
-							this.messageService.clear();
-							this.messageService.add({
-								severity: 'error',
-								summary: 'Sin conexión',
-								detail: 'No se pudo conectar con el servidor',
-								life: 3000,
-							});
-						}
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Error desconocido',
+							detail: 'Se produjo un error desconocido, intente nuevamente.',
+							sticky: true,
+						});
 					}
+				},
+				() => {
+					console.log(
+						'UnidadesMedidaProducto ->' + this.unidadesMedida
+					);
 				}
 			);
 	}
@@ -176,17 +195,35 @@ export class DialogAgregarComponent {
 							detail: 'Inicia sesión nuevamente',
 							life: 3000,
 						});
+					} else if (err.status == 0) {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sin conexión',
+							detail: 'No se pudo conectar con el servidor',
+							sticky: true,
+						});
+					} else if (err instanceof TimeoutError) {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Timeout',
+							detail: 'Se excedió el tiempo de espera máximo de respuesta',
+							sticky: true,
+						});
 					} else {
-						if (err.status == 0) {
-							this.messageService.clear();
-							this.messageService.add({
-								severity: 'error',
-								summary: 'Sin conexión',
-								detail: 'No se pudo conectar con el servidor',
-								life: 3000,
-							});
-						}
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Error desconocido',
+							detail: 'Se produjo un error desconocido, intente nuevamente.',
+							sticky: true,
+						});
 					}
+				},
+				async () => {
+					await this.obtenerUnidadesMedida();
+					console.log('info producto');
 				}
 			);
 	}

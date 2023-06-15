@@ -65,6 +65,7 @@ a {
 
 .item-title {
 	cursor: pointer;
+	transition: all 0.3s ease-in-out;
 }
 .item-title:hover {
 	color: var(--primary-color);

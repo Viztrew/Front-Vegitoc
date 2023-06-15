@@ -63,7 +63,6 @@ export class DialogRecomendacionComponent {
 			.obtenerRecomendacion(this.fecha)
 			.subscribe(
 				(data) => {
-					console.log(data);
 					this.mostrarSpinnerBuscar = false;
 					if (data.is_valid) {
 						if (data.productos) {
@@ -184,8 +183,11 @@ export class DialogRecomendacionComponent {
 	}
 
 	cancelarRecomendacion() {
-		this.suscripcionRecomendacion.unsubscribe();
-		this.visible = false;
+		if (this.visible) {
+			this.cancelarRecomendacionEvent.emit();
+			this.suscripcionRecomendacion.unsubscribe();
+			this.visible = false;
+		}
 	}
 
 	confirmarRecomendacion() {

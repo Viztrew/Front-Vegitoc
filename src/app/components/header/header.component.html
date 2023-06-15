@@ -11,11 +11,6 @@
 		<span class="font-logo">SmartPlate</span>
 	</a>
 
-	<p-button
-		*ngIf="isLoggedIn"
-		class="topbar-session"
-		styleClass="p-button-rounded p-button-lg"
-		icon="pi pi-user"
-	></p-button>
+	<p *ngIf="isLoggedIn" class="topbar-session"></p>
 </div>
 <app-sidebar></app-sidebar>
