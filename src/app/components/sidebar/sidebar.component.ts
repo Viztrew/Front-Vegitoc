@@ -25,7 +25,7 @@ export class SidebarComponent implements OnInit {
 	rutaActual!: any;
 
 	ngOnInit() {
-		let theme = sessionStorage.getItem('theme');
+		let theme = localStorage.getItem('theme');
 		if (theme) {
 			if (theme == 'arya-orange') {
 				this.themeChecked = true;
@@ -33,7 +33,7 @@ export class SidebarComponent implements OnInit {
 				this.themeChecked = false;
 			}
 		} else {
-			sessionStorage.setItem('theme', 'saga-orange');
+			localStorage.setItem('theme', 'saga-orange');
 		}
 
 		this.menuItems = [
@@ -77,7 +77,7 @@ export class SidebarComponent implements OnInit {
 
 	changeTheme() {
 		if (this.themeChecked) {
-			sessionStorage.setItem('theme', 'arya-orange');
+			localStorage.setItem('theme', 'arya-orange');
 			this.themeService.switchTheme('arya-orange');
 			this.messageService.clear();
 			this.messageService.add({
@@ -87,7 +87,7 @@ export class SidebarComponent implements OnInit {
 				life: 1500,
 			});
 		} else {
-			sessionStorage.setItem('theme', 'saga-orange');
+			localStorage.setItem('theme', 'saga-orange');
 			this.themeService.switchTheme('saga-orange');
 			this.messageService.clear();
 			this.messageService.add({

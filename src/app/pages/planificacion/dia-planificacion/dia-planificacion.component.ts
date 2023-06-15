@@ -63,6 +63,8 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 
 	caloriasDiarias: number = 0;
 
+	caloriasDiariasConsumidas: number = 0;
+
 	imagesProductoUrl = environment.imagesUrl;
 
 	imagesRecetaUrl = environment.baseUrl;
@@ -166,7 +168,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 	async obtenerInformacionUsuario() {
 		this.servicio.obtenerInformacionUsuario().subscribe(
 			(data) => {
-				this.InformacionUsuario = data;
+				this.InformacionUsuario = data[0].tarjet_calorias;
 			},
 			(err) => {
 				if (err.status == 401) {
@@ -203,15 +205,13 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						sticky: true,
 					});
 				}
-			},
-			() => {
-				console.log(this.InformacionUsuario);
 			}
 		);
 	}
 
 	calcularTotalCaloriasDiarias() {
 		this.caloriasDiarias = 0;
+		this.calcularCaloriasCosumidas();
 		if (this.Planificacion.productos.length > 0) {
 			for (let i = 0; i < this.Planificacion.productos.length; i++) {
 				this.caloriasDiarias =
@@ -225,6 +225,29 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 				this.caloriasDiarias =
 					this.caloriasDiarias +
 					parseFloat(this.Planificacion.preparaciones[i].kcal);
+			}
+		}
+	}
+
+	calcularCaloriasCosumidas() {
+		this.caloriasDiariasConsumidas = 0;
+		if (this.Planificacion.productos.length > 0) {
+			for (let i = 0; i < this.Planificacion.productos.length; i++) {
+				if (this.Planificacion.productos[i].checked) {
+					this.caloriasDiariasConsumidas =
+						this.caloriasDiariasConsumidas +
+						parseFloat(this.Planificacion.productos[i].kcal);
+				}
+			}
+		}
+
+		if (this.Planificacion.preparaciones.length > 0) {
+			for (let i = 0; i < this.Planificacion.preparaciones.length; i++) {
+				if (this.Planificacion.preparaciones[i].checked) {
+					this.caloriasDiariasConsumidas =
+						this.caloriasDiariasConsumidas +
+						parseFloat(this.Planificacion.preparaciones[i].kcal);
+				}
 			}
 		}
 	}
@@ -452,6 +475,9 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						sticky: true,
 					});
 				}
+			},
+			() => {
+				this.calcularCaloriasCosumidas();
 			}
 		);
 	}
@@ -498,6 +524,9 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						sticky: true,
 					});
 				}
+			},
+			() => {
+				this.calcularCaloriasCosumidas();
 			}
 		);
 	}

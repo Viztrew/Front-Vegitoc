@@ -167,16 +167,24 @@
 			</div>
 		</div>
 	</div>
-	<div>{{ caloriasDiarias }} / {{ InformacionUsuario?.tarjet_calorias }}</div>
+	<div class="mb-1 mt-1">
+		Total consumido: {{ caloriasDiariasConsumidas }} /
+		{{ InformacionUsuario }} Kcal
+	</div>
+	<div class="mb-3 mt-1">
+		Total día: {{ caloriasDiarias }} / {{ InformacionUsuario }} Kcal
+	</div>
 
-	<p-button
+	<button
+		pButton
+		pRipple
 		[disabled]="dia != 'Ayer' ? false : true"
 		label="Recomendación"
 		pTooltip="Obtener recomendación"
 		tooltipPosition="bottom"
 		icon="fa-regular fa-lightbulb"
 		(click)="showDialogConfirmarRecomendacion()"
-	></p-button>
+	></button>
 </div>
 
 <app-dialog-agregar

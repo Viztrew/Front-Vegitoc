@@ -61,14 +61,6 @@ const routes: Routes = [
 			),
 	},
 
-	{
-		path: 'buscar',
-		loadChildren: () =>
-			import(
-				'../pages/buscar-planificacion/buscar-planificacion.module'
-			).then((m) => m.BuscarPlanificacionModule),
-	},
-
 	{ path: '**', redirectTo: '/404' },
 	{
 		path: '404',
