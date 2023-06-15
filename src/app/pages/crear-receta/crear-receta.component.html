@@ -7,7 +7,13 @@
 	></p-steps>
 </div>
 <div class="card card-step-receta p-0">
-	<div class="flex flex-wrap justify-content-center" *ngIf="activeIndex == 0">
+	<div
+		[ngClass]="
+			activeIndex == 0
+				? 'flex flex-wrap justify-content-center'
+				: 'no-mostrar'
+		"
+	>
 		<form [formGroup]="infoForm">
 			<div
 				class="flex justify-content-center col-12 mt-2 image-container mb-2"
