@@ -167,9 +167,7 @@
 			</div>
 		</div>
 	</div>
-	<div>
-		{{ caloriasDiarias }}
-	</div>
+	<div>{{ caloriasDiarias }} / {{ InformacionUsuario?.tarjet_calorias }}</div>
 
 	<p-button
 		[disabled]="dia != 'Ayer' ? false : true"

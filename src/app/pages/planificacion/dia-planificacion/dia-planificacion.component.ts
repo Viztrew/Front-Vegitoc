@@ -70,6 +70,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 	async ngOnInit() {
 		await this.obtenerInformacionUsuario();
 		await this.obtenerPlanificacion();
+
 		this.productoSubscription =
 			this.servicioComponentes.productos$.subscribe((data) => {
 				if (data.dia?.toLowerCase() == this.dia.toLowerCase()) {
@@ -451,9 +452,6 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						sticky: true,
 					});
 				}
-			},
-			() => {
-				this.calcularTotalCaloriasDiarias();
 			}
 		);
 	}
@@ -500,9 +498,6 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						sticky: true,
 					});
 				}
-			},
-			() => {
-				this.calcularTotalCaloriasDiarias();
 			}
 		);
 	}
@@ -563,9 +558,6 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						sticky: true,
 					});
 				}
-			},
-			() => {
-				this.calcularTotalCaloriasDiarias();
 			}
 		);
 	}
@@ -625,9 +617,6 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						sticky: true,
 					});
 				}
-			},
-			() => {
-				this.calcularTotalCaloriasDiarias();
 			}
 		);
 	}
@@ -769,8 +758,8 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					break;
 				}
 			}
+			this.calcularTotalCaloriasDiarias();
 		}, 100);
-		this.calcularTotalCaloriasDiarias();
 	}
 
 	async eliminarRecetaArrayPlan(receta: any) {
@@ -790,8 +779,8 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					break;
 				}
 			}
+			this.calcularTotalCaloriasDiarias();
 		}, 100);
-		this.calcularTotalCaloriasDiarias();
 	}
 
 	editarProductoArrayPlan(planProducto: PlanProducto) {

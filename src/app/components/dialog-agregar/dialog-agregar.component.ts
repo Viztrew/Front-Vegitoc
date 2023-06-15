@@ -169,11 +169,6 @@ export class DialogAgregarComponent {
 							sticky: true,
 						});
 					}
-				},
-				() => {
-					console.log(
-						'UnidadesMedidaProducto ->' + this.unidadesMedida
-					);
 				}
 			);
 	}
@@ -223,7 +218,6 @@ export class DialogAgregarComponent {
 				},
 				async () => {
 					await this.obtenerUnidadesMedida();
-					console.log('info producto');
 				}
 			);
 	}
