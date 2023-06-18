@@ -25,7 +25,7 @@ export class SignupComponent {
 	target: number = 0;
 	ree: number | null = 0;
 	factorActividad: number = 1.2;
-	actividad: string | null = null;
+	actividad: string | null = 'BAJO';
 
 	mostrarMensaje: boolean = false;
 
