@@ -1,17 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
 	FormBuilder,
 	Validators,
 	FormControl,
 	FormGroup,
 } from '@angular/forms';
-import { SignupModule } from './signup.module';
-import { StepsModule } from 'primeng/steps';
 import { VegiService } from 'src/app/services/vegi.service';
-import { AbstractControl } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { TimeoutError } from 'rxjs';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
 	selector: 'app-signup',
@@ -20,24 +18,25 @@ import { TimeoutError } from 'rxjs';
 })
 export class SignupComponent {
 	step = 1;
-	sexo: string | null = null;
-	objetivo: string | null = null;
+	sexo!: string;
+	objetivo!: string;
 	target: number = 0;
-	ree: number | null = 0;
+	ree: number = 0;
 	factorActividad: number = 1.2;
-	actividad: string | null = null;
+	actividad: string = 'BAJO';
 
 	mostrarMensaje: boolean = false;
 
 	//Formulario hecho con formbuilder de angular
 	userForm1!: FormGroup;
 	userForm2!: FormGroup;
-	//Se puede borrar fb¿¿¿ pero se deja servicio¿¿¿
+
 	constructor(
 		private formBuilder: FormBuilder,
 		private servicio: VegiService,
 		private router: Router,
-		private messageService: MessageService
+		private messageService: MessageService,
+		private spinner: NgxSpinnerService
 	) {}
 
 	revisarCorreo() {
@@ -48,7 +47,8 @@ export class SignupComponent {
 				this.messageService.clear();
 				this.messageService.add({
 					severity: 'error',
-					summary: 'El correo ingresado ya existe!',
+					summary: '¡Correo ya existente!',
+					detail: 'El correo ingresado ya existe en SmartPlate.',
 					sticky: true,
 				});
 			} else {
@@ -130,6 +130,7 @@ export class SignupComponent {
 	}
 
 	async enviar() {
+		this.spinner.show();
 		let usuario = {
 			email: this.userForm1.value.correo,
 			nombre: this.userForm2.value.nombreUsuario,
@@ -147,25 +148,25 @@ export class SignupComponent {
 		this.servicio.crearUsuario(usuario).subscribe(
 			async (data) => {
 				if (data) {
+					this.spinner.hide();
 					this.messageService.clear();
 					this.messageService.add({
 						severity: 'success',
 						summary: '¡Cuenta registrada!',
-						detail: 'Inicie sesión con su cuenta',
+						detail: 'Inicie sesión con su cuenta.',
 						life: 3000,
 					});
 					this.router.navigateByUrl('/login');
-				} else {
-					console.log('wtf');
 				}
 			},
 			(err) => {
+				this.spinner.hide();
 				if (err.status == 0) {
 					this.messageService.clear();
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Sin conexión',
-						detail: 'No se pudo conectar con el servidor',
+						detail: 'No se pudo conectar con el servidor.',
 						sticky: true,
 					});
 				} else if (err instanceof TimeoutError) {

@@ -1,4 +1,5 @@
 <p-dialog
+	*ngIf="visible"
 	header="Header"
 	[(visible)]="visible"
 	[breakpoints]="{ '1200px': '40vw', '767px': '60vw', '576px': '95vw' }"
@@ -12,6 +13,9 @@
 	</ng-template>
 
 	<ng-template pTemplate="content">
+		<div class="text-center" *ngIf="editar && crearReceta">
+			<span class="font-bold">{{ item?.nombre_producto || '' }}</span>
+		</div>
 		<div class="text-center">
 			<span class="font-bold">{{ item?.nombre || '' }}</span>
 		</div>
@@ -90,8 +94,29 @@
 				</div>
 			</div>
 
-			<div class="flex align-items-center justify-content-center mt-3">
-				Calorías: {{ calorias || 0 }} kcal
+			<div
+				class="flex align-items-center justify-content-center mt-3 pb-0"
+			>
+				<table class="info-table">
+					<tbody>
+						<tr>
+							<td class="text-bold">Calorías (kcal)</td>
+							<td>{{ calorias || 0 }}</td>
+						</tr>
+						<tr>
+							<td class="text-bold">Grasas totales (g)</td>
+							<td>{{ grasasTotales || 0 }}</td>
+						</tr>
+						<tr>
+							<td class="text-bold">Carbohidratos (g)</td>
+							<td>{{ carbohidratos || 0 }}</td>
+						</tr>
+						<tr>
+							<td class="text-bold">Proteínas (g)</td>
+							<td>{{ proteinas || 0 }}</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</form>
 	</ng-template>

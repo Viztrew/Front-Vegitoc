@@ -404,7 +404,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Sin conexión',
-						detail: 'No se pudo conectar con el servidor',
+						detail: 'No se pudo conectar con el servidor.',
 						sticky: true,
 					});
 				} else if (err instanceof TimeoutError) {
@@ -412,7 +412,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Timeout',
-						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta.',
 						sticky: true,
 					});
 				} else {
@@ -445,7 +445,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Sesión caducada',
-						detail: 'Inicia sesión nuevamente',
+						detail: 'Inicia sesión nuevamente.',
 						life: 3000,
 					});
 				} else if (err.status == 0) {
@@ -453,7 +453,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Sin conexión',
-						detail: 'No se pudo conectar con el servidor',
+						detail: 'No se pudo conectar con el servidor.',
 						sticky: true,
 					});
 				} else if (err instanceof TimeoutError) {
@@ -461,7 +461,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Timeout',
-						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta.',
 						sticky: true,
 					});
 				} else {
@@ -494,7 +494,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Sesión caducada',
-						detail: 'Inicia sesión nuevamente',
+						detail: 'Inicia sesión nuevamente.',
 						life: 3000,
 					});
 				} else if (err.status == 0) {
@@ -502,7 +502,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Sin conexión',
-						detail: 'No se pudo conectar con el servidor',
+						detail: 'No se pudo conectar con el servidor.',
 						sticky: true,
 					});
 				} else if (err instanceof TimeoutError) {
@@ -510,7 +510,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Timeout',
-						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta.',
 						sticky: true,
 					});
 				} else {
@@ -558,7 +558,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Sesión caducada',
-						detail: 'Inicia sesión nuevamente',
+						detail: 'Inicia sesión nuevamente.',
 						life: 3000,
 					});
 				} else if (err.status == 0) {
@@ -566,7 +566,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Sin conexión',
-						detail: 'No se pudo conectar con el servidor',
+						detail: 'No se pudo conectar con el servidor.',
 						sticky: true,
 					});
 				} else if (err instanceof TimeoutError) {
@@ -574,7 +574,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Timeout',
-						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta.',
 						sticky: true,
 					});
 				} else {
@@ -619,7 +619,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Sesión caducada',
-						detail: 'Inicia sesión nuevamente',
+						detail: 'Inicia sesión nuevamente.',
 						life: 3000,
 					});
 				} else if (err.status == 0) {
@@ -627,7 +627,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Sin conexión',
-						detail: 'No se pudo conectar con el servidor',
+						detail: 'No se pudo conectar con el servidor.',
 						sticky: true,
 					});
 				} else if (err instanceof TimeoutError) {
@@ -635,7 +635,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Timeout',
-						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta.',
 						sticky: true,
 					});
 				} else {
@@ -677,7 +677,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Sesión caducada',
-						detail: 'Inicia sesión nuevamente',
+						detail: 'Inicia sesión nuevamente.',
 						life: 3000,
 					});
 				} else if (err.status == 0) {
@@ -685,7 +685,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Sin conexión',
-						detail: 'No se pudo conectar con el servidor',
+						detail: 'No se pudo conectar con el servidor.',
 						sticky: true,
 					});
 				} else if (err instanceof TimeoutError) {
@@ -693,7 +693,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Timeout',
-						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta.',
 						sticky: true,
 					});
 				} else {
@@ -738,7 +738,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Sesión caducada',
-						detail: 'Inicia sesión nuevamente',
+						detail: 'Inicia sesión nuevamente.',
 						life: 3000,
 					});
 				} else if (err.status == 0) {
@@ -746,7 +746,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Sin conexión',
-						detail: 'No se pudo conectar con el servidor',
+						detail: 'No se pudo conectar con el servidor.',
 						sticky: true,
 					});
 				} else if (err instanceof TimeoutError) {
@@ -754,7 +754,7 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.add({
 						severity: 'error',
 						summary: 'Timeout',
-						detail: 'Se excedió el tiempo de espera máximo de respuesta',
+						detail: 'Se excedió el tiempo de espera máximo de respuesta.',
 						sticky: true,
 					});
 				} else {

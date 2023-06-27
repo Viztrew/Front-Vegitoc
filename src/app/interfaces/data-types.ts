@@ -94,6 +94,7 @@ export interface Ingrediente {
 	id_unidad_medida: number;
 	nombre_unidad: string;
 	kcal: number;
+	editar: boolean;
 }
 
 export interface Paso {

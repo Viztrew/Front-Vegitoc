@@ -1,7 +1,7 @@
 <div class="card card-steps">
 	<p-steps
 		[model]="items"
-		[readonly]="true"
+		[readonly]="false"
 		[activeIndex]="activeIndex"
 		(activeIndexChange)="onActiveIndexChange($event)"
 	></p-steps>
@@ -175,6 +175,7 @@
 							class="col-1 edit-button flex justify-content-center"
 							pTooltip="Editar"
 							tooltipPosition="bottom"
+							(click)="editarIngrediente(ingrediente)"
 						>
 							<i class="pi pi-pencil"></i>
 						</div>
@@ -482,3 +483,12 @@
 	[id_producto]="idProductoVer"
 >
 </app-dialog-ver-producto>
+
+<app-dialog-agregar
+	*ngIf="dialogEditarIngrediente"
+	[visible]="dialogEditarIngrediente"
+	[editar]="true"
+	[crearReceta]="true"
+	[item]="ingredienteEditar"
+	(agregarItemRecetaEvent)="addIngredienteReceta($event)"
+></app-dialog-agregar>

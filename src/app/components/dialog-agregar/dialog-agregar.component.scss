@@ -2,3 +2,8 @@
 	text-align: center;
 	padding: 1rem;
 }
+
+:host ::ng-deep .p-dialog .p-dialog-content {
+	text-align: left;
+	padding-bottom: 0;
+}

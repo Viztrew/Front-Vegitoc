@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 import { TimeoutError } from 'rxjs';
 import {
 	InfoProducto,
+	InfoReceta,
 	Ingrediente,
 	PlanProducto,
 	PlanReceta,
@@ -60,12 +61,23 @@ export class DialogAgregarComponent {
 
 	infoProducto!: InfoProducto;
 
+	infoReceta!: InfoReceta;
+
 	valorMinimo: number = 0;
 
 	calorias: number = 0;
 
+	grasasTotales: number = 0;
+
+	carbohidratos: number = 0;
+
+	proteinas: number = 0;
+
 	itemKcal!: {
 		kcal: number;
+		grasasTotales: number;
+		carbohidratos: number;
+		proteinas: number;
 		unidad: string;
 	};
 
@@ -75,22 +87,11 @@ export class DialogAgregarComponent {
 		if (this.item.id_producto) {
 			await this.obtenerInformacionProducto();
 		} else if (this.item.id_preparacion) {
-			this.mostrarSpinnerBuscar = false;
-			this.unidadesMedida = [
-				{
-					id_unidad_medida: 1,
-					nombre: 'porción',
-					unidad_base: 'porcion',
-					multiplicador: '1',
-				},
-			];
+			await this.obtenerInformacionReceta();
 		}
 
 		// se suscriben a los cambios del campo unidad para calcular las calorias
 		await this.suscripcionUnidad();
-
-		// se setea la porcion como unidad por defecto
-		await this.setUnidadPorDefecto();
 
 		// se suscriben a los cambios del campo cantidad para calcular las calorias
 		await this.suscripcionCantidad();
@@ -116,6 +117,9 @@ export class DialogAgregarComponent {
 			nombre: new FormControl(''),
 			id: new FormControl(''),
 			calorias: new FormControl(''),
+			grasasTotales: new FormControl(''),
+			carbohidratos: new FormControl(''),
+			proteinas: new FormControl(''),
 			unidad: new FormControl('', [Validators.required]),
 			cantidad: new FormControl('', [
 				Validators.required,
@@ -222,16 +226,78 @@ export class DialogAgregarComponent {
 			);
 	}
 
+	async obtenerInformacionReceta() {
+		this.servicio
+			.obtenerInformacionReceta(this.item.id_preparacion)
+			.subscribe(
+				(data) => {
+					this.infoReceta = data;
+					this.unidadesMedida = [
+						{
+							id_unidad_medida: 1,
+							nombre: 'porción',
+							unidad_base: 'porcion',
+							multiplicador: '1',
+						},
+					];
+				},
+				(err) => {
+					if (err.status == 401) {
+						this.router.navigateByUrl('login');
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sesión caducada',
+							detail: 'Inicia sesión nuevamente',
+							life: 3000,
+						});
+					} else if (err.status == 0) {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Sin conexión',
+							detail: 'No se pudo conectar con el servidor',
+							sticky: true,
+						});
+					} else if (err instanceof TimeoutError) {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Timeout',
+							detail: 'Se excedió el tiempo de espera máximo de respuesta',
+							sticky: true,
+						});
+					} else {
+						this.messageService.clear();
+						this.messageService.add({
+							severity: 'error',
+							summary: 'Error desconocido',
+							detail: 'Se produjo un error desconocido, intente nuevamente.',
+							sticky: true,
+						});
+					}
+				},
+				() => {
+					this.setUnidadPorDefecto();
+					this.mostrarSpinnerBuscar = false;
+				}
+			);
+	}
+
 	async agregarItemPlanificacion() {
-		if (this.editar) {
+		if (this.editar && !this.crearReceta) {
 			this.agregarItemPlanEvent.emit(this.setValoresItemPlan());
 		} else {
 			await this.setValoresForm();
-			if (this.crearReceta) {
+			if (this.crearReceta && !this.editar) {
 				this.agregarItemRecetaEvent.emit(
-					this.setValoresIngredienteReceta()
+					this.setValoresIngredienteReceta(false)
 				);
-			} else {
+			} else if (this.crearReceta && this.editar) {
+				this.agregarItemRecetaEvent.emit(
+					this.setValoresIngredienteReceta(true)
+				);
+			} else if (!this.crearReceta && !this.editar) {
 				this.agregarItemPlanEvent.emit(this.formAgregar);
 			}
 		}
@@ -248,17 +314,31 @@ export class DialogAgregarComponent {
 		}
 	}
 
-	setValoresIngredienteReceta(): any {
+	setValoresIngredienteReceta(editar: boolean): any {
 		let ingrediente: Ingrediente;
-		return (ingrediente = {
-			id_producto: this.formAgregar.controls['id'].value,
-			nombre_producto: this.formAgregar.controls['nombre'].value,
-			cantidad: this.formAgregar.controls['cantidad'].value,
-			id_unidad_medida:
-				this.formAgregar.get('unidad')?.value.id_unidad_medida,
-			nombre_unidad: this.formAgregar.get('unidad')?.value.nombre,
-			kcal: this.calorias,
-		});
+		if (editar) {
+			return (ingrediente = {
+				id_producto: this.formAgregar.controls['id'].value,
+				nombre_producto: this.item.nombre_producto,
+				cantidad: this.formAgregar.controls['cantidad'].value,
+				id_unidad_medida:
+					this.formAgregar.get('unidad')?.value.id_unidad_medida,
+				nombre_unidad: this.formAgregar.get('unidad')?.value.nombre,
+				kcal: this.calorias,
+				editar: editar,
+			});
+		} else {
+			return (ingrediente = {
+				id_producto: this.formAgregar.controls['id'].value,
+				nombre_producto: this.formAgregar.controls['nombre'].value,
+				cantidad: this.formAgregar.controls['cantidad'].value,
+				id_unidad_medida:
+					this.formAgregar.get('unidad')?.value.id_unidad_medida,
+				nombre_unidad: this.formAgregar.get('unidad')?.value.nombre,
+				kcal: this.calorias,
+				editar: editar,
+			});
+		}
 	}
 
 	setValoresItemPlan(): any {
@@ -295,16 +375,35 @@ export class DialogAgregarComponent {
 	}
 
 	async setUnidadPorDefecto() {
-		if (this.editar && this.item.id_producto) {
-			for (let i = 0; i < this.unidadesMedida.length; i++) {
-				if (
-					this.item.unidad_medida ==
-					this.unidadesMedida[i].id_unidad_medida
-				) {
-					this.formAgregar.controls['unidad'].setValue(
-						this.unidadesMedida[i]
-					);
+		if (this.editar) {
+			if (this.item.id_producto) {
+				if (this.crearReceta) {
+					for (let i = 0; i < this.unidadesMedida.length; i++) {
+						if (
+							this.item.id_unidad_medida ==
+							this.unidadesMedida[i].id_unidad_medida
+						) {
+							this.formAgregar.controls['unidad'].setValue(
+								this.unidadesMedida[i]
+							);
+						}
+					}
+				} else {
+					for (let i = 0; i < this.unidadesMedida.length; i++) {
+						if (
+							this.item.unidad_medida ==
+							this.unidadesMedida[i].id_unidad_medida
+						) {
+							this.formAgregar.controls['unidad'].setValue(
+								this.unidadesMedida[i]
+							);
+						}
+					}
 				}
+			} else if (this.item.id_preparacion) {
+				this.formAgregar.controls['unidad'].setValue(
+					this.unidadesMedida[0]
+				);
 			}
 		} else {
 			this.formAgregar.controls['unidad'].setValue(
@@ -325,9 +424,27 @@ export class DialogAgregarComponent {
 						this.calorias = Math.round(
 							this.itemKcal?.kcal * cantidad
 						);
+						this.grasasTotales = Math.round(
+							this.itemKcal?.grasasTotales * cantidad
+						);
+						this.carbohidratos = Math.round(
+							this.itemKcal?.carbohidratos * cantidad
+						);
+						this.proteinas = Math.round(
+							this.itemKcal?.proteinas * cantidad
+						);
 					} else {
 						this.calorias = Math.round(
 							(this.itemKcal?.kcal / 100) * cantidad
+						);
+						this.grasasTotales = Math.round(
+							(this.itemKcal?.grasasTotales / 100) * cantidad
+						);
+						this.carbohidratos = Math.round(
+							(this.itemKcal?.carbohidratos / 100) * cantidad
+						);
+						this.proteinas = Math.round(
+							(this.itemKcal?.proteinas / 100) * cantidad
 						);
 					}
 				}
@@ -338,21 +455,30 @@ export class DialogAgregarComponent {
 	async suscripcionUnidad() {
 		this.formAgregar.controls['unidad'].valueChanges.subscribe((unidad) => {
 			if (unidad?.unidad_base == 'porcion') {
-				if (this.editar) {
-					if (this.item.id_preparacion) {
-						this.itemKcal = {
-							kcal: this.item.kcal / this.item.cantidad,
-							unidad: 'porcion',
-						};
-					} else if (this.item.id_producto) {
-						this.itemKcal = {
-							kcal: parseFloat(this.infoProducto?.kcal_prcn),
-							unidad: 'porcion',
-						};
-					}
-				} else {
+				if (this.item.id_preparacion) {
 					this.itemKcal = {
-						kcal: this.item.kcal_prcn,
+						kcal: parseFloat(this.infoReceta.info_receta.kcal_prcn),
+						grasasTotales: parseFloat(
+							this.infoReceta.info_receta.gr_totales_prcn
+						),
+						carbohidratos: parseFloat(
+							this.infoReceta.info_receta.hidratos_prcn
+						),
+						proteinas: parseFloat(
+							this.infoReceta.info_receta.prot_prcn
+						),
+						unidad: 'porcion',
+					};
+				} else if (this.item.id_producto) {
+					this.itemKcal = {
+						kcal: parseFloat(this.infoProducto?.kcal_prcn),
+						grasasTotales: parseFloat(
+							this.infoProducto?.gr_totales_prcn
+						),
+						carbohidratos: parseFloat(
+							this.infoProducto?.hidratos_prcn
+						),
+						proteinas: parseFloat(this.infoProducto?.prot_prcn),
 						unidad: 'porcion',
 					};
 				}
@@ -360,13 +486,42 @@ export class DialogAgregarComponent {
 					this.itemKcal.kcal *
 						this.formAgregar.controls['cantidad'].value
 				);
+				this.grasasTotales = Math.round(
+					this.itemKcal.grasasTotales *
+						this.formAgregar.controls['cantidad'].value
+				);
+				this.carbohidratos = Math.round(
+					this.itemKcal.carbohidratos *
+						this.formAgregar.controls['cantidad'].value
+				);
+				this.proteinas = Math.round(
+					this.itemKcal.proteinas *
+						this.formAgregar.controls['cantidad'].value
+				);
 			} else {
 				this.itemKcal = {
 					kcal: parseFloat(this.infoProducto?.kcal_100),
+					grasasTotales: parseFloat(
+						this.infoProducto?.gr_totales_100
+					),
+					carbohidratos: parseFloat(this.infoProducto?.hidratos_100),
+					proteinas: parseFloat(this.infoProducto?.prot_100),
 					unidad: unidad?.unidad_base,
 				};
 				this.calorias = Math.round(
 					(this.itemKcal.kcal / 100) *
+						this.formAgregar.controls['cantidad'].value
+				);
+				this.grasasTotales = Math.round(
+					(this.itemKcal.grasasTotales / 100) *
+						this.formAgregar.controls['cantidad'].value
+				);
+				this.carbohidratos = Math.round(
+					(this.itemKcal.carbohidratos / 100) *
+						this.formAgregar.controls['cantidad'].value
+				);
+				this.proteinas = Math.round(
+					(this.itemKcal.proteinas / 100) *
 						this.formAgregar.controls['cantidad'].value
 				);
 			}

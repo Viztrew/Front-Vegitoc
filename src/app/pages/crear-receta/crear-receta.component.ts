@@ -15,6 +15,7 @@ import { VegiService } from 'src/app/services/vegi.service';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DialogVerProductoComponent } from 'src/app/components/dialog-ver-producto/dialog-ver-producto.component';
+import { DialogAgregarComponent } from 'src/app/components/dialog-agregar/dialog-agregar.component';
 @Component({
 	selector: 'app-crear-receta',
 	templateUrl: './crear-receta.component.html',
@@ -44,6 +45,8 @@ export class CrearRecetaComponent {
 
 	@ViewChild(DialogVerProductoComponent) dialogVerProductoChild: any;
 
+	@ViewChild(DialogAgregarComponent) dialogAgregarChild: any;
+
 	pasosForm!: FormGroup;
 
 	TipoItems: Array<string> = ['producto', 'favorito'];
@@ -61,6 +64,10 @@ export class CrearRecetaComponent {
 	dialogConfirmar: boolean = false;
 
 	dialogVerProducto: boolean = false;
+
+	dialogEditarIngrediente: boolean = false;
+
+	ingredienteEditar!: Ingrediente;
 
 	idProductoVer!: string;
 
@@ -107,27 +114,54 @@ export class CrearRecetaComponent {
 				(ingrediente) => {
 					if (ingrediente?.id_producto) {
 						this.dialogIngredientes = false;
+						this.dialogEditarIngrediente = false;
 						if (this.Receta.lista_productos) {
-							if (
-								this.validarIngredienteRepetido(
-									ingrediente.id_producto
-								)
-							) {
-								this.messageService.clear();
-								this.messageService.add({
-									severity: 'info',
-									summary: '¡Ingrediente repetido!',
-									detail: 'No puedes agregar el mismo producto mas de una vez',
-									life: 3000,
-								});
+							if (ingrediente.editar) {
+								this.editarIngredienteArray(ingrediente);
 							} else {
-								this.cantidadIngredientes =
-									this.cantidadIngredientes + 1;
-								this.Receta.lista_productos.push(ingrediente);
+								if (
+									this.validarIngredienteRepetido(
+										ingrediente.id_producto
+									)
+								) {
+									this.messageService.clear();
+									this.messageService.add({
+										severity: 'info',
+										summary: '¡Ingrediente repetido!',
+										detail: 'No puedes agregar el mismo producto mas de una vez.',
+										life: 4000,
+									});
+								} else {
+									this.cantidadIngredientes =
+										this.cantidadIngredientes + 1;
+									this.Receta.lista_productos.push(
+										ingrediente
+									);
+									this.messageService.clear();
+									this.messageService.add({
+										severity: 'success',
+										summary: '¡Ingrediente agregado!',
+										detail:
+											'El ingrediente ' +
+											ingrediente.nombre_producto +
+											' ha sido agregado exitosamente.',
+										life: 3000,
+									});
+								}
 							}
 						} else {
 							this.cantidadIngredientes = 1;
 							this.Receta.lista_productos = [ingrediente];
+							this.messageService.clear();
+							this.messageService.add({
+								severity: 'success',
+								summary: '¡Ingrediente agregado!',
+								detail:
+									'El ingrediente ' +
+									ingrediente.nombre_producto +
+									' ha sido agregado exitosamente.',
+								life: 3000,
+							});
 						}
 						this.servicioComponentes.addIngredienteReceta(
 							{} as Ingrediente
@@ -246,6 +280,34 @@ export class CrearRecetaComponent {
 		});
 	}
 
+	addIngredienteReceta(ingrediente: Ingrediente) {
+		this.servicioComponentes.addIngredienteReceta(ingrediente);
+	}
+
+	editarIngredienteArray(ingrediente: Ingrediente) {
+		console.log(ingrediente);
+
+		for (let i = 0; i < this.Receta.lista_productos.length; i++) {
+			if (
+				ingrediente.id_producto ==
+				this.Receta.lista_productos[i].id_producto
+			) {
+				this.Receta.lista_productos.splice(i, 1, ingrediente);
+				break;
+			}
+		}
+		this.messageService.clear();
+		this.messageService.add({
+			severity: 'success',
+			summary: '¡Ingrediente editado!',
+			detail:
+				'El ingrediente ' +
+				ingrediente.nombre_producto +
+				' ha sido editado exitosamente.',
+			life: 3000,
+		});
+	}
+
 	eliminarIngredienteArray(ingrediente: Ingrediente) {
 		let elemento = document.getElementById(ingrediente.id_producto);
 		if (elemento) {
@@ -269,6 +331,16 @@ export class CrearRecetaComponent {
 				}
 			}, 100);
 		}
+		this.messageService.clear();
+		this.messageService.add({
+			severity: 'success',
+			summary: '¡Ingrediente eliminado!',
+			detail:
+				'El ingrediente ' +
+				ingrediente.nombre_producto +
+				' ha sido eliminado exitosamente.',
+			life: 3000,
+		});
 	}
 
 	eliminarPasoArray(paso: Paso) {
@@ -292,6 +364,14 @@ export class CrearRecetaComponent {
 				}
 			}, 100);
 		}
+		this.messageService.clear();
+		this.messageService.add({
+			severity: 'success',
+			summary: '¡Paso eliminado!',
+			detail:
+				'El paso ' + paso.n_paso + ' ha sido eliminado exitosamente.',
+			life: 3000,
+		});
 	}
 
 	setNumeroPasosArray() {
@@ -333,6 +413,22 @@ export class CrearRecetaComponent {
 		} else {
 			this.dialogIngredientes = true;
 		}
+	}
+
+	async mostrarDialogEditarIngrediente() {
+		if (this.dialogAgregarChild) {
+			this.dialogEditarIngrediente = false;
+			setTimeout(() => {
+				this.dialogEditarIngrediente = true;
+			}, 100);
+		} else {
+			this.dialogEditarIngrediente = true;
+		}
+	}
+
+	editarIngrediente(ingrediente: Ingrediente) {
+		this.ingredienteEditar = ingrediente;
+		this.mostrarDialogEditarIngrediente();
 	}
 
 	mostrarDialogPasos() {
