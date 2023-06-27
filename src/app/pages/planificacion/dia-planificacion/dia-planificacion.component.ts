@@ -301,17 +301,16 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					if (!recomendacion) {
 						this.messageService.add({
 							severity: 'success',
-							summary:
-								'¡' +
+							summary: '¡Producto agregado!',
+							detail:
 								producto.nombre +
 								' ha sido agregado para ' +
 								articulo +
 								' ' +
 								producto.momento_dia +
 								' de ' +
-								producto.dia.toUpperCase() +
-								'!',
-							life: 2500,
+								producto.dia.toUpperCase(),
+							life: 4500,
 						});
 					}
 				}
@@ -376,17 +375,16 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					if (!recomendacion) {
 						this.messageService.add({
 							severity: 'success',
-							summary:
-								'¡' +
+							summary: '¡Receta agregada!',
+							detail:
 								receta.nombre +
 								' ha sido agregado para ' +
 								articulo +
 								' ' +
 								receta.momento_dia +
 								' de ' +
-								receta.dia.toUpperCase() +
-								'!',
-							life: 2500,
+								receta.dia.toUpperCase(),
+							life: 4500,
 						});
 					}
 				}
@@ -541,13 +539,14 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						this.messageService.clear();
 						this.messageService.add({
 							severity: 'success',
-							summary:
+							summary: '¡Producto eliminado!',
+							detail:
 								producto.nombre +
 								' ha sido eliminado de ' +
 								producto.momento_dia +
 								' de ' +
 								this.dia.toUpperCase(),
-							life: 2500,
+							life: 4000,
 						});
 					}
 				}
@@ -600,13 +599,15 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 						this.messageService.clear();
 						this.messageService.add({
 							severity: 'success',
-							summary:
+
+							summary: '¡Receta eliminada!',
+							detail:
 								receta.nombre +
 								' ha sido eliminado de ' +
 								receta.momento_dia +
 								' de ' +
 								this.dia.toUpperCase(),
-							life: 2500,
+							life: 4000,
 						});
 					}
 				}
@@ -658,13 +659,14 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.clear();
 					this.messageService.add({
 						severity: 'success',
-						summary:
+						summary: '¡Producto editado!',
+						detail:
 							planProducto.nombre +
 							' ha sido editado de ' +
 							planProducto.momento_dia +
 							' de ' +
 							this.dia.toUpperCase(),
-						life: 2500,
+						life: 3500,
 					});
 				}
 			},
@@ -718,13 +720,14 @@ export class DiaPlanificacionComponent implements OnInit, OnDestroy {
 					this.messageService.clear();
 					this.messageService.add({
 						severity: 'success',
-						summary:
+						summary: '¡Receta editada!',
+						detail:
 							planReceta.nombre +
 							' ha sido editado de ' +
 							planReceta.momento_dia +
 							' de ' +
 							this.dia.toUpperCase(),
-						life: 2500,
+						life: 3500,
 					});
 				}
 			},
