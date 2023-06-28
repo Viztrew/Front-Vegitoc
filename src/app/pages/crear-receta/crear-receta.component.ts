@@ -69,6 +69,12 @@ export class CrearRecetaComponent {
 
 	ingredienteEditar!: Ingrediente;
 
+	pasoEditar!: Paso;
+
+	editarPaso: boolean = false;
+
+	labelDialogPasos: string = 'Agregar';
+
 	idProductoVer!: string;
 
 	Receta: CrearReceta = {} as CrearReceta;
@@ -92,7 +98,7 @@ export class CrearRecetaComponent {
 
 		await this.initInfoForm();
 
-		await this.initPasosForm();
+		await this.initPasosForm(false);
 
 		this.items = [
 			{
@@ -270,14 +276,27 @@ export class CrearRecetaComponent {
 		});
 	}
 
-	async initPasosForm() {
-		this.pasosForm = this.formBuilder.group({
-			descripcion: new FormControl('', [
-				Validators.required,
-				Validators.maxLength(500),
-				Validators.minLength(10),
-			]),
-		});
+	async initPasosForm(editar: boolean) {
+		if (editar) {
+			this.pasosForm = this.formBuilder.group({
+				descripcion: new FormControl(
+					{ value: this.pasoEditar.descripcion, disabled: false },
+					[
+						Validators.required,
+						Validators.maxLength(500),
+						Validators.minLength(10),
+					]
+				),
+			});
+		} else {
+			this.pasosForm = this.formBuilder.group({
+				descripcion: new FormControl('', [
+					Validators.required,
+					Validators.maxLength(500),
+					Validators.minLength(10),
+				]),
+			});
+		}
 	}
 
 	addIngredienteReceta(ingrediente: Ingrediente) {
@@ -285,8 +304,6 @@ export class CrearRecetaComponent {
 	}
 
 	editarIngredienteArray(ingrediente: Ingrediente) {
-		console.log(ingrediente);
-
 		for (let i = 0; i < this.Receta.lista_productos.length; i++) {
 			if (
 				ingrediente.id_producto ==
@@ -397,7 +414,39 @@ export class CrearRecetaComponent {
 			this.Receta.pasos = [paso];
 		}
 		this.numero_paso = this.numero_paso + 1;
-		this.initPasosForm();
+		this.initPasosForm(false);
+
+		this.messageService.clear();
+		this.messageService.add({
+			severity: 'success',
+			summary: '¡Paso agregado!',
+			detail:
+				'El paso ' + paso.n_paso + ' ha sido agregado exitosamente.',
+			life: 3000,
+		});
+	}
+
+	editarPasoReceta() {
+		this.dialogPasos = false;
+		this.editarPaso = false;
+		let paso: Paso = {
+			n_paso: this.pasoEditar.n_paso,
+			descripcion: this.pasosForm.get('descripcion')?.value,
+		};
+		for (let i = 0; i < this.Receta.pasos.length; i++) {
+			if (this.pasoEditar.n_paso == this.Receta.pasos[i].n_paso) {
+				this.Receta.pasos.splice(i, 1, paso);
+				break;
+			}
+		}
+		this.messageService.clear();
+		this.messageService.add({
+			severity: 'success',
+			summary: '¡Paso editado!',
+			detail: 'El paso ' + paso.n_paso + ' ha sido editado exitosamente.',
+			life: 3000,
+		});
+		this.initPasosForm(false);
 	}
 
 	mostrarDialogIngredientes() {
@@ -432,6 +481,8 @@ export class CrearRecetaComponent {
 	}
 
 	mostrarDialogPasos() {
+		this.labelDialogPasos = 'Agregar';
+		this.editarPaso = false;
 		if (this.cantidadPasos >= 15) {
 			this.dialogPasos = false;
 			this.messageService.clear();
@@ -442,8 +493,17 @@ export class CrearRecetaComponent {
 				life: 3000,
 			});
 		} else {
+			this.initPasosForm(false);
 			this.dialogPasos = true;
 		}
+	}
+
+	mostrarDialogPasosEditar(paso: Paso) {
+		this.labelDialogPasos = 'Aceptar';
+		this.dialogPasos = true;
+		this.editarPaso = true;
+		this.pasoEditar = paso;
+		this.initPasosForm(true);
 	}
 
 	mostrarDialogConfirmar() {

@@ -1,7 +1,7 @@
 <div class="card card-steps">
 	<p-steps
 		[model]="items"
-		[readonly]="false"
+		[readonly]="true"
 		[activeIndex]="activeIndex"
 		(activeIndexChange)="onActiveIndexChange($event)"
 	></p-steps>
@@ -249,6 +249,7 @@
 							class="col-1 edit-button flex justify-content-center"
 							pTooltip="Editar"
 							tooltipPosition="bottom"
+							(click)="mostrarDialogPasosEditar(paso)"
 						>
 							<i class="pi pi-pencil"></i>
 						</div>
@@ -389,7 +390,12 @@
 	[resizable]="false"
 >
 	<ng-template pTemplate="header">
-		<span class="text-xl font-bold">Paso {{ numero_paso }}</span>
+		<span *ngIf="editarPaso" class="text-xl font-bold"
+			>Editar paso {{ pasoEditar.n_paso }}</span
+		>
+		<span *ngIf="!editarPaso" class="text-xl font-bold"
+			>Agregar paso {{ numero_paso }}</span
+		>
 	</ng-template>
 
 	<ng-template pTemplate="content"
@@ -444,8 +450,8 @@
 	<ng-template pTemplate="footer">
 		<button
 			pButton
-			label="Agregar"
-			(click)="agregarPasoReceta()"
+			[label]="labelDialogPasos"
+			(click)="editarPaso ? editarPasoReceta() : agregarPasoReceta()"
 			[disabled]="pasosForm.invalid"
 		></button>
 	</ng-template>
