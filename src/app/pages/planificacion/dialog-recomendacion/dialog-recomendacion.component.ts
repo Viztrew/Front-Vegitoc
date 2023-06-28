@@ -50,6 +50,16 @@ export class DialogRecomendacionComponent {
 
 	estadoRecetasRecomendadas!: Array<RecetaAgregarPlan>;
 
+	data!: any;
+
+	options!: any;
+
+	puntajeRecomendacion!: {
+		puntaje: number;
+		color: string;
+		colorHover: string;
+	};
+
 	ngOnInit() {
 		this.titulo = 'Recomendación para ' + this.dia;
 
@@ -63,8 +73,6 @@ export class DialogRecomendacionComponent {
 			.obtenerRecomendacion(this.fecha)
 			.subscribe(
 				(data) => {
-					console.log(data);
-
 					this.mostrarSpinnerBuscar = false;
 					if (data.is_valid) {
 						if (data.productos) {
@@ -77,6 +85,23 @@ export class DialogRecomendacionComponent {
 							this.recetasRecomendadas = data.recetas;
 						} else {
 							this.recetasRecomendadas = [];
+						}
+						this.puntajeRecomendacion = {
+							puntaje: data.puntaje,
+							color: '',
+							colorHover: '',
+						};
+						if (data.puntaje < 2) {
+							this.puntajeRecomendacion.color = '--red-500';
+							this.puntajeRecomendacion.colorHover = '--red-400';
+						} else if (data.puntaje == 2) {
+							this.puntajeRecomendacion.color = '--yellow-500';
+							this.puntajeRecomendacion.colorHover =
+								'--yellow-400';
+						} else if (data.puntaje >= 3) {
+							this.puntajeRecomendacion.color = '--green-500';
+							this.puntajeRecomendacion.colorHover =
+								'--green-400';
 						}
 					}
 				},
@@ -116,6 +141,53 @@ export class DialogRecomendacionComponent {
 							sticky: true,
 						});
 					}
+				},
+				() => {
+					const documentStyle = getComputedStyle(
+						document.documentElement
+					);
+					const textColor =
+						documentStyle.getPropertyValue('--text-color');
+
+					this.data = {
+						labels: ['Puntaje'],
+						datasets: [
+							{
+								data: [
+									this.puntajeRecomendacion.puntaje,
+									4 - this.puntajeRecomendacion.puntaje,
+								],
+								backgroundColor: [
+									documentStyle.getPropertyValue(
+										this.puntajeRecomendacion.color
+									),
+									documentStyle.getPropertyValue(
+										'--gray-500'
+									),
+								],
+
+								hoverBackgroundColor: [
+									documentStyle.getPropertyValue(
+										this.puntajeRecomendacion.colorHover
+									),
+									documentStyle.getPropertyValue(
+										'--gray-400'
+									),
+								],
+							},
+						],
+					};
+
+					this.options = {
+						cutout: '60%',
+						plugins: {
+							legend: {
+								labels: {
+									color: textColor,
+								},
+							},
+						},
+					};
 				}
 			);
 	}
